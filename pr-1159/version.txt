@@ -1,9 +1,9 @@
-Last updated: 2020-07-21 13:44:26 -0700
+Last updated: 2020-07-27 17:30:28 -0700
 
 Latest commit:
-    commit cf02e44bb76ab4a9b87e042c05f25cfb0fc4028e
+    commit 56ecc2de17af89ac1b291136f60b8a5f96254f3e
     Author: Mahesh Panchaksharaiah <maheshp@thoughtworks.com>
-    Date:   Tue Jul 21 13:37:21 2020 -0700
+    Date:   Mon Jul 27 17:15:27 2020 -0700
     
-        More changes to the release notes
+        Adding an image for pipeline as code wizard
     
