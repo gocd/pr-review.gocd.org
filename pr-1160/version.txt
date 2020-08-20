@@ -1,0 +1,9 @@
+Last updated: 2020-08-19 23:29:30 -0700
+
+Latest commit:
+    commit 110c848b9bd0fec2e8a3cba46381cacb91f4a5a6
+    Author: Kritika Singh <kritika.singh1994@gmail.com>
+    Date:   Thu Aug 20 11:54:15 2020 +0530
+    
+        Add release notes for 20.7.0
+    
