@@ -1,0 +1,16 @@
+Last updated: 2020-08-31 22:35:23 -0700
+
+Latest commit:
+    commit c80e09813d4b5691a907114c71482b21014f8d40
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Tue Sep 1 05:30:24 2020 +0000
+    
+        Bump minitest from 5.13.0 to 5.14.2
+        
+        Bumps [minitest](https://github.com/seattlerb/minitest) from 5.13.0 to 5.14.2.
+        - [Release notes](https://github.com/seattlerb/minitest/releases)
+        - [Changelog](https://github.com/seattlerb/minitest/blob/master/History.rdoc)
+        - [Commits](https://github.com/seattlerb/minitest/compare/v5.13.0...v5.14.2)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
