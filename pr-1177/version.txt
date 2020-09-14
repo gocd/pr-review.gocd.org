@@ -1,0 +1,16 @@
+Last updated: 2020-09-13 23:07:20 -0700
+
+Latest commit:
+    commit 1f5792182530f07fb70959134cdc0edd45f0a739
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Mon Sep 14 05:31:32 2020 +0000
+    
+        Bump typhoeus from 1.3.1 to 1.4.0
+        
+        Bumps [typhoeus](https://github.com/typhoeus/typhoeus) from 1.3.1 to 1.4.0.
+        - [Release notes](https://github.com/typhoeus/typhoeus/releases)
+        - [Changelog](https://github.com/typhoeus/typhoeus/blob/master/CHANGELOG.md)
+        - [Commits](https://github.com/typhoeus/typhoeus/compare/v1.3.1...v1.4.0)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
