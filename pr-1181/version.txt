@@ -1,0 +1,16 @@
+Last updated: 2020-09-15 22:29:44 -0700
+
+Latest commit:
+    commit 8555b823677e7c62a08f056ffcacd80c616aacad
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Wed Sep 16 05:17:24 2020 +0000
+    
+        Bump autoprefixer-rails from 9.7.3 to 9.8.6.5
+        
+        Bumps [autoprefixer-rails](https://github.com/ai/autoprefixer-rails) from 9.7.3 to 9.8.6.5.
+        - [Release notes](https://github.com/ai/autoprefixer-rails/releases)
+        - [Changelog](https://github.com/ai/autoprefixer-rails/blob/master/CHANGELOG.md)
+        - [Commits](https://github.com/ai/autoprefixer-rails/compare/9.7.3...9.8.6.5)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
