@@ -1,0 +1,16 @@
+Last updated: 2020-09-16 22:22:38 -0700
+
+Latest commit:
+    commit bedd87c672343189b894d779e9691db51126fa55
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Thu Sep 17 05:18:02 2020 +0000
+    
+        Bump fog-core from 2.2.0 to 2.2.3
+        
+        Bumps [fog-core](https://github.com/fog/fog-core) from 2.2.0 to 2.2.3.
+        - [Release notes](https://github.com/fog/fog-core/releases)
+        - [Changelog](https://github.com/fog/fog-core/blob/master/changelog.md)
+        - [Commits](https://github.com/fog/fog-core/compare/v2.2.0...v2.2.3)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
