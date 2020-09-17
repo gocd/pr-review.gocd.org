@@ -1,0 +1,14 @@
+Last updated: 2020-09-16 22:56:33 -0700
+
+Latest commit:
+    commit d7ec6095f31c1d5b4d55b6f1f4bcafc7c879dd4a
+    Author: GaneshSPatil <ganeshpl@thoughtworks.com>
+    Date:   Thu Sep 17 11:20:18 2020 +0530
+    
+        Use Offical GoCD Helm Chart link
+        
+        * Use GoCD Helm Chart repository instead.
+        * Change docs to use gocd/gocd instead of stable/gocd.
+        * Point to hub.helm.sh gocd helm chart.
+        * Fix various links pointing to charts yaml from stable/gocd.
+    
