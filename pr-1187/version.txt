@@ -1,0 +1,16 @@
+Last updated: 2020-09-23 22:24:01 -0700
+
+Latest commit:
+    commit 12fdb5a66789e02aa995b083eac3ec3a88ba721e
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Thu Sep 24 05:19:26 2020 +0000
+    
+        Bump em-websocket from 0.5.1 to 0.5.2
+        
+        Bumps [em-websocket](https://github.com/igrigorik/em-websocket) from 0.5.1 to 0.5.2.
+        - [Release notes](https://github.com/igrigorik/em-websocket/releases)
+        - [Changelog](https://github.com/igrigorik/em-websocket/blob/master/CHANGELOG.rdoc)
+        - [Commits](https://github.com/igrigorik/em-websocket/compare/v0.5.1...v0.5.2)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
