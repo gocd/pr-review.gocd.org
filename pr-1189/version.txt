@@ -1,0 +1,9 @@
+Last updated: 2020-10-12 05:51:42 -0700
+
+Latest commit:
+    commit be96762a363bcec031717889ed4c69509db349c0
+    Author: Abilash <abilashr@thoughtworks.com>
+    Date:   Mon Oct 12 18:15:01 2020 +0530
+    
+        Added blog to restore backup for gocd on kubernetes
+    
