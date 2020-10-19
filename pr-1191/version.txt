@@ -1,0 +1,16 @@
+Last updated: 2020-10-18 22:26:32 -0700
+
+Latest commit:
+    commit 4cb477a62dee382772a85661176a617fa044134d
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Mon Oct 19 05:22:12 2020 +0000
+    
+        Bump excon from 0.71.1 to 0.78.0
+        
+        Bumps [excon](https://github.com/excon/excon) from 0.71.1 to 0.78.0.
+        - [Release notes](https://github.com/excon/excon/releases)
+        - [Changelog](https://github.com/excon/excon/blob/master/changelog.txt)
+        - [Commits](https://github.com/excon/excon/compare/v0.71.1...v0.78.0)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
