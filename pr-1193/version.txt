@@ -1,0 +1,16 @@
+Last updated: 2020-11-04 21:24:34 -0800
+
+Latest commit:
+    commit f8113c4eea152d3b212081aeffba1bd415843813
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Thu Nov 5 05:18:07 2020 +0000
+    
+        Bump mime-types-data from 3.2019.1009 to 3.2020.1104
+        
+        Bumps [mime-types-data](https://github.com/mime-types/mime-types-data) from 3.2019.1009 to 3.2020.1104.
+        - [Release notes](https://github.com/mime-types/mime-types-data/releases)
+        - [Changelog](https://github.com/mime-types/mime-types-data/blob/master/History.md)
+        - [Commits](https://github.com/mime-types/mime-types-data/compare/v3.2019.1009...v3.2020.1104)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
