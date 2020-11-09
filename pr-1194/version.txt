@@ -1,0 +1,15 @@
+Last updated: 2020-11-08 21:31:20 -0800
+
+Latest commit:
+    commit 8852cb3e6c011fc4ad6e0820bc58df4da5cc3555
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Mon Nov 9 05:26:50 2020 +0000
+    
+        Bump parallel from 1.19.0 to 1.20.0
+        
+        Bumps [parallel](https://github.com/grosser/parallel) from 1.19.0 to 1.20.0.
+        - [Release notes](https://github.com/grosser/parallel/releases)
+        - [Commits](https://github.com/grosser/parallel/compare/v1.19.0...v1.20.0)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
