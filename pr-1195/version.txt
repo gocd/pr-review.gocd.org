@@ -1,0 +1,16 @@
+Last updated: 2020-11-08 21:35:29 -0800
+
+Latest commit:
+    commit 8ba267777ef9745d2726e5becad579732176c1fd
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Mon Nov 9 05:27:31 2020 +0000
+    
+        Bump tzinfo from 1.2.6 to 1.2.8
+        
+        Bumps [tzinfo](https://github.com/tzinfo/tzinfo) from 1.2.6 to 1.2.8.
+        - [Release notes](https://github.com/tzinfo/tzinfo/releases)
+        - [Changelog](https://github.com/tzinfo/tzinfo/blob/master/CHANGES.md)
+        - [Commits](https://github.com/tzinfo/tzinfo/compare/v1.2.6...v1.2.8)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
