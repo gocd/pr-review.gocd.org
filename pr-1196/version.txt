@@ -1,0 +1,16 @@
+Last updated: 2020-11-10 21:25:55 -0800
+
+Latest commit:
+    commit 55d6ba5de639fecd2a87b8430547810305aef543
+    Author: dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>
+    Date:   Wed Nov 11 05:20:27 2020 +0000
+    
+        Bump rouge from 3.14.0 to 3.25.0
+        
+        Bumps [rouge](https://github.com/rouge-ruby/rouge) from 3.14.0 to 3.25.0.
+        - [Release notes](https://github.com/rouge-ruby/rouge/releases)
+        - [Changelog](https://github.com/rouge-ruby/rouge/blob/master/CHANGELOG.md)
+        - [Commits](https://github.com/rouge-ruby/rouge/compare/v3.14.0...v3.25.0)
+        
+        Signed-off-by: dependabot-preview[bot] <support@dependabot.com>
+    
