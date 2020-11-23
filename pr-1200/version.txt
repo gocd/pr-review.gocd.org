@@ -1,9 +1,9 @@
-Last updated: 2020-11-23 00:35:59 -0800
+Last updated: 2020-11-23 00:40:33 -0800
 
 Latest commit:
-    commit 44247d8749c5e9dd3639b61c88f45185c6893a82
-    Author: Mahesh Panchaksharaiah <maheshp@thoughtworks.com>
-    Date:   Mon Nov 23 13:59:45 2020 +0530
+    commit 0a0f5c0c8b7355dd7a961dc618f9eddc94ebf0e3
+    Author: Kritika <kritika.singh@thoughtworks.com>
+    Date:   Mon Nov 23 14:04:28 2020 +0530
     
-        GoCD 20.10.0 release notes
+        Fix the typo in gocd version
     
