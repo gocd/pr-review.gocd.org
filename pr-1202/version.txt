@@ -1,0 +1,9 @@
+Last updated: 2020-11-24 07:02:50 -0800
+
+Latest commit:
+    commit 3cfa1d4fbc11137247be47be303c167638eb729b
+    Author: Kleber Rocha <klinux@gmail.com>
+    Date:   Tue Nov 24 11:53:02 2020 -0300
+    
+        Inserting keycloak pluing inside authorization page
+    
