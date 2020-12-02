@@ -1,0 +1,9 @@
+Last updated: 2020-12-02 14:26:01 -0800
+
+Latest commit:
+    commit c8ef4513d2b2ddfcb2016f2ea9816231b290ef40
+    Author: Joel Bodenmann <joel@embedded.pro>
+    Date:   Wed Dec 2 23:17:39 2020 +0100
+    
+        Add CMake Task plugin
+    
