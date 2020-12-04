@@ -1,10 +1,9 @@
-Last updated: 2020-12-03 20:04:32 -0800
+Last updated: 2020-12-03 22:14:14 -0800
 
 Latest commit:
-    commit 9e84bb1d7e4a140b6b02fd9b8e8a76d8c4d3db4b
-    Merge: 1982fafa7 68d2dc1d5
-    Author: GoCD Build User <go-cd@googlegroups.com>
-    Date:   Thu Dec 3 20:01:37 2020 -0800
+    commit d27baae6c016496eb821667d9fd4ca7e31c68104
+    Author: Kritika Singh <kritika.singh1994@gmail.com>
+    Date:   Fri Dec 4 11:39:28 2020 +0530
     
-        Merge remote-tracking branch 'origin/master'
+        fix build failure
     
