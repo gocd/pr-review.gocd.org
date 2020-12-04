@@ -1,9 +1,9 @@
-Last updated: 2020-12-03 22:14:14 -0800
+Last updated: 2020-12-03 22:18:14 -0800
 
 Latest commit:
-    commit d27baae6c016496eb821667d9fd4ca7e31c68104
+    commit ec4b6be7b4ce429cc9e8a4410ee80187d07dd257
     Author: Kritika Singh <kritika.singh1994@gmail.com>
-    Date:   Fri Dec 4 11:39:28 2020 +0530
+    Date:   Fri Dec 4 11:41:49 2020 +0530
     
-        fix build failure
+        No longer require debug logs
     
