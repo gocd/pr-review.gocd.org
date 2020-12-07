@@ -1,9 +1,9 @@
-Last updated: 2020-12-03 22:18:14 -0800
+Last updated: 2020-12-07 04:56:40 +0000
 
 Latest commit:
-    commit ec4b6be7b4ce429cc9e8a4410ee80187d07dd257
-    Author: Kritika Singh <kritika.singh1994@gmail.com>
-    Date:   Fri Dec 4 11:41:49 2020 +0530
+    commit 4668ac63bb0d78059c703d366bf79ba53ddd2328
+    Author: Kritika <kritika.singh@thoughtworks.com>
+    Date:   Mon Dec 7 04:55:29 2020 +0000
     
-        No longer require debug logs
+        Merge d57e8a14bd4ae5249ad468c01a806f857ffb7b64 into faa9c8c381659d19f44e444c5bf551c775ad999c
     
