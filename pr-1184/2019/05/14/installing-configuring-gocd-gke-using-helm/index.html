@@ -90,7 +90,7 @@
 <p>You can specify the zone, GKE master version, the machine type and number of nodes among other things as per your requirements. Remember to allocate enough vCPUs and RAM to run the GoCD server as well as the agents.</p>
 
 <h2 id="deploy-gocd"><strong>Deploy GoCD</strong></h2>
-<p>GoCD provides a <a href="https://github.com/helm/charts/tree/master/stable/gocd">helm</a> chart to deploy GoCD easily in a cluster. You can also find a basic <a href="https://docs.gocd.org/current/gocd_on_kubernetes/gocd_helm_chart/helm_install.html">tutorial</a> here which I’m repeating for better continuity.</p>
+<p>GoCD provides a <a href="https://github.com/gocd/helm-chart/tree/master/gocd">helm</a> chart to deploy GoCD easily in a cluster. You can also find a basic <a href="https://docs.gocd.org/current/gocd_on_kubernetes/gocd_helm_chart/helm_install.html">tutorial</a> here which I’m repeating for better continuity.</p>
 
 <p>1) First you have to set the correct context so that we are able to deploy GoCD in the correct cluster.</p>
 
@@ -114,12 +114,12 @@
 
 <p>4) Now we add the repository where the GoCD chart is available as follows.</p>
 
-<pre><code>helm repo add stable https://kubernetes-charts.storage.googleapis.com
+<pre><code>helm repo add gocd https://gocd.github.io/helm-chart
 </code></pre>
 
 <p>5) Now, all we have to do is just install the chart as</p>
 
-<pre><code>helm install stable/gocd —- name gocd —- namespace gocd
+<pre><code>helm install gocd/gocd —- name gocd —- namespace gocd
 </code></pre>
 
 <p>This will install GoCD on your server along with an ingress to allow access to the Go server over the internet.</p>
@@ -134,9 +134,9 @@
 
 <p>If you go to the server you’ll be able to see the GoCD dashboard with a <em>hello-world</em> pipeline executed just to verify if everything works.</p>
 
-<p>But executing the above command configures the Go server using the values available in this values.yaml file. If you are just playing around to get a feel of using GoCD in Kubernetes, this is fine. However if you are trying to configure the GoCD server with some basic options, then it’s better to use your own <a href="https://github.com/helm/charts/blob/master/stable/gocd/values.yaml">values.yaml</a> file as follows</p>
+<p>But executing the above command configures the Go server using the values available in this values.yaml file. If you are just playing around to get a feel of using GoCD in Kubernetes, this is fine. However if you are trying to configure the GoCD server with some basic options, then it’s better to use your own <a href="https://github.com/gocd/helm-chart/blob/master/gocd/values.yaml">values.yaml</a> file as follows</p>
 
-<pre><code>helm install —- name gocd-app —- namespace gocd -f values.yaml stable/gocd
+<pre><code>helm install —- name gocd-app —- namespace gocd -f values.yaml gocd/gocd
 </code></pre>
 
 <h2 id="configuring-password-file-based-authentication"><strong>Configuring Password File based Authentication</strong></h2>
@@ -243,6 +243,16 @@ kubectl create secret generic gocd-server-ssh \
           <h2 class="section-title">Recent Articles</h2>
           <ol>
             <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
               <span class="post-date">Apr 14</span>
               <span class="post-author">Guest post by Abilash Rajasekaran</span>
               <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
@@ -257,22 +267,12 @@ kubectl create secret generic gocd-server-ssh \
               <span class="post-author">Mohamed Najiullah</span>
               <a href="../../../08/05/configure-container-registry-gcr-artifact-store-gocd/">Configuring Google Container Registry (GCR) as an Artifact Store in GoCD</a>
             </li>
-            <li>
-              <span class="post-date">Jun 25</span>
-              <span class="post-author">GoCD Team</span>
-              <a href="../../../06/25/GoCD-non-root-containers/">Running Dockerized GoCD Containers as Non Root</a>
-            </li>
-            <li>
-              <span class="post-date">May 21</span>
-              <span class="post-author">GoCD Team</span>
-              <a href="../../21/official-stance-on-java/">Effect of Java licensing changes on GoCD</a>
-            </li>
           </ol>
         </section>
         <section>
           <h2 class="section-title">By Year</h2>
           <ol>
-            <li><a href="../../../../2020/">2020 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
             <li><a href="../../../">2019 (7)</a></li>
             <li><a href="../../../../2018/">2018 (18)</a></li>
             <li><a href="../../../../2017/">2017 (39)</a></li>

@@ -9,7 +9,7 @@ function main() {
     die "This script requires a URL"
   fi
 
-  prerequisites unzip curl
+  prerequisites unzip curl basename cut sed
 
   local url="$1"
   local filename=$(basename "$url")
@@ -70,23 +70,14 @@ function prerequisites() {
 
 function read_url() {
   local url="$1"
-
-  if type wget &> /dev/null; then
-    wget -q -O - "$url"
-  else
-    curl -fsSL "$url"
-  fi
+  curl -fsSL "$url"
 }
 
 function download() {
   local url="$1"
   local file="$2"
 
-  if type wget &> /dev/null; then
-    wget "$url" -O "$file"
-  else
-    curl -fSL "$url" -o "$file"
-  fi
+  curl -fSL "$url" -o "$file"
 }
 
 function verify() {
@@ -94,25 +85,39 @@ function verify() {
   local hash="$2"
 
   if type shasum &> /dev/null; then
-    grep -qF "$hash" <(shasum -a 256 "$file" | cut -d " " -f 1) || return 1
+    [ "$hash" = $(shasum -a 256 "$file" | cut -d " " -f 1) ] || return 1
   elif type sha &> /dev/null; then
-    grep -qF "$hash" <(sha -a 256 "$file" | cut -d " " -f 1) || return 1
+    [ "$hash" = $(sha -a 256 "$file" | cut -d " " -f 1) ] || return 1
+  elif type sha256sum &> /dev/null; then
+    [ "$hash" = $(sha256sum "$file" | cut -d " " -f 1) ] || return 1
+  elif type openssl &> /dev/null; then
+    [ "$hash" = $(openssl dgst -sha256 "$file" | cut -d " " -f 2) ] || return 1
+  else
+    warn "[WARNING] Unable to verify SHA-256 because you don't have \`shasum\`, \`sha256sum\`, \`sha\`, or \`openssl\` installed."
   fi
 }
 
 function emph() {
   if [ "yes" = "$use_colors" ]; then
-    echo -e "\033[1;32m$@\033[0m"
+    echo -e "\033[1;32m$*\033[0m"
   else
-    echo "$@"
+    echo "$*"
+  fi
+}
+
+function warn() {
+  if [ "yes" = "$use_colors" ]; then
+    echo -e "\033[1;33m$*\033[0m" >&2
+  else
+    echo "$*" >&2
   fi
 }
 
 function yell() {
   if [ "yes" = "$use_colors" ]; then
-    echo -e "\033[37;41m$@\033[0m" >&2
+    echo -e "\033[37;41m$*\033[0m" >&2
   else
-    echo "$@" >&2
+    echo "$*" >&2
   fi
 }
 
