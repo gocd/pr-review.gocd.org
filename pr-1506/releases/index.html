@@ -158,26 +158,26 @@
   <li><a href="https://github.com/gocd/gocd/issues/11578">#11578</a> - Starting this release, Alpine 3.18 based container images for GoCD Agent are <a href="https://hub.docker.com/r/gocd/gocd-agent-alpine-3.18">available</a>.</li>
   <li><a href="https://github.com/gocd/gocd/issues/11578">#11578</a> - Build the default GoCD Server image on Alpine 3.18</li>
   <li><a href="https://github.com/gocd/gocd/issues/11405">#11405</a> - Reduce size/security attack surface of CentOS Stream 9 based container images (requires use of microdnf instead of dnf)</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11472">#11472</a>, <a href="https://github.com/gocd/gocd/issues/11449">#11449</a>, <a href="https://github.com/gocd/gocd/issues/11473">#11473</a>, <a href="https://github.com/gocd/gocd/issues/11626">#11626</a>, <a href="https://github.com/gocd/gocd/issues/11627">#11627</a>, <a href="https://github.com/gocd/gocd/issues/11625">#11625</a> - Reduce size of UI bundles by removing dead assets, unnecessary legacy Javascript and minifying additional dependencies</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11472">#11472</a>, <a href="https://github.com/gocd/gocd/issues/11449">#11449</a>, <a href="https://github.com/gocd/gocd/issues/11473">#11473</a>, <a href="https://github.com/gocd/gocd/issues/11626">#11626</a>, <a href="https://github.com/gocd/gocd/issues/11627">#11627</a>, <a href="https://github.com/gocd/gocd/issues/11625">#11625</a> - Increase UI loading speed by reducing size of bundles through removal of dead assets, duplicate styles, unnecessary legacy Javascript and minifying additional dependencies</li>
   <li><a href="https://github.com/gocd/gocd/issues/11535">#11535</a> - Improve pipeline config tab switch confirmation dialog message</li>
   <li><a href="https://github.com/gocd/gocd/issues/11663">#11663</a> - Improve user experience when managing Pluggable SCMs with Auto Update</li>
   <li><a href="https://github.com/gocd/gocd/issues/11664">#11664</a> - Improve error messages during config repo material validation</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11634">#11634</a> - Allow server wrapper-properties customisation within server container images</li>
 </ul>
 
 <h4>Bug fixes</h4>
 
 <ul>
+  <li><a href="https://github.com/gocd/gocd/issues/11378">#11378</a>, <a href="https://github.com/gocd/gocd/issues/11406">#11406</a> - gocd-agent-docker-dind:v23.1.0 image can sometimes fail docker tasks run after agent start</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11548">#11548</a> - go-agent 23.1.0 does not start when system tmp dir has a noexec mount</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11376">#11376</a> - Remove unnecessary bloat within CentOS 7 arm64 agent container image</li>
   <li><a href="https://github.com/gocd/gocd/issues/11544">#11544</a> - Pipeline config deep links from Pluggable SCMs and Elastic Agents don't work as expected</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11399">#11399</a> - GoCD Artifacts tab doesn't show artifacts whose name starts with a dot</li>
   <li><a href="https://github.com/gocd/gocd/issues/11773">#11773</a> - Fix import of nant_path from nant config repo tasks</li>
   <li><a href="https://github.com/gocd/gocd/issues/11772">#11772</a> - Fix export to config repo of fetch artifact tasks without pipeline name set</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11634">#11634</a> - Avoid wiping entire wrapper-properties.conf within server container entrypoint</li>
   <li><a href="https://github.com/gocd/gocd/issues/11652">#11652</a> - Fix font display consistency across views</li>
   <li><a href="https://github.com/gocd/gocd/issues/2822">#2822</a> - Fix logging ERROR noise from url rewriting logic</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11548">#11548</a> - go-agent 23.1.0 does not start when system tmp dir has a noexec mount</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11399">#11399</a> - GoCD Artifacts tab doesn't show artifacts whose name starts with a dot</li>
   <li><a href="https://github.com/gocd/gocd/issues/11513">#11513</a> - Remove misleading reporting of agent "creating properties" in console logs</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11378">#11378</a>, <a href="https://github.com/gocd/gocd/issues/11406">#11406</a> - gocd-agent-docker-dind:v23.1.0 image can sometimes fail docker tasks run after agent start</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11376">#11376</a> - Remove unnecessary bloat within CentOS 7 arm64 agent container image</li>
 </ul>
 
 <h4>Security Fixes</h4>
