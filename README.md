@@ -11,7 +11,7 @@ Open the URL https://gocd.github.io/pr-review.gocd.org/pr-$PR_NUMBER to see the 
 cd www.go.cd
 
 # save the list of open pull requests in a variable
-PRS=$(hub pr list | awk '{print $1}' | sed -e 's/#//g')
+PRS=$(gh pr list | awk '{print $1}' | sed -e 's/#//g')
 
 # clone this repo
 cd /tmp
