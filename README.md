@@ -4,7 +4,7 @@ Open the URL https://gocd.github.io/pr-review.gocd.org/pr-$PR_NUMBER to see the 
 
 ## Periodically pruning the repository
 
-- ensure that you have the `hub` cli installed
+- ensure that you have the `gh` cli installed
 
 ```shell
 # change to the directory containing this repo: https://github.com/gocd/www.go.cd
