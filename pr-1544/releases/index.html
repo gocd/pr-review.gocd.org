@@ -16,7 +16,7 @@
     <title>Releases - Version notes | GoCD</title>
     <link href="../assets/images/favicon.ico" rel="shortcut icon" />
     <link href="../assets/stylesheets/site-c5b67c07.css" rel="stylesheet" />
-    <script src="../assets/javascripts/all-cc81523f.js" data-manual="true"></script>
+    <script src="../assets/javascripts/all-4272c575.js" data-manual="true"></script>
     
     <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../feed.xml" />
     <script>
@@ -154,27 +154,42 @@
         <div class="content">
           <p>This release is mainly a maintenance and bug-fix release.</p>
 
+<h4>Jetty web server upgrade</h4>
+
+<p>GoCD relies internally upon the <a href="https://projects.eclipse.org/projects/rt.jetty">Eclipse Jetty web server</a>, which was
+upgraded from v9 to v10 in this release.</p>
+
+<p>If you customise the configuration of the web server via <em>config/jetty.xml</em> or by overriding the Java system property
+<em>jetty.xml.file.name</em>, note that any custom configuration will be overridden to ensure compatibility with the new version.
+After upgrading, shut down your GoCD server and merge back your custom changes from a backup of your config directory
+/ Jetty configuration. You can <a href="https://github.com/gocd/gocd/commit/5d7f3ccb107224fa376938690a8f7721357cddff#diff-7bbdaff7e1127a406cdce7bffae1167d66ecfb219bccc4689cb3cf38e8b2014c">review the changes to jetty.xml here</a>.</p>
+
 <h4>Enhancements</h4>
 
 <ul>
-  <li><a href="https://github.com/gocd/gocd/issues/12015">#12015</a> - Bundle latest Java 17.0.8.1 patch release with non-Linux installers &amp; containers</li>
+  <li><a href="https://github.com/gocd/gocd/issues/12120">#12120</a> - Bundle latest Java 17.0.9 release with non-Linux installers &amp; containers</li>
+  <li><a href="https://github.com/gocd/gocd/issues/12147">#12147</a> - Speed agent bootstrapping by reducing agent dependencies</li>
+  <li><a href="https://github.com/gocd/gocd/issues/12051">#12051</a> - Remove subversion &amp; mercurial from default container images</li>
 </ul>
 
 <h4>Bug fixes</h4>
 
 <ul>
-  <li><a href="https://github.com/gocd/gocd/issues/11868">#11868</a>, <a href="https://github.com/gocd/gocd/issues/11893">#11893</a> - Server config can have boolean attributes unintentionally toggled at GoCD startup</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11868">#11868</a>, <a href="https://github.com/gocd/gocd/issues/11893">#11893</a> - Server config can have boolean attributes unintentionally toggled by server at GoCD startup</li>
   <li><a href="https://github.com/gocd/gocd/issues/11819">#11819</a> - Agent links from stage details jobs tab no longer work since 23.2.0</li>
   <li><a href="https://github.com/gocd/gocd/issues/11866">#11866</a> - GoCD 23.2/23.3 breaks agent mTLS connectivity when private key is encrypted/passphrase protected</li>
-  <li><a href="https://github.com/gocd/gocd/issues/11969">#11969</a> - GoCD Agent on Java 20 cant talk to server on Java 17</li>
+  <li><a href="https://github.com/gocd/gocd/issues/11969">#11969</a> - GoCD Agent on Java 20+ cant talk to server on Java 17</li>
+  <li><a href="https://github.com/gocd/gocd/issues/12107">#12107</a> - Improve error logging during agent token acquisition failures</li>
 </ul>
 
-<h4>Security Fixes</h4>
+<h4>Security fixes</h4>
 
 <p>We regularly fix security issues reported by security researchers &amp; upgrade dependencies to mitigate known vulnerabilities.
 Upgrading to the latest release is always recommended.</p>
 
-<p>There are no security fixes specifically known to affect GoCD included in this release.</p>
+<p>There are no security fixes specifically known to affect GoCD included in this release. If you use GoCD container images,
+note that this release rebuilds GoCD images to include fixes to <em>curl</em> <a href="https://curl.se/docs/CVE-2023-38545.html">CVE-2023-38545</a>
+across all supported platforms.</p>
 
 <h4>APIs</h4>
 
