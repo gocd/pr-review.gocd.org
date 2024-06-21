@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Download GoCD - open source continuous delivery server - for free. Community and commercial support available." name="description" />
+    <meta content="GoCD download, go agent download, go cd download, install gocd" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Download for Free - Server and Agent | GoCD" />
+    <meta name="twitter:description" content="Download GoCD - open source continuous delivery server - for free. Community and commercial support available." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/gocd_continuous_delivery_thoughtworks_twitter-9cfe1828.jpg" />
+    <link rel="canonical" href="http://localhost:4567/download" />
+
+    <title>Download for Free - Server and Agent | GoCD</title>
+    <link href="../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="download download_index">
+    <header class="top">
+  <div class="container">
+    <a href="../" class="logo" analytics-label="logo"><img src="../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="./" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="inner-banner plugins">
+  <div class="container">
+    <div class="banner-content">
+      <h1 class="caption"><span>Download and Install <span class="go">Go</span>CD</span></h1>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+    <div class="row download-content-container">
+      <div class="sidebar-left">
+        <button class="download-btn"><i class="fa fa-bars"></i></button>
+
+        <nav class="sidebar-nav download-nav">
+          <ul class="verticalnav tab-container-marker">
+            <li class="dropdown open">
+              <span class="head">OS Types</span>
+              <ul>
+                <li><span class="tab-marker dld-win" rel="tab-windows">Windows</span></li>
+                <li><span class="tab-marker dld-osx" rel="tab-osx">macOS</span></li>
+                <li><span class="tab-marker dld-deb" rel="tab-debian"> Debian / APT</span></li>
+                <li><span class="tab-marker dld-rpm" rel="tab-redhat">RPM / YUM / DNF</span></li>
+                <li><span class="tab-marker dld-zip" rel="tab-zip">Zip</span></li>
+              </ul>
+            </li>
+            <li class="dropdown open">
+              <span class="head">Cloud Providers</span>
+              <ul>
+                <li><span class="tab-marker dld-docker" rel="tab-docker">Docker</span></li>
+                <li><span class="tab-marker dld-k8s" rel="tab-helm">Kubernetes / Helm</span></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="main-content">
+        <script id="verify-checksum-message-template" type="text/x-handlebars-template">
+          <div class="verify-checksum-message">
+            <div class="content">
+              <button class="close-message">X</button>
+              <p>You can verify the checksum on Linux or macOS by doing this:</p>
+              <div class="code">
+                <p class="prompts">
+                  user@shell: <br/>
+                  user@shell: <br/>
+                  user@shell: <br/>
+                </p>
+                <p class="commands">
+                  CHECK="{{sha256sum}}"<br/>
+                  echo "$CHECK&nbsp;&nbsp;{{filename}}" &gt; verify.sha256<br/>
+                  sha256sum -c verify.sha256<br/>
+                </p>
+                <p class="results">
+                  {{filename}}: OK
+                </p>
+                <p>
+                  On Windows, you will have to use a third-party utility like
+                  <a target="_blank" href="https://code.kliu.org/misc/hashutils/">HashUtils</a>
+                  or <a target="_blank" href="https://support.microsoft.com/en-us/kb/841290">fciv</a>. The values you would  be looking for are:
+                </p>
+                <p class="results">
+                  File: {{filename}}<br/>
+                  MD5 sum: {{md5sum}}<br/>
+                  SHA1 sum: {{sha1sum}}<br/>
+                  SHA256 sum: {{sha256sum}}<br/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </script>
+
+        <div class="loading-message-template" style="display: none">
+          <div class="load-message">
+            <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
+            <span>Please wait. Fetching information about available packages ...</span>
+          </div>
+        </div>
+
+        <div id="downloads"></div>
+      </div>
+
+      <div class="sidebar-right">
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<script id="downloads-help-links" type="text/x-handlebars-template">
+  <li><a href="../releases/" target="_blank">Release notes</a></li>
+  <li><a href="https://docs.gocd.org/current/installation/system_requirements.html"  target="_blank">System requirements</a></li>
+  {{#if os}}
+  <li>
+    <a href="https://docs.gocd.org/current/installation/install/server/{{os}}.html"  target="_blank">Server Installation Instructions</a>
+  </li>
+  <li>
+    <a href="https://docs.gocd.org/current/installation/install/agent/{{os}}.html"  target="_blank">Agent Installation Instructions</a>
+  </li>
+  {{/if}}
+</script>
+
+<script id="download-revisions-template" type="text/x-handlebars-template">
+  {{#*inline "show-releases-for-installer-type"}}
+  <div id="{{{tab_id}}}" class="tab_content {{{installer_type}}}">
+    <div class="release-type">
+      <input type="radio" id="stable-{{installer_type}}" name="typeOfDownloads-{{installer_type}}" checked="checked" value="stable" class="stable" />
+      <label for="stable-{{installer_type}}">Stable</label>
+      <input type="radio" id="experimental-{{installer_type}}" name="typeOfDownloads-{{installer_type}}" value="experimental" class="experimental" />
+      <label for="experimental-{{installer_type}}">Experimental</label>
+    </div>
+    <div class="go-releases">
+      <div class="latest">
+        {{#with latest_release}}
+        <div class="go-release {{display_version}} row">
+          <div class="col-xs-7">
+            <span class="version">Version: {{display_version}}</span>
+          </div>
+          <div class="col-xs-5">
+            <span class="version">Released: {{release_date}}</span>
+          </div>
+          {{#with (lookup . ../installer_type)}}
+          <div class="col-xs-12">
+            <div class="files">
+              {{> show-server-and-agent-installer latest=true}}
+              {{#if info }}
+              <div class="download-message">
+                {{{ info }}}
+              </div>
+              {{/if}}
+            </div>
+          </div>
+          {{/with}}
+        </div>
+        {{/with}}
+        <div class="notes">
+          <p class="imp">To run <span class="go">Go</span>CD, you'll need both server and agent</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-section">
+      <h3>Recommended Installation </h3>
+      <ul class="recommended-list">
+        <li>1. Select your OS</li>
+        <li>2. Download latest Stable Server</li>
+        <li>3. Download latest Stable Agent</li>
+        {{#if os_type}}
+          <li>4. Install Server <a href="https://docs.gocd.org/current/installation/install/server/{{os_type}}.html"  target="_blank" class="link-external">GoCD Server Installation Instructions</a> </li>
+          <li>5. Install Agent <a href="https://docs.gocd.org/current/installation/install/agent/{{os_type}}.html"  target="_blank" class="link-external">GoCD Agent Installation Instructions</a></li>
+        {{/if}}
+        <li>6. Get started
+            <ul class="recommended-list_child">
+              <li>If this your first time using GoCD, we recommend following our <a href="../getting-started/part-1/">Introduction to GoCD</a> guide</li>
+              <li>If you have prior experience with GoCD, here is our <a class="link-external" href="https://docs.gocd.org/current/">product documentation</a></li>
+            </ul>
+        </li>
+      </ul>
+      <p><a href="../releases/" target="_blank">Release notes</a></p>
+      <p><a class="link-external" href="https://docs.gocd.org/current/installation/system_requirements.html" target="_blank">System Requirements </a></p>
+    </div>
+
+    <div class="other-releases">
+      <button class="btn-release" analytics-label="show-old-releases"><span>Show</span> old releases</button>
+    </div>
+
+    <div class="old-release">
+      {{#each all_other_releases}}
+      <div class="row go-release {{display_version}}">
+        <div class="col-xs-7">
+          <span class="version">Version: {{display_version}}</span>
+        </div>
+        <div class="col-xs-5">
+          <span class="version">Released: {{release_date}}</span>
+        </div>
+        {{#if (lookup . ../installer_type)}}
+        {{#with (lookup . ../installer_type)}}
+        <div class="col-xs-12">
+          <div class="files">
+            {{> show-server-and-agent-installer}}
+          </div>
+        </div>
+        {{/with}}
+        {{else}}
+        <div class="files"><div class="file-not-available">Not available</div></div>
+        {{/if}}
+      </div>
+      {{/each}}
+
+      <div>
+        Older unsupported releases <a target="_blank" rel="nofollow" href="https://gocd.github.io/gocd-plugin-info/gocd-releases">can be found here</a>.
+      </div>
+    </div>
+  </div>
+  {{/inline}}
+
+
+  {{#*inline "show-docker"}}
+  <div id="{{{tab_id}}}" class="tab_content {{{installer_type}}}">
+    <div class="latest">
+      {{#with latest_cloud_release}}
+      <div class="release-type">
+        <input type="radio" id="stable-docker" name="typeOfDownloads-docker" checked="checked" value="stable" class="stable" />
+        <label for="stable-docker">Stable</label>
+        <input type="radio" id="experimental-docker" name="typeOfDownloads-docker" value="experimental" class="experimental" />
+        <label for="experimental-docker">Experimental</label>
+      </div>
+      <div class="go-release {{go_version}} row">
+        <div class="col-xs-7">
+          <span class="version">Version: {{go_version}}</span>
+        </div>
+        <div class="col-xs-5">
+          <span class="version">Released: {{release_date}}</span>
+        </div>
+        <div class="col-xs-12">
+          {{> show-docker-release server_docker=server_docker agents_docker=agents_docker docker_org=docker_org }}
+        </div>
+      </div>
+      {{/with}}
+    </div>
+    <div class="other-releases">
+      <button class="btn-release" analytics-label="show-old-releases"><span>Show</span> old releases</button>
+    </div>
+    <div class="old-release">
+      {{#each all_other_cloud_releases}}
+      <div class="row go-release {{go_version}}">
+        <div class="col-xs-7">
+          <span class="version">Version: {{go_version}}</span>
+        </div>
+        <div class="col-xs-5">
+          <span class="version">Released: {{release_date}}</span>
+        </div>
+        <div class="col-xs-12">
+          {{> show-docker-release server_docker=server_docker agents_docker=agents_docker docker_org=docker_org }}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  {{/inline}}
+
+  {{#*inline "show-helm"}}
+  <div id="{{{tab_id}}}" class="tab_content {{{installer_type}}}">
+    <h3>Running GoCD On Kubernetes</h3>
+    <div class="command k8s">
+      helm repo add gocd https://gocd.github.io/helm-chart<br/>
+      helm install gocd gocd/gocd --namespace gocd --create-namespace
+    </div>
+    <div class="download-message k8s">
+     <p>Refer to the <a class="link-external" href="https://docs.gocd.org/current/gocd_on_kubernetes">Getting Started documentation</a> and
+       <a class="link-external" href="https://github.com/gocd/helm-chart/blob/master/gocd/README.md">configuration details</a>.
+     </p>
+    </div>
+
+  </div>
+  {{/inline}}
+
+
+  {{#*inline "show-docker-release"}}
+  <div class="files">
+    <h3>GoCD Server Docker Image</h3>
+    <ul class="docker-list server">
+      {{#each server_docker}}
+      {{> show-server-docker-command image_name=image_name version=../go_version docker_org=../docker_org }}
+      {{/each}}
+    </ul>
+    <h3>GoCD Agent Docker Images</h3>
+    <ul class="docker-list agents">
+      {{#each agents_docker}}
+      {{> show-agent-docker-command image_name=image_name version=../go_version docker_org=../docker_org }}
+      {{/each}}
+    </ul>
+  </div>
+  {{/inline}}
+
+
+  {{#*inline "show-server-docker-command"}}
+  <li>More info at: <a href="https://hub.docker.com/r/{{docker_org}}/{{image_name}}">{{image_name}}</a>
+    <span class="command">docker run -d -p8153:8153 {{docker_org}}/{{image_name}}:v{{version}}</span>
+  </li>
+  {{/inline}}
+
+  {{#*inline "show-agent-docker-command"}}
+  <li>More info at: <a href="https://hub.docker.com/r/{{docker_org}}/{{image_name}}">{{image_name}}</a>
+    <span class="command">docker run -d -e GO_SERVER_URL=... {{docker_org}}/{{image_name}}:v{{version}}</span>
+  </li>
+  {{/inline}}
+
+  {{#*inline "show-server-and-agent-installer"}}
+  {{#if (has-additional-arch this)}}
+  <div class="download-files">
+    {{> show-file server type="server" display_name="Server" info=server.architecture os=../../installer_type latest=latest}}
+    {{> show-file agent type="agent" display_name="Agent" info=agent.architecture os=../../installer_type latest=latest}}
+  </div>
+  <div class="download-files">
+    {{> show-file (lookup . (server-additional-arch this)) type="server" display_name="Server" info=(additional-arch this) os=../../installer_type latest=latest}}
+    {{> show-file (lookup . (agent-additional-arch this)) type="agent" display_name="Agent" info=(additional-arch this) os=../../installer_type latest=latest}}
+  </div>
+  {{else}}
+  <div>
+    {{> show-file server type="server" display_name="Server" os=../../installer_type latest=latest}}
+    {{> show-file agent type="agent" display_name="Agent" os=../../installer_type latest=latest}}
+  </div>
+  {{/if}}
+  {{/inline}}
+
+
+  {{#*inline "show-file"}}
+  <div class="{{{type}}} file">
+    <div class="name">
+      <a id="{{{analytics_id}}}" href="{{{url}}}" class="btn btn-primary">
+        <i class="fa fa-download" analytics-label="download-{{{type}}}-{{{os}}}"> </i>
+        {{#if latest}}
+        <span>Download {{{display_name}}}</span>
+        {{else}}
+        <span>{{{display_name}}}</span>
+        {{/if}}
+        {{#if info}}
+        <span class="bit">{{{info}}}</span>
+        {{/if}}
+      </a>
+    </div>
+    <div class="verify-checksum" data-filename="{{{filename}}}" data-sha256sum="{{{sha256sum}}}" data-sha1sum="{{{sha1sum}}}" data-md5sum="{{{md5sum}}}">
+      <button class="verify" analytics-label="verify-checksum">Verify checksum</button>
+    </div>
+  </div>
+  {{/inline}}
+
+
+  <div class="download-area">
+  </div>
+  <div class="os-tab-content">
+    <div class="tab_container tab-container-marker">
+     <h2 class="installer-type">OS Types</h2>
+      <h3 class="tab-marker tab-accordion_heading dld-win" rel="tab-windows">Windows</h3>
+      {{> show-releases-for-installer-type installer_type="win" os_type="windows" heading="Windows" tab_id="tab-windows"}}
+      <h3 class="tab-marker tab-accordion_heading dld-osx" rel="tab-osx">macOS</h3>
+      {{> show-releases-for-installer-type installer_type="osx" os_type="osx" heading="macOS" tab_id="tab-osx"}}
+      <h3 class="tab-marker tab-accordion_heading dld-deb" rel="tab-debian">Debian / APT</h3>
+      {{> show-releases-for-installer-type installer_type="deb" os_type="linux" heading="Debian" tab_id="tab-debian"}}
+      <h3 class="tab-marker tab-accordion_heading dld-rpm" rel="tab-redhat">RPM / YUM / DNF</h3>
+      {{> show-releases-for-installer-type installer_type="rpm" os_type="linux" heading="RPM" tab_id="tab-redhat"}}
+      <h3 class="tab-marker tab-accordion_heading dld-zip" rel="tab-zip">Zip</h3>
+      {{> show-releases-for-installer-type installer_type="generic" os_type="zip" heading="Zip" tab_id="tab-zip"}}
+      <h2 class="installer-type cloud">Cloud Providers</h2>
+      <h3 class="tab-marker tab-accordion_heading dld-docker" rel="tab-docker">Docker</h3>
+      {{> show-docker installer_type="docker" tab_id="tab-docker"}}
+      <h3 class="tab-marker tab-accordion_heading dld-k8s" rel="tab-helm">Kubernetes / Helm</h3>
+      {{> show-helm installer_type="helm" tab_id="tab-helm"}}
+    </div>
+    <div id="verify-checksum-message"></div>
+  </div>
+</script>
+
+<script>
+  // <![CDATA[
+  jQuery(document).ready(function ($) {
+    var currentInstallerType = "stable";
+    var currentOSPackageType = determinePackageNameBasedOnOS();
+
+    /* Switch OSes. */
+    var target = $("body");
+    target.on('click', '.tab-container-marker .tab-marker', function () {
+      currentOSPackageType = $(this).attr('rel').replace('tab-', '');
+
+      showHelpLinksFor(currentOSPackageType);
+    });
+
+    /* Switch between stable and experimental. */
+    target.on('change', 'input[type=radio][name=typeOfDownloads-rpm], input[type=radio][name=typeOfDownloads-deb], input[type=radio][name=typeOfDownloads-osx], input[type=radio][name=typeOfDownloads-win], input[type=radio][name=typeOfDownloads-generic], input[type=radio][name=typeOfDownloads-docker]', function () {
+      currentInstallerType = $(this).val();
+
+      showDownloadLinks({typeOfInstallersToShow: currentInstallerType})
+        .done(function () {
+          switchActiveTab(currentOSPackageType);
+          switchDownloadType(currentInstallerType);
+        });
+    });
+
+    showDownloadLinks({typeOfInstallersToShow: currentInstallerType})
+      .done(function () {
+        startTabContainer();
+        switchActiveTab(currentOSPackageType);
+      });
+
+    showHelpLinksFor(currentOSPackageType);
+    setupShowVerifyChecksumMessage();
+  });
+  // ]]>
+</script>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="./">DOWNLOAD GoCD</a></li>
+            <li><a href="../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../plugins/">PLUGINS</a></li>
+            <li><a href="../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
