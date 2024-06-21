@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Here are some important meaningful metrics to measure the effectiveness of your continuous deployment process." name="description" />
+    <meta content="Continuous delivery metrics, deployment metrics, deploy-ready builds, cycle time, mean time between failures, mean recovery time, meaningful metrics, common deployment metrics, important continuous delivery metrics" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="4 Important Metrics for Continuous Delivery| GoCD Blog" />
+    <meta name="twitter:description" content="Here are some important meaningful metrics to measure the effectiveness of your continuous deployment process." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/cd-metrics/metrics-continuous-delivery-header-85a81e8b.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2018/01/31/continuous-delivery-metrics.html" />
+
+    <title>4 Important Metrics for Continuous Delivery| GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2018 x2018_01 x2018_01_31 x2018_01_31_continuous-delivery-metrics">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/cd-metrics/metrics-continuous-delivery-header-85a81e8b.jpg" alt="Metrics for Continuous Delivery"/>
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>4 Important Metrics for Continuous Delivery</h1>
+    <h4>Alison Polton-Simon</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<blockquote>
+  <p><em><strong>It's impossible to improve what you can't measure. – Peter Drucker</strong></em></p>
+</blockquote>
+
+<p>This quote reflects the importance of metrics in every domain right now. Intuitively, this statement resonates with all of us. How do you know if you're actually growing if you don't have the data to understand where you've been and where you're going? This blog post talks about the importance we see of metrics, particularly in continuous delivery.</p>
+
+<h2 id="how-do-metrics-matter-in-the-context-of-continuous-delivery">How do metrics matter in the context of continuous delivery?</h2>
+
+<p>What lets you know if you've actually achieved a good state of continuous delivery? To understand the answers to these questions, the GoCD team interviewed consultants, developers, operations teams, and people at every intersection of DevOps. We also talked to business stakeholders, because part of successful continuous delivery is being able to collaborate successfully between business and technology, and being able to communicate the value of some of the underlying work that goes into the implementation of continuous delivery.</p>
+
+<p>There are four metrics that we synthesized out of this that we think are really valuable:</p>
+
+<ul>
+  <li>Number of deploy-ready builds</li>
+  <li>Cycle time</li>
+  <li>Mean time between failures</li>
+  <li>Mean time to recover</li>
+</ul>
+
+<h2 id="how-many-deploy-ready-builds-do-you-have">How many deploy-ready builds do you have?</h2>
+
+<p>For successful continuous delivery, you need routine commits, and specifically routine commits to master. If I'm committing all the time to my own personal branch, I'm not adding value to the code that's actually ready for production.</p>
+
+<p>A good rate of deploy-ready builds also relies on having testing you can trust. One common anti-pattern we heard was the existence of testing that has to run for several hours, or even an entire day to do validation. In many cases these tests were unreliable, meaning that at the end of that period, you're no more certain than you were at the start. That becomes costly because it makes everyone very wary of ever releasing. Deploying software can feel like Russian Roulette.</p>
+
+<p>This metric also emphasizes the importance of collaboration between product and engineering roles. Cross-functional teams must be able to create a roadmap such that at any point stories are broken up small enough that you can release them and deliver real value to users. If the product side isn't engaged in this, teams develop backlogs of large chunks of work that don't add any value until late in the game.</p>
+
+<p>As a complement to careful roadmap planning, the development team should employ patterns like feature toggles, which allow features to be deployed without exposing them to customers.</p>
+
+<h2 id="what-is-your-cycle-time">What is your cycle time?</h2>
+
+<p>Long cycle time was the most common pain point we heard from developers. The time from when a commit is made, through testing and validation, to a deployment can be an enormous source of frustration for a developer. As an engineer, waiting for feedback requires disruptive context switching and represents wasted time.  A light-hearted, but very real representation of this is a classic <a href="https://xkcd.com/303/">XKCD comic</a> about sword fighting while waiting for code to compile.</p>
+
+<figure>
+<img src="https://imgs.xkcd.com/comics/compiling.png" alt="Waiting for code to compile" />
+</figure>
+
+<p>This dead time doesn’t get you any closer to delivering real value to users, and can create a loss of focus. Improving a team’s cycle time relies on efficient testing, and on getting feedback as quickly as you can. Here are a few practices that can help improve your cycle time.</p>
+
+<ol>
+  <li>Running your unit tests early in your pipeline and your complex, longer running automated tests downstream, will provide essential feedback sooner, and save you time.</li>
+  <li>Passing dependencies from pipeline stage to pipeline stage can help avoid unnecessary rebuilding of artifacts, which can be really valuable.</li>
+  <li>Parallelizing your builds when possible also provides significant savings.</li>
+  <li>Lastly, make sure you've got the right build resources so that whatever builds you need to run, you have enough agents to do the job.</li>
+</ol>
+
+<h2 id="whats-your-mean-time-between-failures-and-mean-time-to-recover">What’s your mean time between failures and mean time to recover?</h2>
+
+<p>Mean time between failures and mean time to recover often go hand in hand because it is important to balance the two of them. Mean time between failures reminds the team to keep the build green whenever possible, and to avoid easy failures. However, only looking at mean time between failures and trying to avoid failure completely can result in teams becoming overly cautious and never releasing anything new. The core point of software development is to provide new value to users and make sure that we're serving their needs. Thus, a focus on mean time to recover – a metric that represents the ability to bounce back from a misstep – is a key counterbalance.</p>
+
+<p>Achieving a good mean time between failures relies on getting feedback early on and making sure that thorough validation occurs in testing environments. These validations should be run on production-like environments with realistic data. Strong local builds are also crucial here.</p>
+
+<p>Since failure is inevitable, it’s important to make sure that your mean time to recover is as quick as possible. How long does it take to get you back to a green build after you've had a pipeline failure, or after you've had a release that's failed? Robust monitoring of production is essential. Teams should learn about failures through your monitoring and alerts, not through customer complaints.</p>
+
+<p>Drilling key practices like rolling back can also improve mean time to recover. Having an automated rollback process can buy you a little bit of time to understand where the issue occurs. Diagnosing the cause of an issue quickly also relies on  informative logging that enables developers to pinpoint a problem when they’ve been paged at 2:00am.</p>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<p>Going back to Peter Drucker's quote, to improve anything, first you need to find a way to measure it and make it visible. This is why, having a dashboard and making metrics visible to the team gives them a sense of ownership and a sense of connection that is really valuable. On the other hand, I don't want to say that metrics are a panacea. There are definitely some meaningless metrics and vanity metrics out there. Ultimately, you want to incentivize people to look at hard problems, and where they can create meaning for the team or organization.</p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

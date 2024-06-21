@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="When we develop software projects, we can get into places where it is difficult to make progress either forwards or backwards." name="description" />
+    <meta content="software development, regression tests, continuous integration, automated tests" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Don't let sunk costs sink your project | GoCD Blog" />
+    <meta name="twitter:description" content="When we develop software projects, we can get into places where it is difficult to make progress either forwards or backwards." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/high-centered-team/sunkcosts_masthead-c1ddda92.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2016/06/21/dont-let-sunk-costs-sink-your-project.html" />
+
+    <title>Don't let sunk costs sink your project | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2016 x2016_06 x2016_06_21 x2016_06_21_dont-let-sunk-costs-sink-your-project">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/high-centered-team/sunkcosts_masthead-c1ddda92.jpg" alt="Don't let sunk costs sink your project" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Don't let sunk costs sink your project</h1>
+    <h4>Jeff Norris</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>When my family and I moved out of our last house, we decided to do the majority of the hauling ourselves using a rental truck. Our house was up on the side of a hill with an uncomfortably steep driveway. We picked up the rental truck early in the day, pulled it up to the house and spent the majority of the day filling it up. When we finally finished loading it, we were exhausted, hungry, and really anxious to get across town to start unloading. I carefully backed the truck out of our driveway while my wife made sure I avoided the tree branches and the mailbox. Everything was fine until I got to that spot where the driveway met the street, where the truck just… stopped moving.</p>
+
+<p><img src="../../../assets/images/blog/high-centered-team/truck-149df877.jpg" alt="Truck stuck between driveway and street" title="Truck stuck between driveway and street" /></p>
+
+<p>The back frame of the truck was resting peacefully on the street, and the front wheels part way up the driveway. Unfortunately the back wheels spun helplessly a couple of inches above the ground. It was the perfect combination of too much weight in the truck and the wrong angle of the driveway. There was nothing I could do to move either forward or backward. I was really and truly stuck.</p>
+
+<p>When you drive a vehicle over something high, and the center of your vehicle rests on it, with the wheels slightly in the air, it's referred to as being <strong>"high-centered"</strong>. When we develop software projects, we can get into situations where we are also "high-centered", places where it is difficult to make progress either forwards or backwards. Some examples of where this can happen are when you go too far trying to refactor everything when you are fixing a bug, or when you start trying to replace a part of your application and don't realize just how tightly coupled you are to it. I have lived through a few of these situations.</p>
+
+<h2 id="examples-of-high-centered-software-development">Examples of 'High-Centered' Software Development</h2>
+
+<p>The first time I experienced this was with the regression testing suite for a fairly complicated international leasing application. This project had a long and powerful history, and we dealt with this problem about ten years into the evolution of this system. At its peak, the project had about 80 people, then slimmed down to about 20. We had built up a large suite of regression tests with a heavyweight testing tool that I'm embarrassed to admit we ever used. The tests took a substantial percentage of our development effort just to maintain, and we didn't have enough confidence in our test suite to know whether everything was working properly. There were intermittent failures and strange relationships between tests that caused them to fail if the order of execution wasn't exactly right.</p>
+
+<p>This regression testing suite was a constant source of friction that made it difficult for us to make any progress. We had to do something dramatic to get out of it. We declared bankruptcy on our regression suite and started over again with a more modern, lightweight testing tool.  We gave up on testing individual stories and instead focused on testing lighter-weight journeys through the application. It took a lot of courage to walk away from all those sunk costs. All those person-years of development time were already spent, and continuing to invest in them wasn't going to help.</p>
+
+<h2 id="how-to-spot-trouble-earlier">How to Spot Trouble Earlier</h2>
+
+<p>If you feel like you are putting in too much effort into your project for the actual progress you are making, you too might be stuck. Ask yourself: if you were starting over again, would you still consider doing things that way? If the answer is a definite "no", you may want to try something different.</p>
+
+<p>Continuous Integration servers like <a href="https://www.gocd.org/">GoCD</a> also give you a pretty good indicator if you are starting to get stuck. If you are following standard CI practices and checking in regularly, you are probably in the cadence of pushing your code to the master/trunk branch at least once a day. If you are coming up to the end of the day and you have that sinking feeling that it wouldn't be safe to check in, or your build fails in some surprising and catastrophic way, then you may need to try breaking your changes into smaller, more manageable pieces. It is much easier to keep yourself from getting stuck if you work in smaller increments and use techniques like <a href="https://martinfowler.com/bliki/BranchByAbstraction.html">"branch by abstraction"</a>.</p>
+
+<p>But oftentimes, it can be difficult to spot when you are about to be high-centered. Unfortunately, trying harder at the things that got you there in the first place probably won't help. You will need to stop, step back and take an honest look at what your options going forward are.</p>
+
+<p>With our stuck truck, we had to call a giant tow truck to come pick up the fully loaded moving truck from our driveway and set it in the street. With your software project, instead of calling a tow truck, you may need to introduce a <a href="https://paulhammant.com/2013/07/14/legacy-application-strangulation-case-studies/">strangler application</a> or split your applications into smaller parts so that you can clean up incrementally. I hope this has been helpful. If you have any tips or stories about "high-centered" software projects, please let us know in the comments.</p>
+
+<style type="text/css">
+.float-image {
+  max-width: 25%;
+}
+
+.float-image img {
+  max-width: 100%;
+}
+
+.float-image img.pad-right {
+  padding-right: 10px;
+}
+
+.float-image img.pad-left {
+  padding-left: 10px;
+}
+
+.float-article {
+  max-width: 75%;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+@media (max-width: 699px) {
+  .float-left, .float-right {
+    float: none;
+  }
+
+  .float-image {
+    max-width: 100%;
+  }
+
+  .float-article {
+    max-width: 100%;
+  }
+}
+</style>
+
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
