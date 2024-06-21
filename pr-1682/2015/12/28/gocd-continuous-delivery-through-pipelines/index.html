@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Nenad Bozic's team switched from Jenkins to GoCD in part because of GoCD's first-class pipelines." name="description" />
+    <meta content="continuous delivery, delivery pipelines, deployment pipelines, software delivery, pipeline dependencies" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Continuous delivery through pipelines | GoCD Blog" />
+    <meta name="twitter:description" content="Nenad Bozic's team switched from Jenkins to GoCD in part because of GoCD's first-class pipelines." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/go-cd-continuous-delivery-through-pipelines/dieamond-problem-6c3b1401.png" />
+    <link rel="canonical" href="http://localhost:4567/2015/12/28/gocd-continuous-delivery-through-pipelines" />
+
+    <title>Continuous delivery through pipelines | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2015 x2015_12 x2015_12_28 x2015_12_28_gocd-continuous-delivery-through-pipelines x2015_12_28_gocd-continuous-delivery-through-pipelines_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+
+
+  <header class="blog-post-header">
+    <h1>Guest post: <span class="go">Go</span>CD - Continuous Delivery through pipelines</h1>
+    <h4>Nenad Bozic</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      <p>In order to compete in today's IT market, you must be truly agile, you must listen
+to your customers and deliver features in a timely manner. In order to support business
+development and marketing in their lean strategies we, as developers, must leverage
+fast deliveries and deployments and test automations. Continuous Delivery makes it possible
+to continuously adapt software in line with user feedback, shifts in the market and changes
+of business strategy. Testing, support, development and operations work together as one
+delivery team to automate and streamline the build, test and release process.</p>
+
+<p>There are a lot of quality tools out there. For a long time, we used Jenkins as the most
+widespread CD tool, with a great community and a lot of plugins and integrations with
+other tools. What we lacked was a natural pipeline flow and good visualization. We also
+lacked some more advanced features like pipeline dependencies, conditional triggering jobs
+from many pipelines, templating etc. We needed to look elsewhere and we decided to go with
+GoCD, a product by Thoughtworks which became open source in 2014. It is a Java/Ruby on Rails
+advanced continuous integration and release management system, according to their website.
+The major reason why we chose it was that they modeled pipelines as first class citizens
+and that, in our opinion, it used right abstraction for delivery pipeline.
+But let us start from the beginning.</p>
+
+<h2 id="gocd-overview">GoCD overview</h2>
+
+<p>At the highest level, Go consists of two main components, the Go Server and multiple Go Agents.
+The system works on a pull model where agents periodically poll the server for work.</p>
+
+<p><img src="../../../../assets/images/blog/go-cd-continuous-delivery-through-pipelines/goCD-architecture-f39bda5b.png" title="GoCD Architecture" alt="GoCD Architecture" /></p>
+
+<p>The main flow of Go goes through a couple of following stages:</p>
+
+<ol>
+  <li>User adds a pipeline with material</li>
+  <li>MDU (material update sub-system) notices a new commit</li>
+  <li>Scheduler schedules a build</li>
+  <li>Go agents poll for work and get assignments</li>
+  <li>Agent does the work</li>
+</ol>
+
+<p>Let's talk about the main building blocks of Go. As stated before, the main abstract is a
+<strong>pipeline</strong> which is the highest unit of work with its inputs and outputs. The input object
+of one pipeline is called a <strong>material</strong> and it can be either a version control resource
+(Git, Gerrit, Subversion, Mercurial) or an output from another pipeline. The output of a
+pipeline is called an <strong>artifact</strong>. Since there is one server and multiple agents,
+there is no guarantee that the whole pipeline will be performed by the same Go agent.
+Artifacts are copied to Go server and picked up by agents that require them for their jobs.</p>
+
+<p>Each pipeline consists of one or more <strong>stages</strong>, where each stage has one or more <strong>jobs</strong> and
+each job has one or more <strong>tasks</strong>. Granularity to this level of details is done because of
+parallelism. Inside pipeline stages are sequential and can be triggered automatically on
+success or manually. Within each stage, jobs are parallel. The outcome of a stage is considered
+as failure if at least one job fails. Again, tasks within each job are also sequential.</p>
+
+<p>After installing Go server and client there is no need for an extensive configuration.
+However, it is recommended to create a separate partition on a computer's hard disk for
+Go server artifacts (artifacts can grow over time and problems may occur). In server
+configuration, there is also an admin tab for URL configuration. We needed to get feedback
+on failing builds, so we integrated Go with LDAP so each user of Go had an email and could
+subscribe on build information based on preferred filters.
+Here is a <a href="https://docs.gocd.org/current/configuration/dev_authentication.html">link</a>
+which explains the authentication process.</p>
+
+<p>It is worth mentioning that GoCD has a powerful API for power users where the entire
+configuration can be performed via REST. It has great documentation with examples,
+JSON requests and response. Here is a link to
+<a href="https://api.gocd.org/current/#introduction">GoCD API documentation</a>.</p>
+
+<h2 id="pipeline-dependencies">Pipeline dependencies</h2>
+
+<p>Go supports pipeline dependencies. Artifacts defined in upstream dependencies can be
+accessed by downstream dependency. Downstream pipeline can be configured either to
+be triggered automatically (for example for building on development environment) or
+manually (for example for building on production environment).</p>
+
+<p>Multiple pipeline dependency is called <strong>fan-in</strong> and it ensures that pipeline is triggered
+only when all upstream dependencies finish. Upstream dependencies consist of other
+pipelines or version control which make them powerful. If you have a client server
+application and have functional tests on the client's side, which depend on the server
+being updated, you can make a client functional test pipeline which will trigger on commit
+on client and successful build and deploy of server side.</p>
+
+<p><img src="../../../../assets/images/blog/go-cd-continuous-delivery-through-pipelines/goCD-fanIn-4f7b1e3b.png" title="Pipeline dependencies tab showing fan-in" alt="GoCD pipeline dependencies tab showing fan-in" /></p>
+
+<p>The additional challenge here is a diamond-like dependency, where it is not enough for both
+upstream dependencies to finish but to have right versions. The following diagram depicts
+that problem. Here, configuration is really important, C1 must be set as material for both
+C2 and C3 and C2 and C3 are materials for the pipeline Package. The package will auto trigger
+when both C2 and C3 go green with the same version of code.</p>
+
+<p><img src="../../../../assets/images/blog/go-cd-continuous-delivery-through-pipelines/dieamond-problem-6c3b1401.png" title="Pipeline dependencies show a Diamond dependency Problem" alt="Pipeline dependencies show a Diamond dependency Problem" /></p>
+
+<h2 id="pipeline-templates">Pipeline templates</h2>
+
+<p>Template engine is a great effort and time saver. Each pipeline can be promoted to template
+and, based on that template, other pipelines can be built with a few clicks. We used this
+extensively for deployment pipelines. Usually, there are multiple environments
+(development, stage, UAT, production) and deployment process is the same with only a
+few parameters which are different. You can create one deployment pipeline and test it.
+When you make sure it works, extract the template out of it and clone the deployment
+pipelines for other environments. Differences can usually be covered with a couple of
+parameters, which can be created upon pipeline creation.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In the introductory part, we mentioned that pipelines are modeled in GoCD as first
+class citizens. In Jenkins, you can order a row of boxes and let the flow go through
+each one of them until it finishes. Each box here in Jenkins is equivalent to each task
+in GoCD. Moreover, in GoCD, each box is pipeline itself with its stages, jobs and tasks.</p>
+
+<p>GoCD is a fairly new player in the automation world with refreshing UI and a couple of
+nice concepts. The community is still growing but it is responsive. We had a couple of
+problems which we posted on StackOverflow and usually got answers pretty quickly.
+We are using <a href="https://github.com/ashwanthkumar/gocd-build-github-pull-requests">Gerrit/Github plugin</a>
+to notify Github PR on failed or passed build which is being actively developed.
+New releases are pushed frequently. Documentation is great, especially API documentation.
+It's our pleasure to use such a great UI and a couple of nice advanced features.
+You have a possibility to model your pipeline in a great variety of ways.
+There are some features missing but we in <a href="https://www.smartcat.io/">SmartCat</a> are all
+about open source so, in the future, we will try to help this project and start contributing.</p>
+
+<h2 id="about-the-author">About the author</h2>
+
+<p><em>This is guest post by Nenad Bozic, one of Co-Founders of SmartCat. You can find out more about
+Nenad and SmartCat team on their <a href="https://www.smartcat.io/">website</a>.</em></p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

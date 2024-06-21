@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="In this series, we’ll cover aspects of CD pipelines, why they are important, and optimal ways to model them." name="description" />
+    <meta content="GoCD, continuous delivery, deployment pipelines, modeling workflows, feedback loops, paralellization, concepts of gocd" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Importance and Principles of CD Pipelines | GoCD Blog" />
+    <meta name="twitter:description" content="In this series, we’ll cover aspects of CD pipelines, why they are important, and optimal ways to model them." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/importance-cd-pipelines/importance_pipelines_hero-58d38841.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/03/01/importance-and-principles-of-cd-pipelines.html" />
+
+    <title>Importance and Principles of CD Pipelines | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_03 x2017_03_01 x2017_03_01_importance-and-principles-of-cd-pipelines">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/importance-cd-pipelines/importance_pipelines_hero-58d38841.jpg" alt="Part 1 - The Importance and Principles of Continuous Delivery Pipelines: Modeling Deployment Pipelines" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Part 1 - Modeling Deployment Pipelines: The Importance and Principles of Continuous Delivery Pipelines</h1>
+    <h4>Aravind S.V, Product Manager at GoCD</h4>
+    <p class='tags'>
+<a href="../../../tags/modeling-deployment-pipelines.html" class="tag">        Modeling Deployment Pipelines
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<h3 id="in-an-ideal-magical-world-your-end-to-end-deployment-from-a-commit-to-production-looks-like-this">In an ideal, magical world, your end-to-end deployment from a commit to production looks like this:</h3>
+
+<p><img src="../../../assets/images/blog/importance-cd-pipelines/magic-364edd88.jpeg" alt="Magic Deployment Pipeline" title="Magical Deployment Process" /></p>
+
+<p>If this represents your situation (especially if all your tests run quickly enough that you’re confident about deploying to production), you don’t really need a good Continuous Delivery (referred to as CD) solution and you can stop reading this post right here.</p>
+
+<p>However, for most of us, the path from commit to production involves numerous moving parts, (like multiple code and asset repositories, automatic and manual handoffs, unit tests, integration tests, acceptance tests, performance tests, security tests, etc.) and time that it takes to execute all of these elements. When your path to production is not the magical world shown above, you need a way of modeling your workflow so that people can see, understand and talk about it. This is where CD pipelines come in.</p>
+
+<p>In this <a href="../../../tags/modeling-deployment-pipelines.html">on-going series</a>, we’ll cover aspects of CD pipelines from why they are important to some of the optimal ways to model them.</p>
+
+<h2 id="what-is-cd-pipeline">What is a Continuous Delivery Pipeline?</h2>
+
+<p>A deployment pipeline is an integral part of Continuous Delivery. It is a way of modeling your software delivery process so that it provides feedback and visibility to the team delivering new features.</p>
+
+<p>Jez Humble, co-author of the book <a href="https://www.amazon.com/dp/0321601912?tag=contindelive-20">Continuous Delivery</a>, in his <a href="https://continuousdelivery.com/">blog</a> says,</p>
+
+<blockquote>
+  <p><em>Deployment pipelines tie together configuration management, continuous integration and test and deployment automation in a holistic, powerful way that works to improve software quality, increase stability, and reduce the time and cost required to make incremental changes to software, whatever domain you’re operating in.</em></p>
+</blockquote>
+
+<p>CD pipelines are incredibly useful in telling you as quickly as possible whether a change is good enough to be taken to production.</p>
+
+<h2 id="why-do-you-need-cd-pipeline">Why do you need a CD pipeline?</h2>
+
+<p>Boiled down to its essence a CD pipeline is a series of feedback loops.</p>
+
+<p>Quick feedback loops are everywhere, including industries apart from software development. Any situation where you can make a change, see its effect, correct the input to make it go towards a desired outcome (and rinse and repeat) is a great opportunity for feedback loops.</p>
+
+<p>In technology, some of the obvious attempts at feedback loops are <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPLs</a> (Read-Eval-Print-Loops for languages) and tests. And in the world of build and deployment, a deployment pipeline satisfies the need for quick feedback.</p>
+
+<p>The necessity for a deployment pipeline has been perfectly summed up by <a href="https://martinfowler.com/bliki/DeploymentPipeline.html">Martin Fowler</a> as this</p>
+
+<blockquote>
+  <p><em>One of the challenges of an automated build and test environment is you want your build to be fast, so that you can get fast feedback, but comprehensive tests take a long time to run. A deployment pipeline is a way to deal with this by breaking up your build into stages. Each stage provides increasing confidence, usually at the cost of extra time. Early stages can find most problems yielding faster feedback, while later stages provide slower and more through probing. Deployment pipelines are a central part of Continuous Delivery.</em></p>
+</blockquote>
+
+<h2 id="principles-cd-pipeline">Some fundamental principles of CD pipelines</h2>
+
+<h3 id="principle-fast-feedback">1. Fast feedback first</h3>
+
+<p>Usually, CD pipelines are set up so that the parts which provide fast feedback run first. In practice, quick-running unit tests are usually run earlier in the pipeline than the slower-running functional and performance tests. This ensures quicker feedback by making sure that slower running tests aren’t run unnecessarily taking up resources.</p>
+
+<p><img src="../../../assets/images/blog/importance-cd-pipelines/Fast-Feedback-First-3e39eb55.png" alt="Fast Feedback Loop" title="Fast Feedback First" /></p>
+
+<h3 id="principle-important-feedback">2. Most important feedback first</h3>
+
+<p>Just because something runs quickly doesn’t mean that it needs to be brought ahead in the CD pipeline. It is possible that running something which is slower but much more valuable, will provide better feedback than running something which is quick but doesn’t fail enough to be useful.</p>
+
+<p>For instance, installer tests might be valuable and might run quicker than functional tests. However, in a typical project, changes to the installer are much less frequent than changes which might fail functional tests. So, it is reasonable to delay the installer tests till the functional tests have finished.</p>
+
+<h3 id="principle-parallelize">3. Parallelize as much as possible</h3>
+
+<p>Ideally, for every change, you want to be able to run every type of test parallely, so that the overall feedback time is reduced. In the extreme case of being able to run everything parallely, the cycle time becomes as much as the longest running part of the pipeline.</p>
+
+<p>In practice, due to resource constraints, this is not always possible. So, a CD pipeline solution should allow selective parallelization.</p>
+
+<h3 id="principle-build-reuse">4. Build once and reuse</h3>
+
+<p>This is one of the bedrock CD principles - the ability to build once, get an artifact and run it through different kinds of tests, so that your confidence in that specific artifact increases over time. Once it goes through the final gate in the CD pipeline successfully, you can be assured that the artifact is safe to be deployed to production and used.</p>
+
+<p><img src="../../../assets/images/blog/importance-cd-pipelines/build-reuse-83ab8b4a.jpeg" alt="Build artifact once and reuse in deployment pipeline" title="Build once and reuse" /></p>
+
+<p>It is up to the CD pipeline solution you choose to provide a good artifact propagation mechanism, so that, even with multiple instances of the pipeline running, it keeps track of the correct version of the artifact to be used in the rest of the pipeline.</p>
+
+<h3 id="principle-run-locally">5. Able to run this process locally</h3>
+
+<p>It is recommended to have scripts for your whole build and deployment process, so that changes can be easily tracked and audited. Moreover, this allows you to be independent of the CD tool of your choice. This allows you to treat the CD tool as a script runner which is aware of the workflow of deploying to production but isn’t necessarily the only place where the knowledge of how to build and deploy is. This stops it from being a big single-point-of-failure for the organization.</p>
+
+<h3 id="principle-repeatable">6. Make the process repeatable</h3>
+
+<p>Through a combination of environment variables and isolation mechanisms such as virtual machines or containers, it is recommended to make the build process repeatable so that it is not dependent on being run at a specific time or on a specific set of worker or agent nodes. Using solutions such as Ansible/Chef/Puppet/SaltStack, etc. for provisioning the virtual machines or agent infrastructure can also help towards this.</p>
+
+<h3 id="principle-rerun-pipeline">7. Should be able to run or rerun some parts of the pipeline, potentially with different parameters</h3>
+
+<p>It is not uncommon to need to rerun parts of a CD pipeline. Typically, this happens when tests fail for environment-related reasons and you’re trying to confirm that suspicion. It’s also used to get specific versions of a build into an environment, for testing. Even though, ideally, it’s all automatic and you should never have to do this, it’s useful to be able to.</p>
+
+<p><br />Boiled down to it, a CD pipeline is going to try to, as quickly as possible, do everything possible to stop your change from going to production. It is great when something fails in a CD pipeline because it means that it did not go into production and fail there.</p>
+
+<p>In <a href="../29/beginnings-of-a-real-pipeline.html">our next post</a>, we’ll look at some common approaches to build and deployment workflows and how CD pipelines can be modeled to accommodate them. We’ll be describing these using GoCD as the CD tool. To follow along, do get to know some of the <a href="https://gocd.org/getting-started">basic concepts of GoCD</a> and how to get started with GoCD.</p>
+
+<p><sub>Note: In this series of posts, the examples and images shown will be using GoCD but the concepts are generic and can be implemented on your preferred CD solution.</sub></p>
+
+<div class="row">
+  <div class="downloadbanner">
+  <div class="container">
+    <div class="banner-with-cta">
+      <p>Get started with simplifying continuous delivery. Download and use <span class="go">Go</span>CD for free</p>
+      <a href="../../../download/">Download</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
