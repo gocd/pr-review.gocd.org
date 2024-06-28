@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="GoCD is open source continuous delivery software. This is a basic introduction to how GoCD works and a simple one stage pipeline in GoCD." name="description" />
+    <meta content="GoCD, continuous delivery, continuous delivery software, continuous integration, continuous integration software, go, goforcd, open source, basics, stage, pipeline" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Hello World with GoCD | GoCD Blog" />
+    <meta name="twitter:description" content="GoCD is open source continuous delivery software. This is a basic introduction to how GoCD works and a simple one stage pipeline in GoCD." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/hello-world-with-go/media_1394063534943-251780ef.png" />
+    <link rel="canonical" href="http://localhost:4567/2014/03/06/hello-world-with-go.html" />
+
+    <title>Hello World with GoCD | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2014 x2014_03 x2014_03_06 x2014_03_06_hello-world-with-go">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+
+
+  <header class="blog-post-header">
+    <h1>Hello World with <span class="go">Go</span>CD</h1>
+    <h4>Ken Mugrage</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      <p>In a few steps you'll see an example of a simple one stage pipeline in GoCD. This is definitely not meant to be a definitive guide, just a basic introduction to how GoCD works. It's definitely a good idea to peruse <a href="https://docs.gocd.org/current/introduction/concepts_in_go.html">the concepts section</a> go GoCD's help to understand some of the terms you'll see (like pipeline and stage).</p>
+
+<p><em>I am assuming you've installed GoCD Server AND a GoCD Agent. You need both!</em> I'm also assuming you have some source code in a version control system that you want to build.</p>
+
+<h3 id="give-it-a-name">Give it a name</h3>
+
+<p><img src="../../../assets/images/blog/hello-world-with-go/media_1394063203663-defb74a5.png" title="Name the Pipeline" alt="Name the Pipeline" /></p>
+
+<p>Pipelines have names, and they go into groups which are related. For example, you might have <em>Project_1</em> and <em>Project_2</em> in the <em>Development</em> pipeline group. Note that there can't be any spaces in these names.</p>
+
+<h3 id="where-is-your-code">Where is your code?</h3>
+
+<p><img src="../../../assets/images/blog/hello-world-with-go/media_1394063238598-cc4cd6e6.png" title="Add Materials details" alt="Add Materials details" /></p>
+
+<p>GoCD has a concept of <em>materials</em>. This is the stuff that goes into your application. This is mostly likely in a version control system. There are other material types, but for the moment let's stick with a VCS. I have selected Subversion for this example, but GoCD also supports Git, Mercurial, Perforce and TFS.</p>
+
+<p>Once you've entered your connection data, make sure to click the <em>Check Connection</em> button! It's not uncommon for people to have things like version control clients in their own path but not in the path of the GoCD user. This will tell you if GoCD can connect to your server.</p>
+
+<h3 id="make-it-do-something">Make it do something.</h3>
+
+<p><img src="../../../assets/images/blog/hello-world-with-go/media_1394063327989-43ac29c7.png" title="Use stages and jobs to manage work" alt="Use stages and jobs to manage work" /></p>
+
+<p>GoCD uses <em>stages</em> and <em>jobs</em> to manage work. Make sure you check out the help doc linked above for definitions of both. Give your sample step a name, and then choose the <em>Task Type</em>. Go knows how to execute Ant, nAnt and Rake, by default so you'll see those called out specifically in the drop down. If you choose <em>More</em> you can provide any command which can be executed from the command line. This could be a shell script, batch file, maven command, chef recipe etc.</p>
+
+<p>I have a very simple Java Hello World application that uses Ant. My build file is called <em>build.xml</em>, and I want to run the targets <em>clean</em> and <em>all</em>. You should enter whatever the valid targets are for your software.</p>
+
+<h3 id="initial-pipeline-created">Initial pipeline created</h3>
+
+<p><img src="../../../assets/images/blog/hello-world-with-go/media_1394063391538-70cbaf26.png" title="Paused Pipeline" alt="Paused Pipeline" /></p>
+
+<p>We now have a very simple pipeline created. It doesn't do a whole lot (like the automated testing I'm sure you'll want) but it does do some real work. You'll note the big blue "pause" symbol at the top. This means that GoCD has your pipeline on hold while you're working on it. If you're ready to let GoCD work, just click that button to unpause.</p>
+
+<h3 id="success">Success!</h3>
+
+<p><img src="../../../assets/images/blog/hello-world-with-go/media_1394063534943-251780ef.png" title="One stage Pipeline created" alt="One stage Pipeline created" /></p>
+
+<p>And there we have it. A simple one step pipeline that will run in GoCD. Of course you'll want to add more stages to run tests and such. You'll probably also want to add more pipelines to actually deploy your software. (Note: doing everything in one long pattern is often considered an anti-pattern - see <a href="https://continuousdelivery.com/2010/09/deployment-pipeline-anti-patterns/">Jez Humble's article</a> )</p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

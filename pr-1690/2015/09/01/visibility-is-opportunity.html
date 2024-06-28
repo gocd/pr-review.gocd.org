@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="GoCD is open source continuous delivery software. This blog has some lessons on improving Continuous Integration on projects." name="description" />
+    <meta content="GoCD, continuous delivery, continuous delivery software, continuous integration, continuous integration software, go, goforcd, open source" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Visibility Is Opportunity | GoCD Blog" />
+    <meta name="twitter:description" content="GoCD is open source continuous delivery software. This blog has some lessons on improving Continuous Integration on projects." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/timestamps-in-console-logs-example-eb317f14.png" />
+    <link rel="canonical" href="http://localhost:4567/2015/09/01/visibility-is-opportunity.html" />
+
+    <title>Visibility Is Opportunity | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2015 x2015_09 x2015_09_01 x2015_09_01_visibility-is-opportunity">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+
+
+  <header class="blog-post-header">
+    <h1>Visibility Is Opportunity: stories of improving continuous integration</h1>
+    <h4>Xiao Li</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      <h1 id="visibility-can-be-hard-but-its-worth-it">Visibility can be hard, but it's worth it.</h1>
+
+<p><a href="https://www.thoughtworks.com/mingle">Mingle</a> is a 9 years JRuby Rails project.
+We do test-driven development and continuous integration.
+We write selenium tests to test everything since Oct 2006.</p>
+
+<p>For a long time, our <strong>build time was 1 to 2 hours</strong>.
+We thought it was a good balance of build time and resources needed.</p>
+
+<p>2014, we had about 12+K tests, including units, functionals and selenium tests.
+The best build time was 1 hour ran in parallel on 46 VMs.</p>
+
+<p>We ran test in parallel by <a href="https://gocd.org">Go CD</a> jobs and <a href="https://github.com/test-load-balancer/tlb">TLB</a>.
+There were 46 test jobs in one <a href="https://gocd.org">Go CD</a> stage.
+Units, functionals and selenium tests were different.
+So We created 3 <a href="https://github.com/test-load-balancer/tlb">TLB</a> tasks to distribute them separately.
+We configured <a href="https://github.com/test-load-balancer/tlb">TLB</a> to distribute tests by test runtime for having similar build time.</p>
+
+<p>When I looked for ideas to improve build performance, I had the following questions:</p>
+
+<ol>
+  <li>Where was time spending when test was running?</li>
+  <li>Were there bottlenecks in test code?</li>
+</ol>
+
+<p>Profiling was an obvious option, but it was challenge to profile build.
+Because:</p>
+
+<ol>
+  <li>Profiling one test won't help. To figure out what's bottleneck for entire build, we need profile all tests running.</li>
+  <li>Profiling generates lots of data. 1 hour build on 46 VMs will generate tons of data.</li>
+  <li>We need merge/aggregate data collected from build VMs for analysis.</li>
+</ol>
+
+<p>It turns out, sampling profiler can be a good tool for this job. But Mingle is on Ruby 1.8.
+There wasn't sampling profiler support it.
+So I wrote <a href="https://rubygems.org/gems/sampling_prof">Sampling Profiler</a> and a data analysis web application to do the job:</p>
+
+<ol>
+  <li>First I ran <a href="https://rubygems.org/gems/sampling_prof">Sampling Profiler</a> with test on build.</li>
+  <li>Then sent all profiling call-graph data to the data analysis web application.</li>
+  <li>Data analysis web application merges same build profiling result.</li>
+  <li>Last, I built UI to navigate through profiling result.</li>
+</ol>
+
+<p>After I did it, test code performance improvement became straightforward.
+The biggest surprise I found was test slept 1 hour on build in total.
+The following code was one example:</p>
+
+<p>{% highlight ruby %}
+Timeout::timeout(time / 1000.0) do
+  # wait until given JavaScript condition is true
+  while get_eval(condition).downcase == "false"
+    sleep 1
+  end
+end
+{% endhighlight %}</p>
+
+<p>The <code>sleep 1</code> code above caused build slept about 40+ minutes in total.
+Changing <code>sleep 1</code> to <code>sleep 0.1</code> fixed problem.</p>
+
+<p>Although there was no big bottleneck found, I was able to list and fix a handful small bottlenecks.
+Our <strong>build time reduced to 45 minutes</strong>, and became more stable.</p>
+
+<p><strong>You're on the right track when you're improving visibility of the problem details. It can be hard. But hard work pays off.</strong></p>
+
+<h1 id="detail-can-lead-you-to-the-truth">Detail can lead you to the truth.</h1>
+
+<p>Recently, our build became unstable (more random failures) and longer (1 hour) again.
+I got time to look into build performance again.
+My teammate <a href="https://www.thoughtworks.com/profiles/jeff-norris">Jeff Norris</a> noticed it was too slow when running selenium test on build VM.
+I realized we had not paid attention to our VM performance.
+Our VMs ran with 1 vertual CPU and 3.5 GB memory.
+To run a selenium test, we need launch 3 processes:</p>
+
+<ol>
+  <li><a href="https://www.thoughtworks.com/mingle">Mingle</a> application server for testing</li>
+  <li>Selenium proxy server</li>
+  <li>Selenium test.</li>
+</ol>
+
+<p>It is possible that 1 vertual CPU is not enough.
+So we increased build VMs to 2 vCPU.
+Build time decreased to 50 minutes.
+The result was not as good as we thought.
+So I compared all jobs runtime.
+It turned out some selenium test jobs ran twice faster than other selenium test jobs.</p>
+
+<p>As <a href="https://github.com/test-load-balancer/tlb">TLB</a> balanced our selenium tests by time, we expect job runtime similar.
+My first hypothesis was <a href="https://github.com/test-load-balancer/tlb">TLB</a> may not work as expected.
+Because tests didn't seem to be distributed well by runtime.
+To verify my hypothesis, I checked out <a href="https://github.com/test-load-balancer/tlb">TLB</a> source code. It was more complex than I thought.
+And there is also no way to output more logs to verify it's correctness.
+But <a href="https://gocd.org">Go CD</a> has good support for APIs, so I wrote <a href="https://github.com/ThoughtworksStudios/goapi/blob/master/examples/compare_test_runtime.rb">Ruby script</a> to verify my hypothesis.</p>
+
+<p>The following chart shows how the test runtime looks like on build. X-axis is job names; y-axis is job runtime.</p>
+
+<p><img src="../../../assets/images/acceptnace-test-build-time-6e0b8af7.png" title="Graph representing Acceptance Test time" alt="Graph representing Acceptance Test time" /></p>
+
+<p>Blue bars are test runtime on job. Red bars are "expected time", because <a href="https://github.com/test-load-balancer/tlb">TLB</a> distributed tests by previous build test runtime.
+Red bars are test runtime calculated by previous build test runtime:</p>
+
+<pre><code>Job expected runtime = sum of each test runtime in previous build
+</code></pre>
+
+<p>From this result, we can see the balance is not perfect, but OK.
+Because red bars are similar high across all acceptance (selenium test) jobs.</p>
+
+<p>Blue bars matched what I observed on build time.
+Then I ran same script on more builds. The outputs were similar, just different jobs got longer time to run.</p>
+
+<p>As <a href="https://gocd.org">Go CD</a> random picked up build VMs to run any job, it gave me a clue that maybe its build VM performance issue.
+So I wrote another <a href="https://github.com/ThoughtworksStudios/goapi/blob/master/examples/agent_stats.rb">script</a> to build the following chart:</p>
+
+<p><img src="../../../assets/images/vms-build-time-7ae5af26.jpg" title="Graph displaying GoCD build agent runtime" alt="Graph displaying GoCD build agent runtime" /></p>
+
+<p>It's clear there are some VMs are consistent slower than others.
+Then Barrow Kwan found out 2 of our VMs hosts were overloaded when we increased vCPUs on our VMs.
+We have set the host NOT to overload the CPU core but there was a typo in configuration.
+After sorted out VM host CPU overload issue, our <strong>build time reduced to 30 minutes</strong>.</p>
+
+<p><strong>So, don't just assume, prove it with detailed data. Make details visible. It leads you to the truth.</strong></p>
+
+<h1 id="you-dont-know-what-you-dont-know">You don't know what you don't know.</h1>
+
+<p><a href="https://gocd.org">Go CD</a> introduced "timestamps in console logs" in release 15.1.
+It made build task runtime visible.
+I was not pay attention to the timestamps in the console logs until recently.
+The following screenshot shows an example:</p>
+
+<p><img src="../../../assets/images/timestamps-in-console-logs-example-eb317f14.png" title="Timestamps in console logs" alt="Timestamps in console logs" /></p>
+
+<p>It turns out, <a href="https://github.com/test-load-balancer/tlb.rb">tlb.rb</a> client we used has the following code:</p>
+
+<p>{% highlight ruby %}
+def self.get path
+  sleep 2
+  Net::HTTP.get_response(host, path, port).body
+end
+{% endhighlight %}</p>
+
+<p>It only sleeps 2 seconds for one call, but it is called lots of times at the end of tests ran.
+After removed code <code>sleep 2</code>, there is almost no time spent at the end of test anymore.</p>
+
+<p>Without "timestamps in console logs", it is something like following:</p>
+
+<p><img src="../../../assets/images/no-timestamps-in-console-logs-example-a63eaf2d.png" title="No timestanps in console logs" alt="No timestanps in console logs" /></p>
+
+<p>No one will notice it ever.</p>
+
+<p>The benefit of fixing this problem is outstanding for our <strong>pre-commit build</strong>.
+Pre-commit build is a build running a test suite before developer pushes changes to trunk repository.
+Our pre-commit build runs all unit and functional tests.
+The <strong>build time reduced from 18 minutes to 10 minutes</strong> with 20 processes on 3 machines.</p>
+
+<p><strong>So, use/build tools that keep information visible,
+you may be surprised what you can get from it.</strong></p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Each time we improved our CI build performance, we thought that's the best we could do.
+But it was not true overtime.</p>
+
+<p>We found something, but missed other parts.
+So when you look into a problem, don't assume how it works.
+Working for better understanding instead.
+There are various ways to gain more understanding of the problem:</p>
+
+<ul>
+  <li>Start from scratch.</li>
+  <li>Look from different point of view.</li>
+  <li>Make hypothesis and verify it.</li>
+  <li>Find out more details of the problem.</li>
+  <li>Learn from resolving similar problems.</li>
+  <li>…</li>
+</ul>
+
+<p>Visibility of the problem detail supports you hunting helpful data.
+Thus it gives you more opportunities to understand and solve problem.</p>
+
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
