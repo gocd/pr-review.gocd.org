@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="A look at some of the ways to reduce the duplication found between pipelines using templates." name="description" />
+    <meta content="GoCD, reusing pipelines, remove duplicates, continuous delivery, cd pipeline template, reduce duplication, build pipelines, build propagation" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Reusing Pipelines | GoCD Blog" />
+    <meta name="twitter:description" content="A look at some of the ways to reduce the duplication found between pipelines using templates." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/reusing-pipelines/reusing-pipelines-hero-6de82f68.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/04/06/reusing-pipelines.html" />
+
+    <title>Reusing Pipelines | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_04 x2017_04_06 x2017_04_06_reusing-pipelines">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/reusing-pipelines/reusing-pipelines-hero-6de82f68.jpg" alt="Part 3 - Reusing Pipelines: Modeling Deployment Pipelines" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Part 3 - Modeling Deployment Pipelines: Reusing Pipelines</h1>
+    <h4>Aravind S.V, Product Manager at GoCD</h4>
+    <p class='tags'>
+<a href="../../../tags/modeling-deployment-pipelines.html" class="tag">        Modeling Deployment Pipelines
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>This is the third post in the series - <a href="../../../tags/modeling-deployment-pipelines.html">Modeling Deployment Pipelines</a>. In our <a href="../../03/29/beginnings-of-a-real-pipeline.html">previous post</a>, we looked at the initial stages of modeling a deployment pipeline and ways to reduce duplication in jobs by using multiple pipelines. This approach of using multiple pipelines enabled better control, but introduced duplication between the pipelines.</p>
+
+<p>Having duplicate pipelines increases the time and effort to create and update your pipelines. Ideally, we want to create a reusable pipeline “stencil” that could be used to easily create other similar pipelines by updating certain variables. This makes creation of a new pipeline, that is similar to one already created, much easier &amp; faster. It also means that updating pipelines can be a single update rather than multiple updates. When creating builds that test the same things on different platform or browsers (as in our examples below) this kind of reusability can be very powerful and efficient.</p>
+
+<h2 id="reusing-pipelines">Reusing Pipelines</h2>
+
+<p>Enter pipeline templates! A <em>template</em> is a concept in GoCD which helps reduce duplication between similar pipelines. It allows stages and jobs to be defined at the template level and through configurable parameters, allows each pipeline which is based off of that template, to set the parameters which make sense for it. Let’s see how a pipeline template can help in this case:</p>
+
+<div class="imagezoom">
+<img src="../../../assets/images/blog/reusing-pipelines/introducing-template-2a3da5c1.jpeg" alt="Introducing CD build Pipeline Templates" title="Pipeline Template" />
+<span class="info_txt">Click image to zoom in</span>
+</div>
+
+<p>There are still 4 pipelines in this image, but because we’ve used a template, all stage and job information has been moved into it. The only parameter used in this template is “OS” and it is shown in the template as “#{OS}”. Any number of parameters can be used in a template. Also, a template in GoCD is “live”, in the sense that any change to the template will automatically apply to all pipelines which are based off of it.</p>
+
+<p>Here’s a look at what we’ve been able to achieve so far:</p>
+
+<ul>
+  <li>We have a three stage “Build” pipeline, which builds, then runs unit and integration tests in parallel and then builds an installer.</li>
+  <li>As soon as the installer stage in this pipeline succeeds, all three downstream functional test pipelines get triggered.</li>
+  <li>Based on the template and their own parameters substituted into it, they run a “smoke” stage each and then run functional tests split into two parts.</li>
+  <li>Owing to the specified resources, GoCD makes sure that only those agents tagged with the resources specified pick up the jobs, thereby running the tests on different operating systems.</li>
+</ul>
+
+<p>All of this is just orchestrated through GoCD (or your chosen CD solution), but the actual scripts which do all of this are safely checked into your source control repository, thereby ensuring that you can easily run this locally if you need (see <a href="../../03/01/importance-and-principles-of-cd-pipelines.html#principle-run-locally">Principle 5</a>).</p>
+
+<p>Not bad at all!</p>
+
+<p>Before we look at moving a build to your deployment environment, here is a simplified version of our CD pipeline, which will help with continuing to extend it.</p>
+
+<div class="imagezoom">
+<img src="../../../assets/images/blog/reusing-pipelines/simplified-version-62879135.jpeg" alt="Simplified Version of CD build Pipeline" title="Simplified Version of Pipeline" />
+<span class="info_txt">Click image to zoom in</span>
+</div>
+
+<p>Typically, once a build has gone through the various tests (functional, unit, integration etc.), it is deployed onto a set of environments<sup>(^1)</sup> such as UAT, pre-production and production (for example). This is called “Build Propagation”.  We’ll cover in more detail how to implement Build Propagation in your deployment pipeline in our next post.</p>
+
+<p><em>^1 - These “deployment environments” are different from the concept of an “Environment” in GoCD. More on that in a <a href="../17/build-propagation-using-fan-in-fan-out.html">later post</a>.</em></p>
+
+<div class="row">
+  <div class="downloadbanner">
+  <div class="container">
+    <div class="banner-with-cta">
+      <p>Get started with simplifying continuous delivery. Download and use <span class="go">Go</span>CD for free</p>
+      <a href="../../../download/">Download</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

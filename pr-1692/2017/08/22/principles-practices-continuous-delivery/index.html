@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Part Three of the CD 101 series covers the principles and practices in continuous delivery and ways to decrease risk in deployments." name="description" />
+    <meta content="gocd, open source continuous delivery, open source continuous delivery tools, ci/cd server, best practices for continuous delivery, reduce deployment risk, continuous delivery, CD 101, Continuous delivery 101, getting started with CD, what is continuous delivery, video series, history of cd" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Deployment pipeline and types of automated testing | GoCD Blog" />
+    <meta name="twitter:description" content="Part Three of the CD 101 series covers the principles and practices in continuous delivery and ways to decrease risk in deployments." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/continuous-delivery-101/continuous-delivery-101-part3-hero-a7e89092.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/08/22/principles-practices-continuous-delivery" />
+
+    <title>Deployment pipeline and types of automated testing | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_08 x2017_08_22 x2017_08_22_principles-practices-continuous-delivery x2017_08_22_principles-practices-continuous-delivery_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../../assets/images/blog/continuous-delivery-101/continuous-delivery-101-part3-hero-a7e89092.jpg" alt="Part 3 - Principles and Best Practices for Continuous Delivery: CD 101"/>
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Part 3 - CD101: Principles and Best Practices for Continuous Delivery</h1>
+    <h4>Ken Mugrage</h4>
+    <p class='tags'>
+<a href="../../../../tags/cd-101.html" class="tag">        CD 101
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>This is part 3 of our <a href="../../../../tags/cd-101.html">Continuous Delivery 101 video series</a>, where we’ll be looking at some of the principles and best practices in continuous delivery like:</p>
+
+<ul>
+  <li>The need for a repeatable process</li>
+  <li>Automation</li>
+  <li>Version controlling everything</li>
+  <li>Building in quality from the start</li>
+  <li>Redefining done as ‘released’</li>
+</ul>
+
+<p>For some background on details of a continuous delivery pipeline and types of automated testing, please watch <a href="../../../07/20/deployment-pipeline-automated-testing.html">part 2</a> of our video series.</p>
+
+<p>In this video we also cover some of the characteristics of a team where there is a concept of shared ownership and what it means to practice a ‘DevOps’ culture.</p>
+
+<p><br /></p>
+<div align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/S0g91mryV4c" frameborder="0" allowfullscreen=""></iframe>
+</div>
+<p><br /></p>
+
+<p>Now that we’ve covered the basics &amp; best practices of Continuous Delivery, <a href="../../../09/12/value-stream-mapping.html">in part 4</a>, we’ll look at how anyone can get started. Stay tuned.</p>
+
+<hr />
+
+<h2 id="what-is-continuous-delivery-101">What is Continuous Delivery 101?</h2>
+
+<p>This is a video series to help you get started on your CD journey. Ken Mugrage, a notable advocate for continuous delivery, will walk you through a collection of 5 short videos. This series will cover the history of CD, basic concepts, best practices, how to get started and popular tools. We will also introduce in-depth readings as we go through these basic concepts with you.</p>
+
+<p>By the end of the video series, you'll have a holistic view of continuous delivery and a deeper understanding and appreciation of critical concepts.</p>
+
+<h2 id="why-should-you-watch-it">Why should you watch it?</h2>
+
+<p>These videos can help you and more specifically, your team, learn to adopt best practices of Continuous Delivery, understand the core concepts of a deployment pipeline, and the history of how Agile and Lean drove these technical practices.</p>
+
+<p>You can truly benefit out of these videos if you:</p>
+
+<ul>
+  <li>are looking to get an overview of continuous delivery for yourself</li>
+  <li>are championing DevOps transformation in your organization and need a concise 'getting started' guide for your team</li>
+  <li>think your team are doing continuous delivery but not quite there yet and want to take as step back to refresh the fundamentals</li>
+</ul>
+
+<div class="cornered-banner">
+  <p class="cornered-banner_content">
+    Try GoCD today with our new Test Drive experience
+  </p>
+  <a href="../../../../test-drive-gocd.html" class="cornered-banner_cta">START NOW</a>
+</div>
+
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="This post is an overview of GoCD and Spinnaker, why they are different from each other and which problems you should use them to solve." name="description" />
+    <meta content="continuous delivery, gocd vs spinnaker, gocd, spinnaker, automated deployment spinnaker, gocd continuous delivery, spinnaker cloud abstractions, gocd pipeline" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="GoCD vs Spinnaker | GoCD Blog" />
+    <meta name="twitter:description" content="This post is an overview of GoCD and Spinnaker, why they are different from each other and which problems you should use them to solve." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/gocd-vs-spinnaker/gocd-vs-spinnaker-hero-66a667cb.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/07/10/gocd-vs-spinnaker.html" />
+
+    <title>GoCD vs Spinnaker | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_07 x2017_07_10 x2017_07_10_gocd-vs-spinnaker">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/gocd-vs-spinnaker/gocd-vs-spinnaker-hero-66a667cb.jpg" alt="Continuous Delivery: GoCD vs Spinnaker" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Continuous Delivery: <span class="go">Go</span>CD vs Spinnaker</h1>
+    <h4>Sheroy Marker (Head of Technology), Thoughtworks Products</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>With Continuous Delivery (CD) adoption on the rise, tools that help teams with CD are becoming popular too. GoCD and Spinnaker are two sought after tools in this space. We are often asked how they compare - “GoCD or Spinnaker?”  and the truth is that these tools solve different problems and are not interchangeable. Before we delve further, here’s a quick refresher on Continuous Delivery.</p>
+
+<h2 id="continuous-delivery">Continuous Delivery</h2>
+
+<blockquote>
+  <p>Continuous Delivery is the ability to get changes of all types—including new features, configuration changes, bug fixes and experiments—into production, or into the hands of users, safely and quickly in a sustainable way - Jez Humble</p>
+</blockquote>
+
+<p>Continuous Delivery is an overarching practice that includes Build Automation or Continuous Integration, Test Automation and Deployment Automation. By automating these concerns in a Continuous Delivery pipeline you are enabling your software to be releasable to production at any time. A CD workflow is incomplete if it doesn’t address all of these concerns.</p>
+
+<div align="center">
+<img src="../../../assets/images/blog/gocd-vs-spinnaker/concerns-CD-workflow-b113290e.jpeg" alt="Concerns addressed in a CD workflow" title="Concerns addressed in a CD workflow" />
+</div>
+
+<p>Continuous Delivery has its roots in the lean principle of <a href="https://en.wikipedia.org/wiki/Value_stream_mapping" target="_blank">value stream mapping</a> to improve the efficiency of software delivery, by identifying and eliminating waste in the process. For organizations looking to introduce efficiency in their release engineering with CD, an understanding of their value stream is crucial. An efficient software release process must model this value stream effectively. A good visualization of the current state goes a long way in finding and removing bottlenecks.</p>
+
+<p>As Continuous Delivery becomes more popular as a practice, so do some of the tools that enable this practice. GoCD and Spinnaker are two of the popular tools in this space.</p>
+
+<h2 id="gocd">GoCD</h2>
+
+<p>GoCD is a best-of-breed Continuous Delivery tool that allows you to orchestrate complex Continuous Delivery workflows. It was the first Continuous Delivery server to provide <em>built-in abstractions</em> to create CD pipelines, <em>along with value stream visualizations</em> for you to be able to truly take stock of the efficiencies (or lack of) in your release process.</p>
+
+<p>GoCD provides the <em>flexibility</em> to introduce the levels of parallelism and manual stages that specific workflows may require. The tool allows you to introduce the right mix of controls such as role based access control for critical stages, and leaves the implementation of the steps to the user.</p>
+
+<p>GoCD does not think of Continuous Integration and Continuous Delivery as disconnected processes. When designing a Continuous Delivery workflow for a non-trivial software system, representing the end to end process, from a developer commit to a production deployment is key.</p>
+
+<div class="imagezoom">
+<img src="../../../assets/images/blog/gocd-vs-spinnaker/gocd-vsm-e76668b8.png" alt="GoCD Value Stream Map" title="GoCD Value Stream Map" />
+<span class="info_txt">GoCD's Value Stream Map</span>
+</div>
+
+<p>With GoCD, you can define your build, test, and deploy stages in the same pipeline with end to end visualization of the process. The value stream view in GoCD gives you the complete picture of your deployment pipeline including <em>traceability and lineage of artifacts</em> that are currently deployed on environments.</p>
+
+<p>GoCD is open source and provides a plugin architecture that lets you extend its ecosystem.</p>
+
+<h2 id="spinnaker">Spinnaker</h2>
+
+<p>Spinnaker is a best-in-class multi-cloud deployment automation tool built at Netflix to handle deployments to large clusters on AWS. Spinnaker does not model the end to end Continuous Delivery workflow. You have to integrate with a Continuous Integration tool like <a href="../../04/25/gocd-over-jenkins.html" target="_blank">Jenkins</a> to automate the build and test automation stages for your CD workflow.</p>
+
+<p>Spinnaker provides cloud abstractions such as applications, deployments and clusters out of the box. These abstractions enable you to automate deployments relatively quickly and without the need for much scripting. Though Spinnaker has the concept of pipelines, they are specific to deployments and don’t model a complete Continuous Delivery workflow, from commit to production.</p>
+
+<p>Spinnaker is prescriptive about deployment patterns with it’s built-in abstractions such as out-of-the-box stage types, immutable images, and deployment strategies. The opinionated nature of the tool is  beneficial for teams that are looking for industry standard solutions to some of these deployment concerns and don’t really want to implement these patterns themselves.</p>
+
+<div class="imagezoom">
+<img src="../../../assets/images/blog/gocd-vs-spinnaker/spinnaker-pipeline-bee01f81.png" alt="Spinnaker’s Pipeline View" title="Spinnaker’s Pipeline View" />
+<span class="info_txt">Spinnaker’s Pipeline View. Image from: https://www.spinnaker.io/guides/tutorials/codelabs/hello-deployment/</span>
+</div>
+
+<p>Spinnaker is designed to handle deployments to popular cloud environments and allows you to define workflows for these deployments. For large software systems, at scales close to the Netflix service, deployment is in itself a complex problem. When you are releasing software to tens of thousands of nodes, concerns such as <em>automated deployment and rollback strategies</em> become key. A tool that provides these abstractions out of the box can be hugely beneficial.</p>
+
+<p>Spinnaker doesn’t support a plugin model but provides extension points to support deployments to new cloud providers. These cloud provider implementations exist for most of the popular cloud providers.</p>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<p>In summary, GoCD is a best-in-breed Continuous Delivery server that allows you to represent complex CD workflows to any environment. If you are looking to represent your end-to-end CD workflow with good visualizations of your value stream, artifact lineage and pipeline current state, consider GoCD.</p>
+
+<p>If you are managing large scale clusters and can benefit from the Netflix style deployment patterns and cloud native abstractions, consider Spinnaker. Spinnaker focuses on one thing, deployments, and does it well. You will have to use additional tools to design an end-to-end CD workflow.</p>
+
+<div class="cornered-banner">
+  <p class="cornered-banner_content">
+    Try GoCD today with our new Test Drive experience
+  </p>
+  <a href="../../../test-drive-gocd.html" class="cornered-banner_cta">START NOW</a>
+</div>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
