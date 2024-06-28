@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="GoCD is excited to announce the release of our Kubernetes Helm Chart that will allow our users to run GoCD natively on Kubernetes." name="description" />
+    <meta content="Gocd, kubernetes, cloud native, kubernetes plugin, gocd helm chart, gocd helm, docker workflow, gocd k8s, continuous delivery with kubernetes, k8s" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Run GoCD on Kubernetes | GoCD Blog" />
+    <meta name="twitter:description" content="GoCD is excited to announce the release of our Kubernetes Helm Chart that will allow our users to run GoCD natively on Kubernetes." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/gocd-kubernetes-helm-chart/gocd-kubernetes-helm-chart-hero-71d9973f.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2018/03/21/continuous-delivery-gocd-kubernetes.html" />
+
+    <title>Run GoCD on Kubernetes | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-74d6f297.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2018 x2018_03 x2018_03_21 x2018_03_21_continuous-delivery-gocd-kubernetes">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+        <figure>
+    <img src="../../../assets/images/blog/gocd-kubernetes-helm-chart/gocd-kubernetes-helm-chart-hero-71d9973f.jpg" alt="GoCD Kubernetes Helm Chart"/>
+  </figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Continuous delivery workflows on modern infrastructure - Run <span class="go">Go</span>CD on Kubernetes</h1>
+    <h4>Sheroy Marker</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>We are excited to announce the <a href="https://hub.helm.sh/charts/gocd/gocd">release of our Kubernetes helm chart</a> that will allow our users to run GoCD natively on Kubernetes.</p>
+
+<p>GoCD is a best-of-breed continuous delivery tool that allows you to model complex continuous delivery workflows. Kubernetes has emerged as one of the most interesting application delivery platforms. Our upcoming releases will have features that allow GoCD users to model Docker based build workflows with deployments to Kubernetes - we’ll cover more about this later in the post.</p>
+
+<h2 id="continuous-delivery-with-kubernetes">Continuous Delivery with Kubernetes</h2>
+
+<p>An efficient continuous delivery (CD) workflow is key to enabling high performance teams deliver software frequently, and reliably. CD workflows are specific to an organization’s processes. One of the enablers of continuous delivery is a high level of automation with few manual interventions. And so, <strong>automation around delivery infrastructure</strong> is key to a successful CD workflow.</p>
+
+<p>Kubernetes provides simple abstractions for designing deployments for modern application architectures without the need for a lot of ‘configuration management’ code. A powerful API makes it programmable and easily accessible to development teams. Though Kubernetes provides the platform to build self-service delivery infrastructure, it does not provide the facilities to build and deploy your applications.</p>
+
+<blockquote>
+  <p><em>GoCD gives you the flexibility to effectively represent CD pipelines that suit your organization’s processes. Kubernetes gives you a highly programmable delivery infrastructure platform. And together, they provide the foundation for a powerful Continuous Delivery platform.</em></p>
+</blockquote>
+
+<p>We wanted our users to be able to leverage GoCD’s pipeline modeling capabilities with Kubernetes’ developer-centric APIs to enhance their deployment process. To do this, we planned our Kubernetes-related feature releases in two steps.</p>
+
+<h2 id="step-1-current-release--run-gocd-natively-on-kubernetes">Step 1 (Current Release) : Run GoCD natively on Kubernetes</h2>
+
+<p><img src="../../../assets/images/blog/gocd-kubernetes-helm-chart/kubernetes-cluster-agents-c15ee8f8.svg" alt="Provisioning GoCD Elastic Agents on a Kubernetes Cluster" /></p>
+
+<p>Our first goal was to get GoCD to run natively on Kubernetes. In our latest release, we have provided our users with the ability to:</p>
+
+<ul>
+  <li>Install GoCD as a Kubernetes native application with an officially supported helm chart</li>
+  <li>Scale GoCD agents seamlessly with the new ElasticAgent plugin that spins up agents on the fly in response to build workload</li>
+  <li>Design Docker-based build workflows using the Docker in Docker capability</li>
+</ul>
+
+<h2 id="step-2-upcoming-releases-model-a-docker-based-build-workflow">Step 2 (Upcoming Releases): Model a Docker-based build workflow</h2>
+
+<p><img src="../../../assets/images/blog/gocd-kubernetes-helm-chart/GoCD-deploying-kubernetes-0635fbee.svg" alt="GoCD deploying to a Kubernetes Cluster" /></p>
+
+<p>Beyond enabling GoCD to run natively on Kubernetes, we are also working on giving our users the ability to <strong>fully leverage the container-based build workflow</strong>. Containerization provides a clean separation of concerns for managing applications. Docker and Kubernetes together, enable a standard and simplified CD workflow.</p>
+
+<p>These upcoming features will allow our users to:</p>
+
+<ul>
+  <li>
+    <p><strong>Use Docker images as build artifacts</strong><br />
+Docker images are the artifacts that are generated and propagated in a Docker based build workflow. Our users will be able to designate Docker images generated during the build process as artifacts. GoCD will even publish and fetch Docker images from a registry of choice. Metadata regarding Docker image artifacts will be made available to the build context for use in downstream pipelines.</p>
+  </li>
+  <li>
+    <p><strong>Deploy applications to a Kubernetes environment</strong><br />
+Deployments to Kubernetes are based on deployment specifications that are hydrated with runtime configuration. This hydrated deployment specification is then applied to a Kubernetes cluster that performs the actual deployment of the application.  This capability will allow our users to compose these deployments in a continuous delivery build pipeline.</p>
+  </li>
+  <li>
+    <p><strong>Monitor the deployment and call it done once the services come up</strong><br />
+Kubernetes provides a rich API to monitor the progress of a deployment and provide the status of running applications. With this capability, a GoCD build task will complete once the Kubernetes deployment has completed. This will allow for reliably triggering post-deployment stages.</p>
+  </li>
+</ul>
+
+<hr />
+
+<p>We've built GoCD to encompass the best CD practices. We’ve always tried to stay true to that with every release we make and the Kubernetes plugin is no exception.</p>
+
+<p>Check out our <a href="https://docs.gocd.org/current/gocd_on_kubernetes/">documentation on how to start using GoCD on Kubernetes</a> with our officially supported <a href="https://hub.helm.sh/charts/gocd/gocd">helm chart</a> now.</p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
