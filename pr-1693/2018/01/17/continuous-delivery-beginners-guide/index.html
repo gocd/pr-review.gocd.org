@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="This post is for non-technical folks and demystifies the term continuous delivery and why it’s important." name="description" />
+    <meta content="Continuous delivery, beginners guide to CD, beginners guide, continuous delivery for starters, continuous delivery basics" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="An absolute beginners guide to Continuous Delivery | GoCD Blog" />
+    <meta name="twitter:description" content="This post is for non-technical folks and demystifies the term continuous delivery and why it’s important." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/beginners-guide-cd/beginners-guide-cd-header-d0a7319f.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2018/01/17/continuous-delivery-beginners-guide" />
+
+    <title>An absolute beginners guide to Continuous Delivery | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2018 x2018_01 x2018_01_17 x2018_01_17_continuous-delivery-beginners-guide x2018_01_17_continuous-delivery-beginners-guide_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../../assets/images/blog/beginners-guide-cd/beginners-guide-cd-header-d0a7319f.jpg" alt="Beginners Guide to Continuous Delivery"/>
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>An absolute beginners guide to Continuous Delivery</h1>
+    <h4>Erin Snyder</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>My first gig at Thoughtworks was as a Support Engineer for <a href="https://thoughtworks.com/mingle">Mingle - an agile project management tool</a>. When I joined, some of my instructors at the coding bootcamp I attended, tried to teach us how agile development works. Well, they tried. None of us really practiced agile besides having daily stand-ups where we talked about blockers and successes. Some of the practices I figured out on my own, but most of it, I learned from observing my team. And, that’s how I eventually learnt about continuous delivery too.</p>
+
+<p>After working with Mingle, I expanded my support-net (it’s like a fishing net but made of empathy and clever workarounds instead of rope) to cover support for GoCD and SnapCI - both in the domain of <strong>Continuous Delivery and Release Management systems</strong>.</p>
+
+<p>Those are very big intimidating words (worthy of capitalization even) and prior to this, I had no idea what any of that meant. I expect that a lot of people might be in the same position. Perhaps, you’ve heard of it and like me, found them intimidating. Hopefully, by the end of this post, I’d have demystified this for you. And I can’t promise that you’ll be ready to immediately jump into <em>“doing CD”</em>, but you’ll have a better idea (as I eventually did) of what ‘continuous delivery’ means and what the fuss is all about.</p>
+
+<p>In this post, I decided to pour out my knowledge for the benefit of anyone who might not be familiar with such things. Experienced developers can take a break: this one’s for the new kids and people like me who come from non-traditional (no CS degree here!) backgrounds.</p>
+
+<h2 id="first-of-all-how-does-software-even-get-made">First of all, how does software even get made?</h2>
+
+<p>When I was attending a coding bootcamp, here was my process:</p>
+
+<ul>
+  <li>An instructor told me to write some code.</li>
+  <li>I wrote the code.</li>
+  <li>I ran some tests to see if the code works.</li>
+  <li>If it didn't work, I’d try to fix it.</li>
+  <li>Sometimes the code worked - because, magic!</li>
+  <li>I submitted my code for review by my instructor, usually by issuing a pull request on GitHub, or by deploying to Heroku, or something.</li>
+  <li>Done. Go have a cookie!</li>
+</ul>
+
+<p>In a workplace that practices agile development, it is a bit different. Here is your process:</p>
+
+<ul>
+  <li>Identify a need (aka, What am I building and why am I building it?)</li>
+  <li>Flesh out the idea (What are the specifics? Create a blueprint.)</li>
+  <li>Design the thing (What features should it have? What user stories?)</li>
+  <li>Code the thing (Allocate tasks to designers, developers, etc)</li>
+  <li>Test the thing while you are coding the thing (Easier to fix it when it breaks)</li>
+  <li>Integrate your thing into existing code base and test that too (Did your thing break someone else’s thing?)</li>
+  <li>Deploy the thing to an environment, like staging or production (OMG it's live and everyone can see it!)</li>
+  <li>Maintain the thing (Bug fixes, documentation, etc)</li>
+  <li>Repeat</li>
+</ul>
+
+<h2 id="so-what-does-continuous-deployment-do">So, what does continuous deployment do?</h2>
+
+<p>Some of the above steps can be automated to make the whole process faster. The faster you push a bug fix or a new feature, the happier your customers will be.</p>
+
+<p>When you use continuous deployment software, here is your process:</p>
+
+<ul>
+  <li>Think up the idea</li>
+  <li>Flesh out the idea</li>
+  <li>Design it</li>
+  <li>Code it</li>
+  <li>Each time you make a commit, it triggers a build server to package the code and sends it off for testing. You should treat any commit as if it could cause your code to be deployed to production and released to your customers, unless you do continuous delivery. More on that in a minute!</li>
+  <li>Code is automatically deployed to different environments and tested (unit tests, functional tests, integration tests, etc). If any of the tests fail, the process stops.</li>
+  <li>Then it’s time to maintain your code, fix some bugs and write some documentation to help your lovely support people troubleshoot the thing. :)</li>
+  <li>Repeat</li>
+</ul>
+
+<h2 id="what-was-that-about-continuous-delivery">What was that about continuous delivery?</h2>
+
+<p>The only <a href="https://www.gocd.org/2017/10/17/difference-between-continuous-delivery-continuous-deployment-infographic/">difference between continuous deployment and continuous delivery</a> is a manual trigger on the deployment stage. In continuous delivery, a human being has to push the button to deploy to an environment (staging, production, whatever).</p>
+
+<p>This means that you can control your release cycle and decide what is getting pushed where and when.</p>
+
+<blockquote>
+  <p><strong>Deployment becomes a business decision.</strong></p>
+</blockquote>
+
+<p>You can even rig up a big red button for your PM or whoever to push when it’s time to release!</p>
+
+<hr />
+
+<p>So that’s it! That is your very basic introduction to CD. It’s just a way to automate some of the steps that your code goes through when you’re developing software and gives you control over your release schedule. Not so intimidating after all :).</p>
+
+<div class="cornered-banner">
+  <p class="cornered-banner_content">
+    Try GoCD today with our new Test Drive experience
+  </p>
+  <a href="../../../../test-drive-gocd.html" class="cornered-banner_cta">START NOW</a>
+</div>
+
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../">2018 (16)</a></li>
+            <li><a href="../../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

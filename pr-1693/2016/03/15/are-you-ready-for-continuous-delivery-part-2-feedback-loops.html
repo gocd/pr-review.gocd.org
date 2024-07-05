@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Common manual and automated feedback loops your organization should consider before rolling out continuous delivery." name="description" />
+    <meta content="continuous delivery, continuous integration, software deployment, deployment pipeline, feedback loops, test automation, production monitoring, usability testing" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Feedback Loops | GoCD Blog" />
+    <meta name="twitter:description" content="Common manual and automated feedback loops your organization should consider before rolling out continuous delivery." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/are-you-ready-for-continuous-delivery/feedback_loops-93f9a552.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2016/03/15/are-you-ready-for-continuous-delivery-part-2-feedback-loops.html" />
+
+    <title>Feedback Loops | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2016 x2016_03 x2016_03_15 x2016_03_15_are-you-ready-for-continuous-delivery-part-2-feedback-loops">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/are-you-ready-for-continuous-delivery/feedback_loops-93f9a552.jpg" alt="Continuous Feedback Loops" title="Continuous Delivery Feedback Loops" />
+  <span class="attribution">
+    <a target="_blank" href="https://www.flickr.com/photos/drainrat/14017306767/sizes/l">Attribution - Change: Cropped</a>
+  </span>
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Part 2 - Are you ready for Continuous Delivery: Feedback loops</h1>
+    <h4>David Rice</h4>
+    <p class='tags'>
+<a href="../../../tags/are-you-ready-for-continuous-delivery.html" class="tag">        Are you ready for Continuous Delivery
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>During the 10 plus years Thoughtworks has been in the Continuous Delivery (CD) ecosystem, we've regularly come across
+people wanting to try our tools (GoCD and Snap CI) as they start their journey toward CD. Very often, in attempting to
+support teams new to CD, we suggest that they pause any tool evaluation and consider whether their organization is
+actually ready to embark on this journey. If you do not frankly assess your team's readiness, the result can be a
+massive failure. The path to CD should not start with the immediate adoption of a CD tool.</p>
+
+<p>In <a href="../../01/25/are-you-ready-for-continuous-delivery/">part one</a> of this series, we explored some core development
+practices that are prerequisites for CD. In this part, we'll look at a variety of feedback loops—both manual and
+automated—your organization should have in place before rolling out CD.</p>
+
+<h2 id="feedback-loops-and-continuous-delivery">Feedback loops and Continuous Delivery</h2>
+
+<p>The aim of Continuous Delivery is to release software faster, more reliably, and more frequently. Given that, diagrams
+of CD typically depict a linear flow. On the surface, this is quite different from Continuous Integration, which is
+usually shown as a loop.</p>
+
+<figure>
+  <img src="../../../assets/images/blog/are-you-ready-for-continuous-delivery/gocd_thoughtworks_continuous_integration_feedback_loops-8325bf92.png" alt="Continuous Integration Cycle" title="Continuous Integration Cycle" class="size_medium" />
+</figure>
+
+<p>But CD as a linear flow is an incomplete picture. A good deployment pipeline has numerous feedback loops along the
+way. At each stage of the pipeline, verifications are run. If they pass, the pipeline continues. If they fail, the
+pipeline halts and the team responds appropriately to the feedback. The feedback along the way prevents CD from being
+chaos. Poor quality will almost never reach production in a well-designed pipeline.</p>
+
+<figure>
+  <img src="../../../assets/images/blog/are-you-ready-for-continuous-delivery/gocd_thoughtworks_continuous_delivery_feedback_loops-cb9bdbe3.png" alt="Continuous Delivery feedback loop" title="Continuous Delivery feedback loop" class="size_medium_large" />
+</figure>
+
+<p>Most of the feedback loops you find in a deployment pipeline are good practices in and of themselves. You might already
+be doing some or most of them. We think you should have many of these in place before moving forward with CD.</p>
+
+<h2 id="test-automation">Test automation</h2>
+
+<p>The most common feedback loop in any deployment pipeline is the execution of automated tests. You must have a solid test
+automation strategy before attempting CD. Some people like the approach of the
+<a href="https://martinfowler.com/bliki/TestPyramid.html">test pyramid</a>. We're actually fine with any sensible approach, as long
+as it's fast and reliable. There are myriad types of automated tests, and which ones you use will depend upon your
+circumstances. Here, we will take a look at three of the most important types: unit, regression, and performance.</p>
+
+<h4 id="unit-tests">Unit tests</h4>
+
+<p>Unit tests verify your application at the most granular level, typically methods or classes. They are fast, easy to
+maintain, and support rapid change of your application. Unit tests should be the foundation of your automation
+strategy. If your teams don't value a thorough and fast unit test suite, they won't be able to move fast or with
+confidence.</p>
+
+<p>Some points to consider when assessing your team:</p>
+
+<ul>
+  <li>The suite must be fast. What's fast? A few minutes on a large code base is OK. But faster is better. Slow unit tests
+result in a slow, horribly frustrating development flow.</li>
+  <li>On a mature team, the testers will be comfortable with pushing as much of your test automation as possible into your
+unit test layer.</li>
+  <li>Code coverage is important, but tracking metrics is generally only beneficial for a team learning the basics.</li>
+  <li>Some frameworks and platforms are known to be slow when it comes to unit tests. Do not fight or subvert a framework to
+make tests fast. Instead, consider switching your framework or platform.</li>
+</ul>
+
+<h4 id="regression-test-suite">Regression test suite</h4>
+
+<p>A regression test suite verifies that your entire application actually works. This suite adds a ton of value to a
+deployment pipeline. For many, the regression stage of a pipeline gives the confidence needed to deploy. We want to make
+a couple of points about this.</p>
+
+<p>Firstly, regression tests should be 100 percent automated. They are change-detectors and do not require brain power to
+execute. A manual regression stage in your deployment process will prove painful. Work to get rid of it. Your testers
+can add more value elsewhere.</p>
+
+<p>Secondly, we reject the notion that a regression suite must mean slow, flaky Selenium tests. Our take is, yes, it's a
+fair reputation, but it was earned by many teams doing it wrong. How to author and maintain an automated regression
+suite is a book-worthy topic, but quickly:</p>
+
+<ul>
+  <li>Don't couple them to small stories or tasks. Only consider them in the context of the entire application.</li>
+  <li>Relentlessly prune the suite. Keep it tight. Err on the side of leaving something uncovered rather than accepting
+duplication.</li>
+  <li>Treat them as production code. Keep things very clean.</li>
+  <li>Have programmers write them. Train your testers to code if they are interested in automation. Avoid drag-and-drop
+programming.</li>
+  <li>Do not accept flaky tests. Fix them or get rid of them.</li>
+  <li>Even the best suites we've seen tend to be slow. Embrace using some combination of hardware, virtualization, and cloud
+to parallelize execution.</li>
+</ul>
+
+<p>One caveat to note: the best testers will want to do a manual regression every so often, just to help structure how they
+think about the application. That's a good thing so long as it's about their being thoughtful and not how you actually
+integrate regression checks into your process.</p>
+
+<h4 id="performance-testing">Performance testing</h4>
+
+<p>Performance testing—verifying that your application meets specific performance criteria—is a massive topic. There's no
+one way to do it: your approach will vary according to request volume and data size. There are many varieties: load,
+stress, soak, and spike, to name a few. It's too big a topic for this post. That said, we do have some thinking that can
+help you assess your maturity:</p>
+
+<ul>
+  <li>Do not leave this phase for last. We cannot stress enough just how difficult this practice is and how much time we've
+seen sunk into failed efforts. Everything about it is difficult: modeling, standing up an environment, building the
+harness, assessing results, building it into your deployment pipeline.</li>
+  <li>It's critical to test against specific criteria. Don't worry about getting your criteria wrong at first. You can change
+the criteria once you have real production data.</li>
+  <li>Don't assume you'll reach web-scale in month two. You'll waste huge cycles prematurely optimizing both your application
+and your tests. (Don't read this as us saying, "Don't consider what your actual scale might be." Just a suggestion that
+you be realistic and pragmatic.)</li>
+  <li>Utilize production monitoring to the greatest extent possible. A canary release can go a long way toward verifying the
+performance of a new version of your application.</li>
+</ul>
+
+<h2 id="production-monitoring">Production monitoring</h2>
+
+<p>Do you have a production monitoring strategy? Feedback loops aren't only for pre-production phases. As much as we try to
+achieve dev/prod parity, production is truly a unique environment for most organizations and things can—and do—go wrong.</p>
+
+<p>Here are some questions to help you assess your readiness:</p>
+
+<ul>
+  <li>How quickly does your team know something is broken? Do they learn about it via monitoring? And then how fast can they
+respond?</li>
+  <li>Does your team ignore alerts?</li>
+  <li>Do your teams tend to invent an approach to monitoring as they go along? Believe it or not, we actually see this a lot
+and it's not a good thing. Be as thoughtful about monitoring and alerts as you are with other parts or your application.</li>
+  <li>Do you keep a database of events so that you can later query for patterns?</li>
+</ul>
+
+<h2 id="user-testing">User testing</h2>
+
+<p>Sitting users down in front of your application and try it out is a critical feedback loop. In an enterprise setting, we
+like to see two type of user testing: usability testing and user acceptance testing. Usability testing verifies that
+users find the application easy to use. User acceptance testing verifies that users can complete transactions with the
+application in a real-world setting. There can be fair bit of overlap between the two types.</p>
+
+<p>If you do not do user testing, you will struggle getting users to accept frequent releases of new versions. Users will
+only like rapid changes if the experience remains usable, consistent, and effective.</p>
+
+<p>We also want to call out that these feedback loops are manual processes that often require weeks or months of elapsed
+time. They are typically not modeled into the deployment pipeline, and that's fine. But do not leave them both batched
+up until the end. That's a long wait period and likely an unknown amount of rework before deploying to prod. If you do
+this, your process will feel more like waterfall than CD. Run these user tests early and often, while you are writing
+the code.</p>
+
+<h2 id="exploratory-testing">Exploratory testing</h2>
+
+<p>All this talk of automation does not mean your testers should retire their analytical thinking and learn to program. In
+fact, test automation should free up your testers to do what they're best at: use their
+brains. <a href="https://www.atlassian.com/continuous-delivery/software-testing/exploratory-testing">Exploratory testing</a> is when a tester is
+simultaneously learning about the system, designing tests, and executing tests. It is when a tester gets into a deep
+flow, not even knowing what the next test is. This is where a good tester can really shine, doing some of their most
+valuable work.</p>
+
+<p>For most types of applications, a test strategy should include skilled testers performing exploratory testing. This
+testing will find problems, teach you about your system, and inform your automated regression suite. As with user
+testing, this testing should be done throughout the development process and not as a gate at the end.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>This list of feedback loops organizations should have in place before doing CD is not exhaustive (e.g., we didn't
+discuss A/B testing). We have presented the more common feedback loops we see where CD has been successful. Obviously
+every situation presents different problems and has different needs.</p>
+
+<p>You don't need to have high marks on everything we have presented to begin your journey to CD. But if you are feeling
+only so-so against a majority of them, we'd suggest working on the individual pieces before approaching CD. Once you get
+enough of them in place, you will find that you've actually completed a large swath of your journey to Continuous
+Delivery.</p>
+
+<p>In future parts of this series, we plan to explore culture, the last mile, and more.</p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
