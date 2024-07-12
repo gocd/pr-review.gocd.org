@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Types of deployment pipelines you should implement to ensure your software is production-ready at any time." name="description" />
+    <meta content="continuous delivery, delivery pipelines, deployment pipelines, security testing, performance testing, production deployment" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="It's not CD if you can't deploy right now | GoCD Blog" />
+    <meta name="twitter:description" content="Types of deployment pipelines you should implement to ensure your software is production-ready at any time." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/deploy-now/but_it_just_needs_oven-6a40663e.png" />
+    <link rel="canonical" href="http://localhost:4567/2016/01/17/not-done-unless-its-done" />
+
+    <title>It's not CD if you can't deploy right now | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2016 x2016_01 x2016_01_17 x2016_01_17_not-done-unless-its-done x2016_01_17_not-done-unless-its-done_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+
+
+  <header class="blog-post-header">
+    <h1>Part 1 - It's not Continuous Delivery if you can't deploy right now</h1>
+    <h4>Ken Mugrage</h4>
+    <p class='tags'>
+<a href="../../../../tags/it-s-not-cd-if-you-can-t-deploy-right-now.html" class="tag">        It's Not CD if You Can't Deploy Right Now
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<div>
+  <div class="float-image float-right">
+    <img src="../../../../assets/images/blog/deploy-now/but_it_just_needs_oven-6a40663e.png" class="pad-left" title="Ingredients ready to go into the oven" alt="Ingredients ready to go into the oven" />
+  </div>
+
+  <div class="float-article float-left">
+    <p>
+      This is the first in a <a href="../../../../tags/it-s-not-cd-if-you-can-t-deploy-right-now.html">series of articles</a> that will cover the types of pipelines you should implement to ensure your software is truly ready for production at any time. The culture changes required in most organizations are incredibly important, but I'm going to focus on some technical practices in this series.
+    </p>
+
+    <p>
+      Years ago, when I was in management, I had a favorite rule. If asked "is something done?" the answer could not include the word "except" or any of its synonyms.
+    </p>
+
+    <p>
+      "It's done except for…" = "no".
+    </p>
+
+    <p>
+      I hear people say all the time that they're practicing continuous delivery. This declaration is often followed by something like,  "I can let the security team know anytime", or "I just have to run the performance tests". If you can't push your software to production right now, you're not done with your continuous delivery journey.
+    </p>
+  </div>
+  <div class="clear" />
+</div>
+
+<h2 id="some-of-the-things-you-might-not-be-running-but-should-">Some of the things you might not be running but should …</h2>
+
+<p>In this article I'm going to give an overview of some of the types of pipelines that you should be running if you want your software to be ready to ship at all times. Of course this is not an exhaustive list, there are most likely things that are specific to what you're doing that you should have, just as there are probably things that I will list that don't make sense for you. The point is that everything possible should be automated as part of your deployment pipeline.</p>
+
+<p>Over the next several weeks I'll be writing more about each of these types of pipelines, follow me on Twitter if you would like to know when new articles come out at <a href="https://twitter.com/kmugrage">@kmugrage</a>.</p>
+
+<h3 id="security-testing">Security testing</h3>
+
+<div>
+  <div class="float-image float-left">
+    <img src="../../../../assets/images/blog/deploy-now/but_it_just_needs_recorded-8850667e.png" class="pad-right" title="Sheet music that is not yet recorded" alt="sheet music that is not yet recorded" />
+  </div>
+
+  <div class="float-article float-right">
+    <p>
+All too often this is the primary category of tasks that don't get run until everything else is "done". This often results in issues that are very hard to track down since the time between tests has been very long. By writing these tests all the time you'll have a much easier time tracking down issues before they become too hard to fix.
+    </p>
+
+    <p>
+Many people feel it's not the greatest idea to have the same person writing the security tests who is writing the code. There's also the question of skillset; great security people are not common. It's important that you use a Continuous Delivery server that is capable of using more than one build material for a single pipeline. That way these tests will run whenever the code or the tests are updated.
+    </p>
+  </div>
+  <div class="clear" />
+</div>
+
+<h3 id="performance-testing">Performance testing</h3>
+
+<p>This one is probably the hardest to run all the time if for no other reason than hardware costs. To properly performance test many applications takes a serious dedication of resources. Luckily public and private cloud infrastructures have made this somewhat easier. Consider having a pipeline where the first stage spins up the machines you need either as virtual machines or containers, runs the tests, and then shuts down those machines.</p>
+
+<p>In this day of "search for a term, hit the link, wait no more than 2 seconds for the page to load" performance is critical. To make matters worse, performance issues are often very hard to track down. You want to know as soon as possible if you've introduced a problem.</p>
+
+<h3 id="management-of-the-environments">Management of the environments</h3>
+
+<p>It's been said many times that it's much easier to break an application by messing up the environment that it is by doing something wrong in the source code. If something like the security advisory comes out and you need to update systems as soon as possible, you should be able to commit the change to a configuration management tool, have that change picked up by your continuous delivery system and run it through exactly the same process as a code change.</p>
+
+<h3 id="testing-of-the-deployment-itself">Testing of the deployment itself</h3>
+
+<div>
+  <div class="float-image float-right">
+    <img src="../../../../assets/images/blog/deploy-now/but_it_just_needs_paint-11210336.png" class="pad-left" title="Blank canvas" alt="Blank canvas" />
+  </div>
+
+  <div class="float-article float-left">
+    <p>
+      This isn't really a type of pipeline all by itself. This is the concept that you should be deploying the software exactly the same way in every environment that you plan to deploy in production. Unfortunately it's still not uncommon for people to copy over files to a QA server run test and only then run the actual deployment tool that pushes the same software to a production server.
+    </p>
+
+    <p>
+      No matter how you're doing your actual production deployment, whether that is shell scripts, dedicated tools, configuration management tools, or others, you should be deploying in exactly the same way everywhere else. Consider using tools that can read environment specific details from environment variables or other inputs.
+    </p>
+  </div>
+  <div class="clear" />
+</div>
+
+<h3 id="why-wouldnt-you-do-this">Why wouldn't you do this?</h3>
+
+<p>One of the biggest objections I hear to running all of these types of pipelines on every change is that the pipeline will take too long to run. This is why having a continuous delivery server that's capable of running multiple pipelines in parallel while ensuring that software doesn't go any further if any of those pipelines fail is so important.</p>
+
+<p>The other objection I hear the most is that people simply lack the automation around these areas. This is certainly valid, and I don't want to pretend that any of this is easy to do. Don't be afraid to start with what you can, and then add other things your pipeline as your capabilities grow. A continuous delivery pipeline is a bit of a living system it should be evolving along with your processes.</p>
+
+<h3 id="what-are-the-other-big-ones">What are the other big ones?</h3>
+
+<p>I'm very interested in hearing other types of pipelines that you find useful.</p>
+
+<div class="cornered-banner">
+  <p class="cornered-banner_content">
+    Try GoCD today with our new Test Drive experience
+  </p>
+  <a href="../../../../test-drive-gocd.html" class="cornered-banner_cta">START NOW</a>
+</div>
+
+<style type="text/css">
+.float-image {
+  max-width: 25%;
+}
+
+.float-image img {
+  max-width: 100%;
+}
+
+.float-image img.pad-right {
+  padding-right: 10px;
+}
+
+.float-image img.pad-left {
+  padding-left: 10px;
+}
+
+.float-article {
+  max-width: 75%;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+@media (max-width: 699px) {
+  .float-left, .float-right {
+    float: none;
+  }
+
+  .float-image {
+    max-width: 100%;
+  }
+
+  .float-article {
+    max-width: 100%;
+  }
+}
+</style>
+
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
