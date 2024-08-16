@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="A look at how we got to build and pipelines as code and challenging some of the assumptions surrounding them." name="description" />
+    <meta content="GoCD, Pipelines as Code, Infrastructure as Code, continuous delivery, build as code, config as code" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="What Does Pipelines as Code Really Mean | GoCD Blog" />
+    <meta name="twitter:description" content="A look at how we got to build and pipelines as code and challenging some of the assumptions surrounding them." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/pipelines-as-code/pipelines-as-code-hero-a3209f2b.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/05/02/what-does-pipelines-as-code-really-mean" />
+
+    <title>What Does Pipelines as Code Really Mean | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_05 x2017_05_02 x2017_05_02_what-does-pipelines-as-code-really-mean x2017_05_02_what-does-pipelines-as-code-really-mean_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../../assets/images/blog/pipelines-as-code/pipelines-as-code-hero-a3209f2b.jpg" alt="Pipelines As Code" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>What Does Pipelines as Code Really Mean?</h1>
+    <h4>Badri Janakiraman and David Rice</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>Mirroring the rise of interest in infrastructure as code, there has been a <a href="https://www.thoughtworks.com/radar/techniques/pipelines-as-code">considerable interest</a> in defining builds and pipelines as code. But unlike with infrastructure as code, we see a rise in the assumption that defining pipelines as code requires the use of a full programming language. This assumption puzzles us.</p>
+
+<p>This post will attempt to:</p>
+
+<ul>
+  <li>Break down how we got to build and pipelines as code</li>
+  <li>Fight the assumption that pipelines as code equates to always configuring pipelines with a general purpose programming language</li>
+  <li>Call out that storing pipeline config in your team’s project repository is orthogonal to pipelines as code</li>
+</ul>
+
+<h2 id="infrastructure-as-code">Infrastructure as code</h2>
+
+<p>As infrastructure as code is the “as code” movement the majority of us are most familiar with, let’s take a quick look.</p>
+
+<p><a href="https://martinfowler.com/bliki/InfrastructureAsCode.html">Martin Fowler’s bliki</a> tells us that “Infrastructure as code is the approach to defining computing and network infrastructure through source code that can then be treated just like any software system.”  We can keep the code in version control for audit and reproducible builds. As it’s code, we can also test it. Two of the bigger benefits are less stress when rolling out changes as well as reduced mean time to recovery when disaster strikes.</p>
+
+<p>Infrastructure as code is enabled by countless libraries, scripts, and definition files. Configuration is typically via a declarative syntax such as YAML or JSON, a DSL, or a full-fledged programming language such as Ruby. Pick the right tool for the job.</p>
+
+<p>Build as code and pipeline as code would have much the same definition. They are an approach to defining your builds and pipelines in diffable, readable files checked into source control that can then be treated just like any software system.</p>
+
+<h2 id="build-as-code">Build as code</h2>
+
+<p>The first CI server, <a href="https://en.wikipedia.org/wiki/CruiseControl">CruiseControl</a> appeared around 2000/01. Interestingly, CruiseControl fully supported build as code. CruiseControl ran a build by simply calling a specified target in a specified ant file that lived in the project’s source repository. The build was defined in code, an ant build file, and stored in the team’s source repository.</p>
+
+<p>The next generation of CI servers, mostly notably Hudson/Jenkins (pre 2.0), quickly moved away from that style of build definition. They fully owned the build configuration, often allowed editing only via a GUI, and stored it outside the team’s source code.  This caused a number of problems:</p>
+
+<ul>
+  <li>Inability to change code and build configuration in lockstep, forcing a lengthy game of whack-a-mole to get the build, the application, and tests in synch.</li>
+  <li>Inability to track changes to the build configuration, resulting in non-reproducible builds.</li>
+  <li>Inability to make build configuration changes atomically, resulting in unintended build executions and failures.</li>
+  <li>In an environment with central build servers, a team was not in control of its own build.</li>
+</ul>
+
+<p>In 2011 Travis CI changed things. Travis builds could only be defined in a travis.yml file that lived in your source repository. Developers absolutely loved the travis.yml file. No doubt one reason is that it fixed the above list of problems. But we think it might have as much to do with devops culture and infrastructure as code being in vogue by this time.</p>
+
+<p>Lessons from the Travis model were as follows:</p>
+
+<ul>
+  <li>Keep the build configuration for a specific project alongside the code for that project in the same version control system</li>
+  <li>Pick an external form for the build configuration that is plain text and is human readable so that the changes could be tracked and diffed much like the changes to any other part of the code.</li>
+</ul>
+
+<p>Travis CI mainstreamed build as code. Note that we aren’t talking about utilizing a full programming language yet. Travis CI’s build as code was a YAML file.</p>
+
+<h2 id="pipelines-as-code">Pipelines as code</h2>
+
+<p>Today, we see deployment pipelines and “CI/CD Servers” are mainstream. And pipelines as code requiring a full programming language is the de facto assumption. In fact, Jenkins has clearly set out to own the term “Pipelines as Code,” including popularizing that the configuration of pipelines should only be done via a programming language.</p>
+
+<p>We can understand why equating pipelines as code with configuration via a programming language has happened. Deployment pipelines have more complex workflows. A typical microservice architecture will require many deployment pipelines that are for the most part identical. These are problems that are in fact well-solved by most programming languages. And “Pipelines as Code” makes for some great marketing.</p>
+
+<p>But infrastructure as code doesn’t demand a programming language. Nor should pipelines as code. A CD tool with deployment pipelines really should support the reuse of build and pipeline configuration, parameterization, conditional execution and other common constructs via simple, declarative definitions. We reject the notion that pipelines as code requires writing imperative code.</p>
+
+<h2 id="is-configuring-via-a-general-purpose-language-wrong">Is configuring via a general purpose language wrong?</h2>
+
+<p>No! Absolutely not. We just don’t want it to be the starting point. It brings more complexity. More complexity brings more errors. And in the same way that complex Chef repositories need test-kitchen based unit tests to make sure that they are doing the right thing, a complex and programmed build configuration needs tests itself. <em>Quis custodiet ipsos custodes?</em></p>
+
+<p>GoCD tries very hard to support deployment pipelines in such a way that you only need to declare definitions to define your pipelines. But there are scenarios where GoCD’s limits are hit and then something like <a href="https://github.com/SpringerSBM/gomatic">Gomatic</a>, allowing configuration of pipelines via Python scripts, is useful. As with everything in software, you need to understand the trade-offs and choose the right tools.</p>
+
+<h2 id="storing-build-and-pipeline-config-in-the-main-project-repository">Storing build and pipeline config in the main project repository</h2>
+
+<p>Lastly, there is great confusion between the concept of pipelines as code and the concept of storing the configuration in the team’s main code repository. While the two concepts are often in play together, they are in fact separate concerns. That the pipeline is stored in version control is non-negotiable. But storing pipeline config in the team’s main application repository is not a requirement of pipeline as code.</p>
+
+<p>In the simple scenarios, where a single team owns everything, by all means store the pipeline config in your main application repository. But in a more complex system, with multiple repositories, multiple dependencies, or other intricacies, there is not enough information in any of the application code repositories to reason how the full pipeline should work. Here you will want to store your pipeline configuration in its own repository.</p>
+
+<p>GoCD supports pipeline configuration via your application code repository, a repository external to your application code, or a central file that GoCD itself manages under git version control.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>It’s great that we all are demanding builds and pipelines as code. Pipelines as code need not always be via a programming language. Don’t awkwardly force your build and pipeline config into your main source repository when it’s not the right thing to do.</p>
+
+<p>We hope this post helped clear up some of the confusion surrounding pipelines as code. Do let us know by commenting below or tweet to us at <a href="https://twitter.com/david_j_rice">@david_j_rice</a> and <a href="https://twitter.com/badrij">@badrij</a>.</p>
+
+<p><em>Thanks to <a href="https://paulhammant.com/">Paul Hammant</a> for pushing us to offer more prescriptive guidance on where to store the pipeline configuration.</em></p>
+
+<div class="row">
+  <div class="downloadbanner">
+  <div class="container">
+    <div class="banner-with-cta">
+      <p>Get started with simplifying continuous delivery. Download and use <span class="go">Go</span>CD for free</p>
+      <a href="../../../../download/">Download</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

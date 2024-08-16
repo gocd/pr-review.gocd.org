@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="This Continuous Deployment Strategy article describes some of the implementation techniques for performing blue/green deployments." name="description" />
+    <meta content="gocd, continuous deployment strategies, blue green servers, blue green, continuous integration, continuous delivery, canary releases, blue green deployments" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Blue/Green Deployments | GoCD Blog" />
+    <meta name="twitter:description" content="This Continuous Deployment Strategy article describes some of the implementation techniques for performing blue/green deployments." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/blue-green/blue-green-hero-3f180508.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/07/25/blue-green-deployments" />
+
+    <title>Blue/Green Deployments | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_07 x2017_07_25 x2017_07_25_blue-green-deployments x2017_07_25_blue-green-deployments_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../../assets/images/blog/blue-green/blue-green-hero-3f180508.jpg" alt="Blue/Green Deployments" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Part 2 - Continuous Deployment Strategies: Blue/Green Deployments</h1>
+    <h4>Ketan Padegaonkar</h4>
+    <p class='tags'>
+<a href="../../../../tags/continuous-deployment-strategies.html" class="tag">        Continuous Deployment Strategies
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>In the <a href="../../18/continuous-deployment-strategies.html">previous article</a> on Continuous Deployment Strategies, we explored at a high level some of the popular CD strategies.</p>
+
+<p>This article describes some of the implementation techniques for performing blue/green deployments.</p>
+
+<blockquote>
+  <p>Blue/green is a technique for deployments where the existing running deployment is left in place. A new version of the application is installed in parallel with the existing version. When the new version is ready, cut over to the new version by changing the load balancer configuration.</p>
+</blockquote>
+
+<p>The basic idea behind this technique is to be able to route users to either the green set of servers, or the blue set of servers.</p>
+
+<p>This can be achieved in multiple ways:</p>
+
+<ul>
+  <li>Changing the load balancer/router</li>
+  <li>Changing public DNS records</li>
+  <li>Load Balancer + Internal DNS records</li>
+</ul>
+
+<h2 id="changing-the-load-balancerrouter">Changing the load balancer/router</h2>
+
+<p><img src="../../../../assets/images/blog/continuous-deployment-strategies/blue-green-deployments-d73adc69.jpeg" alt="Load Balancer Router" title="Load Balancer Router" /></p>
+
+<p>Using this technique you would change the load balancer or request router to point to either the blue server or the green server.</p>
+
+<h2 id="changing-public-dns-records">Changing public DNS records</h2>
+
+<p>Using this technique involves load-balancing at the DNS level by changing either the CNAME or the A records. When users request a DNS entry for your website, your DNS server could return the IP address for either the blue server or the green server. This particular approach would require that the time to live (TTL) is set to a very small value.</p>
+
+<p><img src="../../../../assets/images/blog/blue-green/dns-9ac8588f.jpeg" alt="Changing public DNS records" title="Changing public DNS records" /></p>
+
+<p>This particular approach is not recommended for changing public DNS records because some DNS servers run some browsers don't respect the low TTL values on the DNS entry, they will cache the DNS records for longer than the TTL. This may leave a subset of your users not being able to access your website.</p>
+
+<h2 id="load-balancer--internal-dns-records">Load Balancer + Internal DNS records</h2>
+
+<p>This approach is a combination of the two techniques we've seen so far.</p>
+
+<p><img src="../../../../assets/images/blog/blue-green/load-balancer-1a3e2b12.jpeg" alt="Load Balancer + Internal DNS records" title="Load Balancer + Internal DNS records" /></p>
+
+<p>In this technique, instead of changing public DNS records, we'll change internal (private) DNS records. Since the internal network and the DNS server can be managed and configured to respect TTLs, this approach works a lot better than changing public DNS records.</p>
+
+<p><em>This article was first published on the SnapCI Blog.</em></p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
