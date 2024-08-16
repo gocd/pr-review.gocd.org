@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="GoCD is open source continuous delivery software. Now users can add custom authentication schemes through plugins." name="description" />
+    <meta content="GoCD, continuous delivery, continuous delivery software, continuous integration, continuous integration software, go, goforcd, open source, authentication, plugin, end-point" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Authentication end-point | GoCD Blog" />
+    <meta name="twitter:description" content="GoCD is open source continuous delivery software. Now users can add custom authentication schemes through plugins." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/authentication-plugins/login-page-b00e9881.png" />
+    <link rel="canonical" href="http://localhost:4567/2015/06/18/authentication-end-point.html" />
+
+    <title>Authentication end-point | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2015 x2015_06 x2015_06_18 x2015_06_18_authentication-end-point">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+
+
+  <header class="blog-post-header">
+    <h1>Authentication end-point</h1>
+    <h4>GoCD Team</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      <p>Starting 15.2.0 GoCD Server will expose authentication end-point. What this means is GoCD users can add "custom" authentication schemes through plugins.</p>
+
+<p>Examples of integrations possible:</p>
+
+<ul>
+  <li>OAuth Login - <a href="https://github.com/srinivasupadhya/gocd-oauth-login">GitHub</a>, <a href="https://github.com/srinivasupadhya/gocd-oauth-login">Google</a>, Hotmail, Yahoo! etc.</li>
+  <li>Single Sign-on (SSO) - LDAP, Okta etc.</li>
+  <li>2-factor authentication - SMS verification etc.</li>
+  <li>Custom <code>username</code> &amp; <code>password</code> authentication</li>
+</ul>
+
+<h3 id="how-does-it-work">How does it work?</h3>
+
+<p>Below is an explanation of how <a href="https://github.com/srinivasupadhya/gocd-oauth-login">GitHub OAuth Login plugin</a> works.</p>
+
+<ul>
+  <li>Generate OAuth token on GitHub.</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/generate-oauth-token-3fb15337.png" class="has_border full_size" id="mature_ci_cd_setup" title="Generate oauth token on GitHub" alt="Generate oauth token on Git Hub" />
+  <figcaption>Figure 1: Generate oauth token <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<ul>
+  <li>On plugin listing page users will see a gear icon (similar to one on the pipeline dashboard).</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/list-plugin-56a2f413.png" class="has_border full_size" id="plugin_listing" title="Plugin listing with gear icon" alt="Plugin listing with gear icon" />
+  <figcaption>Figure 1: Plugin listing with gear icon <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<ul>
+  <li>Clicking on the gear icon opens a pop-up that renders "Plugin Settings".</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/configure-plugin-5a5b3512.png" class="has_border full_size" id="configure_plugin" title="Configure plugin pop-up" alt="Configure plugin pop-up" />
+  <figcaption>Figure 2: Configure plugin pop-up <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<ul>
+  <li>Login Page</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/login-page-b00e9881.png" class="has_border full_size" id="login_page" title="Login Page with GitHub icon" alt="Login Page with Git Hub icon" />
+  <figcaption>Figure 3: Login Page with GitHub icon <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<ul>
+  <li>Click on GitHub icon</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/github-login-18b74573.png" class="has_border full_size" id="auth_gocd_on_github" title="Authorize GoCD Server to access GitHub" alt="Authorize Go CD Server to access Git Hub" />
+  <figcaption>Figure 3: Authorize GoCD Server to access GitHub <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<ul>
+  <li>Successful login</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/successful-login-a699ce6f.png" class="has_border full_size" id="successful_login" title="Pipeline View on successful login" alt="Pipeline View on successful login" />
+  <figcaption>Figure 3: On successful login <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<ul>
+  <li>Ability to Search &amp; Add users</li>
+</ul>
+
+<figure>
+  <img src="../../../assets/images/blog/authentication-plugins/search-user-6d06f1b6.png" class="has_border full_size" id="search_user" title=" Search User" alt=" Search User screen" />
+  <figcaption>Figure 3: Search User <span class="click_to_enlarge">(Click to enlarge)</span></figcaption>
+</figure>
+
+<p>We hope plugin developers are able to use this feature to support their organizations authentication mechanism.</p>
+
+<h4 id="references">References:</h4>
+
+<ul>
+  <li><a href="https://plugin-api.gocd.org/current/authorization/">Developer Docs</a></li>
+  <li><a href="https://github.com/gocd/gocd/issues/851">GitHub Issue</a></li>
+  <li><a href="../../../plugins/">Sample plugins</a></li>
+</ul>
+
+<style type="text/css">
+figure {
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+figcaption {
+  color: #575757;
+  font-weight: normal;
+}
+
+img.full_size {
+  width: 82%;
+  margin-left: 8%;
+  margin-right: 8%;
+}
+
+img.has_border {
+  border: 1px solid;
+}
+</style>
+
+<script type="text/javascript">
+  $("figure").on('click', 'img', function() {
+    $(this).width("100%").css('margin-left', 0).css('margin-right', 0);
+    $(this).parent("figure").find("span.click_to_enlarge").hide();
+  });
+</script>
+
+<hr />
+
+<p>As always, GoCD questions can be asked on the <a href="https://groups.google.com/g/go-cd">mailing list</a>.</p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>

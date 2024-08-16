@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="How to use a manual approval process to propagate your build which gives you more control over deployments." name="description" />
+    <meta content="GoCD, continuous delivery, deployment control, manual approvals, manual gate, control build propagation, manual stages, manual pipeline" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Control deployments using Manual Gates | GoCD Blog" />
+    <meta name="twitter:description" content="How to use a manual approval process to propagate your build which gives you more control over deployments." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/manual-gates/manual-approval-hero-4d6c9eec.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/05/23/control-deployments-manual-approvals.html" />
+
+    <title>Control deployments using Manual Gates | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_05 x2017_05_23 x2017_05_23_control-deployments-manual-approvals">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/manual-gates/manual-approval-hero-4d6c9eec.jpg" alt="Part 5 - Control deployments using Manual Gates: Modeling Deployment Pipelines" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Part 5 - Modeling Deployment Pipelines: Control deployments using Manual Gates</h1>
+    <h4>Aravind S.V, Product Manager at GoCD</h4>
+    <p class='tags'>
+<a href="../../../tags/modeling-deployment-pipelines.html" class="tag">        Modeling Deployment Pipelines
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>This is the fifth post in the series - <a href="../../../tags/modeling-deployment-pipelines.html">Modeling Deployment Pipelines</a>. In our <a href="../../04/17/build-propagation-using-fan-in-fan-out.html">previous post</a>, we talked about how using Fan-in/Fan-out helps build propagation. In this post, we will show you how to use a manual approval process to propagate your build which is especially useful for critical deployments.</p>
+
+<h2 id="the-importance-of-manual-approvals">The Importance of Manual Approvals</h2>
+
+<p>To deploy into environments such as production, and pre-production, it’s often important to have a manual approval process. This way, you can also make sure that your deployment happens only when you're ready for it (be it in terms of the time of the day, or in terms of other dependencies you need to wait for). We refer to this approval process as a “gate” since it works as one to control the build propagation by either stopping or allowing the build to go through. (Note: Manual gates are supported by GoCD, out of the box, by marking a stage as manual). Here’s an image which shows the environments that the build is propagated through by using pipelines with manual gates.</p>
+
+<div class="imagezoom">
+<img src="../../../assets/images/blog/manual-gates/pipeline-environments-53b88a03.jpeg" alt="Pipeline with Environments" title="Pipeline with Environments" />
+<span class="info_txt">Click image to zoom in</span>
+</div>
+
+<p><em>To see how we came up with this deployment pipeline diagram, <a href="../../03/29/beginnings-of-a-real-pipeline.html">see this earlier post</a>.</em></p>
+
+<h2 id="types-of-manual-gates">Types of Manual Gates</h2>
+
+<p>There are three manual gates (or manual stages) shown as little red boxes in this image. The one between the two stages of the “UAT” pipeline is often used as a pass/fail gate. This is to help control which builds go to “Test” stage. In this case, if the testing is manual and someone needs to approve a “build”, this kind of a gate is useful. The “Test” stage can also just be a dummy stage. If the deployed build is deemed to be a failure, no one approves it and the “Test” stage for that pipeline never gets run. So, that build never shows up as a candidate for the “Pre_Prod” environment.</p>
+
+<p>The second and the third gates shown are before the first stage of both the “Pre_Prod” and “Production” pipelines. When the first stage of a pipeline is marked manual, the whole pipeline is also called a “manual pipeline”. In this case, you don't want the pipeline to  automatically trigger when one of its dependencies finishes successfully. Instead, you want to have the ability to select the upstream dependencies of the pipeline and then trigger it. It’s also quite useful for manual stages to have their own “approvers”. Therefore you can allow only a subset of people to see and approve it. (Note: If you’d like to know how manual stages can be set up in GoCD, <a href="https://docs.gocd.org/current/configuration/dev_authorization.html#adding-authorization-to-approvals">read this</a>. You can use the “trigger with options” feature to decide what to run when the first stage is manual). We highly recommend this be used where you need to limit access.</p>
+
+<p>Build propagation continues to be shown in green and works equally well with manual gates. Even if you take multiple days before you approve a stage, the correct artifact will be fetched from the correct upstream pipeline. <em>Important: Please make sure that the old artifacts are not purged before they’re fetched.</em> When using GoCD, you can choose to never purge artifacts for a stage, so that it is always available for downstream pipelines to use.</p>
+
+<h2 id="a-gocd-pro-tip-for-manual-pipelines">A GoCD pro tip for Manual Pipelines</h2>
+
+<p>When using GoCD, it’s more convenient to have a dummy first stage and a gate after it, instead of making a pipeline’s first stage manual (like the third manual gate shown in the image above). This prevents a user from having to trigger with options and making a mistake in choosing the available upstream dependencies. More importantly, the pipeline history page in GoCD can then be used to see all available builds and choose one to take further. In the configuration, it looks like this:</p>
+
+<p><img src="../../../assets/images/blog/manual-gates/dummy-stage-8006248e.jpeg" alt="Pipeline with Dummy Stage" title="Pipeline with Dummy Stage" /></p>
+
+<p>In the pipeline history page in GoCD, it will look like this:</p>
+
+<div class="imagezoom">
+<img src="../../../assets/images/blog/manual-gates/pipeline-history-cdb6d8df.png" alt="Pipeline History" title="Pipeline History" />
+<span class="info_txt">Click image to zoom in</span>
+</div>
+
+<p>This approach becomes even more important in a fan-in scenario. Without this (having the first stage be manual), it is more prone to human error - Eg. A user can pick upstream dependencies which are not compatible like using a run of “Upstream_1” pipeline which ran with SVN revision 1 combined with a run of “Upstream_2” pipeline which ran with SVN revision 2. By using the dummy stage approach, fan-in will apply to the pipeline first and an incompatible combination of the two upstream pipelines will not lead to the “Dummy stage” being triggered at all.</p>
+
+<p>We recommend using this approach to model manual pipelines in GoCD. It not only gives you more control, but also prevents human error in complex pipelines thereby making your deployments safer.</p>
+
+<hr />
+
+<p>So far throughout the series, we have a defined process of taking a set of changes through a set of tests, automated and manual, and based on the result, through a set of environments coming closer and closer to production, with increasing confidence.</p>
+
+<p>In <a href="../../06/13/modeling-deployment-pipelines-agents-environments.html">our next post</a>, we’ll look at “Where does all of this run?” and talk in more detail about workers, or in GoCD terms, GoCD <a href="https://docs.gocd.org/current/introduction/concepts_in_go.html#agent">Agents</a>. If you haven’t already, we recommend you to have your <a href="../../../help/">GoCD server setup</a> to better follow our upcoming posts.</p>
+
+<div class="row">
+  <div class="downloadbanner">
+  <div class="container">
+    <div class="banner-with-cta">
+      <p>Get started with simplifying continuous delivery. Download and use <span class="go">Go</span>CD for free</p>
+      <a href="../../../download/">Download</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
