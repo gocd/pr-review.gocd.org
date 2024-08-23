@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="This story is about the experiences of the Snap CI team in moving a monolith codebase to microservices and the continuous delivery learnings along the way." name="description" />
+    <meta content="confessions, snapci, stories, experts continuous delivery, continuous delivery stories, monolith to microservices" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Confessions of Continuous Delivery Experts: From microservices back to monolith | GoCD Blog" />
+    <meta name="twitter:description" content="This story is about the experiences of the Snap CI team in moving a monolith codebase to microservices and the continuous delivery learnings along the way." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/cd-confession-snapci/continuous-delivery-confessions-snapci-de12716b.png" />
+    <link rel="canonical" href="http://localhost:4567/2017/12/06/confessions-continuous-delivery-experts-snapci-microservices-monolith" />
+
+    <title>Confessions of Continuous Delivery Experts: From microservices back to monolith | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_12 x2017_12_06 x2017_12_06_confessions-continuous-delivery-experts-snapci-microservices-monolith x2017_12_06_confessions-continuous-delivery-experts-snapci-microservices-monolith_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../../assets/images/blog/cd-confession-snapci/continuous-delivery-confessions-snapci-de12716b.png" alt="CD confessions moving from monolith to microservices"/>
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Confessions of Continuous Delivery Experts: From microservices back to monolith</h1>
+    <h4>GoCD Team</h4>
+    <p class='tags'>
+<a href="../../../../tags/cd-confessions.html" class="tag">        CD Confessions
+</a>     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>This blog series highlights the important lessons that we learned when we thought we were practicing continuous delivery. This is the third in our series of <a href="https://www.gocd.org/tags/cd-confessions.html">confessions from continuous delivery experts</a>. This story is about the experiences of the Snap CI team in moving a monolith codebase to microservices and why they chose to move back.</p>
+
+<p>Snap CI was a continuous integration and delivery server for teams who work in the Cloud. If you were using GitHub, Snap CI could take your commit, put it through an automated test or suite of tests that you've written, and then help you deploy it to your Cloud target (like Heroku, AWS etc) .</p>
+
+<h2 id="confession-we-fulfilled-all-the-practices-on-a-checklist-but-we-failed-on-the-core-principle-which-is-to-deliver-changes-quickly"><em>Confession: We fulfilled all the practices on a checklist, but we failed on the core principle which is ‘to deliver changes quickly’</em></h2>
+
+<p>Snap CI’s team had very enthusiastic and experienced CD practitioners. The team wanted to do ‘everything CD’. Within six months after we began the product, we had a microservices architecture with nine different components, sophisticated messaging queues, monitoring, an automated infrastructure, and deployment pipelines for all of these different components.</p>
+
+<blockquote>
+  <p><strong><em>“We were in CD Nirvana”</em></strong></p>
+</blockquote>
+
+<p>We had everything except for one important piece -  delivering quickly. We were delivering to production every two weeks, which sounds “not so bad,” but was not a business decision. We were unable to deploy any sooner than that. The product manager was exceptionally frustrated that they were unable to do daily ‘continuous deployment’ as the business needed to.</p>
+
+<h2 id="confession-we-did-not-pay-attention-to-the-other-core-principle-of-continuous-delivery-which-was-to-deliver-changes-reliably"><em>Confession: We did not pay attention to the other core principle of continuous delivery, which was to deliver changes reliably</em></h2>
+
+<p>The second problem we had, was that when it came time to deliver, the likelihood of key features working was only about 50%. All that monitoring we had in place wasn’t giving us usable feedback. We were forced to rely on manual testing or using a small test group to inform us of any failures. We were unable to move the product forward for public use.</p>
+
+<h2 id="assess-and-reassess-your-continuous-delivery-practices">Assess and reassess your continuous delivery practices</h2>
+
+<p>It’s commonly thought that microservices are essential to do continuous delivery as a best practice. However, in our situation they were not right for us at that time.</p>
+
+<p>We were enamoured by the idea of “microservices” and separated our components without pausing to think if they truly made sense for delivery. As a result,  components were only separated superficially. When we changed one component, we still needed to change the data structure in the other components. And because of this, we were unable to deliver those pieces separately from each other.</p>
+
+<p>At this time, we made a decision to  go back to a monolith structure which put us in a better place to understand what was going on with the product. This gave us the ability to gradually release more often and allow the business needs and the needs of the product to dictate where those splits should be.</p>
+
+<h2 id="lessons-we-learned">Lessons we learned</h2>
+
+<p>We learned that users don’t care if your team is practicing continuous delivery or using microservices. These are decisions a team makes to ensure what they build reaches users quickly and reliably. It’s easy to get caught up in the checklists, “doing CI and CD”, trying cool new microservices etc.</p>
+
+<blockquote>
+  <p><em><strong>Do the important things first that will deliver code quickly and reliably and then evolve and move forward on your journey.</strong></em></p>
+</blockquote>
+
+<p>The second lesson we learned was that CD is a journey. It's an evolution, and you first need to set your goals driven by your business and then make your way there. It is tempting to move to the latest practice or new technology as soon as you hear about it. However I recommend that  in the first few weeks, unless you are 100% sure that that's what you need, don’t make any major architectural decisions. Do the important things first that will deliver code quickly and reliably and then evolve and move forward on your journey.</p>
+
+<p><em>Snap CI was created by Thoughtworks Products. It is no longer available and <a href="https://github.com/snap-ci/snap-ci-blog-content/blob/master/posts/2017-02-06-2017-02-06-snap-announcement.md">has been discontinued</a> since Feb 2017.</em></p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
