@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Here are some techniques to avoid the pain of having brittleness from legacy code." name="description" />
+    <meta content="legacy code, upgrade dependencies, security vulnerabilties, unit tests, branch by abstraction, technical debt" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="How to Avoid Brittle Code | GoCD Blog" />
+    <meta name="twitter:description" content="Here are some techniques to avoid the pain of having brittleness from legacy code." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/how-to-avoid-brittle-code/how-to-avoid-brittle-code-083942f0.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2016/03/24/how-to-avoid-brittle-code" />
+
+    <title>How to Avoid Brittle Code | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2016 x2016_03 x2016_03_24 x2016_03_24_how-to-avoid-brittle-code x2016_03_24_how-to-avoid-brittle-code_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../../assets/images/blog/how-to-avoid-brittle-code/how-to-avoid-brittle-code-083942f0.jpg" alt="How to Avoid Brittle Code" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>How to Avoid Brittle Code</h1>
+    <h4>David Rice</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>The most common problem with legacy code is brittleness. A brittle codebase is one that a team cannot change without great pain. In Thoughtworks' 10 years of building products we've learned some hard lessons while trying to keep fairly large codebases malleable, year after year. In this post I'll share what we learned from our biggest challenges. One caveat: my writing down these thoughts isn't my saying we've got it down cold. We still have our share of pain from legacy code. Like any team, we struggle to get better each and every day.</p>
+
+<h2 id="upgrade-everything-all-the-time">Upgrade everything, all the time</h2>
+
+<p>You should aspire to upgrade your dependencies and frameworks all the time. OK, so maybe this is almost in the realm of the obvious now. But very few people thought so 10 years ago. And I wonder whether even teams who <em>know</em> this is the right thing to do, <em>actually</em> prioritize it. It just needs to be something you do all the time and not left to be handled via technical debt. Here's why:</p>
+
+<ol>
+  <li>
+    <p><strong><a href="https://martinfowler.com/bliki/FrequencyReducesDifficulty.html">If it hurts, do it more often</a></strong>. One of the most obvious reasons to upgrade all the time is that upgrading can be hard. There's very often an unpredictable cascade of broken dependencies. The amount of work is mostly unknown. Do it more often and it becomes a non-issue. But there's more to this than simple pain avoidance.</p>
+  </li>
+  <li>
+    <p>Another motivator for upgrading dependencies is <strong>fixing security vulnerabilities</strong>. One of the biggest differences in building software now versus 10 years ago is the seemingly non-stop flow of vulnerability reports against our libraries, frameworks and applications. Fixing vulnerabilities will almost always involve upgrading some of your dependencies. The upgrades must to be easy in order to quickly ship vulnerability fixes.</p>
+  </li>
+  <li>
+    <p>Teams that don't upgrade regularly typically will label the activity as technical debt. Despite the industry being much more willing to talk about technical debt than 10 years ago, it's still <strong>a very painful conversation</strong> to convince a product manager to pay down technical debt. If your team works in an "upgrade everything all the time mode", you can avoid any conversation around upgrading technical debt altogether.</p>
+  </li>
+</ol>
+
+<h2 id="its-about-the-unit-tests">It's about the unit tests</h2>
+
+<p>The primary pain point for working with legacy code is how long it takes to make changes. So if you intend for your code to be long-lived, you need to ensure that it will be entirely pleasurable for future developers to make changes to it. And there's one element that dominates all others for this: an extremely fast and thorough unit test suite.</p>
+
+<p>The cycle for adding new features, including any refactoring, is roughly this: write failing test; code; get to green; make it right. If you're doing it right, you're executing a lot of unit tests along the way, sometimes a focused set and sometimes the entire suite. If these tests aren't fast, the development cycle will not be enjoyable. The coding experience should not be: make a couple of changes and sit around for 10 or 20 minutes while tests run. That's a bad place to be.</p>
+
+<p>Keeping a unit suite fast isn't just about how you design and code. Yes, you can do a lot of things to keep tests fast, such as avoiding files, databases, sockets, creation of huge graphs of objects, etc. But the other key piece is picking frameworks and languages that lend themselves to fast tests. If you find yourself subverting your framework to make your tests fast, you need to consider a different framework. And—yes—you can read this as my being unlikely to use Rails the next time I'm building a traditional multi-page application.</p>
+
+<p>There's also a consideration about the size of the application. Once a codebase is a certain size, you need to figure out how to split it up. This is the only way to keep a fairly complete understanding of a piece of software in your head. Finding the seams along which to split a monolith is not an academic modeling exercise. You will spend a lot of time playing with your code, moving things around, redesigning, refactoring. Having a fast test suite to quickly validate your work along the way will make this work several orders of magnitude easier.</p>
+
+<p>Actually, "several orders of magnitude" is likely underselling it. If you need to split up a monolith and have a painfully slow unit test suite, well… you just might be stuck. That's learning a lesson the hard way. So do everything in your power to keep your unit tests extremely fast and able to run in a single thread on a dev machine.</p>
+
+<h2 id="branch-by-abstraction-should-not-be-a-permanent-state">"Branch by Abstraction" should not be a permanent state</h2>
+
+<p>Long-lived products are going to have a number of tech leads over the years. A certain type of tech lead will come in and start making noise about what stinks in the stack and immediately want to start swapping in new stuff. And that's OK. New shiny toys aren't always bad. For a long-lived codebase, it requires some fresh energy to generate enough momentum to swap out the parts that are no longer holding their weight. That said, I want to make two important points.</p>
+
+<p>A new tech lead should not swap out any tech until they've been working on the team for two to three months. There's too much context to understand. The new tech lead needs to learn empathy for the team and the codebase. The team and tech lead need to build trust and a rhythm. Better decisions will be made with an initial pause.</p>
+
+<p>The typical means of swapping out new tech (outside the absurdity of long-lived branches) is to utilize <a href="https://martinfowler.com/bliki/BranchByAbstraction.html">Branch by Abstraction</a>:</p>
+
+<ul>
+  <li>An abstraction is placed in front of component X.</li>
+  <li>Component Y is introduced as a replacement for X</li>
+  <li>The abstraction routes intelligently between X &amp; Y while…</li>
+  <li>X is gradually made obsolete</li>
+  <li>X is removed; the abstraction is maybe removed</li>
+</ul>
+
+<p>I have many times seen this process fail to complete due to discovering how difficult it is to remove that final 20% of the old component. I cannot stress enough how painful it is to drag around multiple ways of doing things year after year. It slows everything down and is demoralizing. Branch by Abstraction is a great pattern. It's the only way I'd do this sort of component swapping. But it needs to be accompanied by the team's complete commitment to eliminate the old component within a specified timebox.</p>
+
+<h2 id="technical-debt-can-kill-you">Technical debt can kill you</h2>
+
+<p>Just because we talk about technical debt more than we used to does not provide any guarantee that it will be paid down. Perversely, maintaining a backlog of technical debt makes it easy to never pay it down. It's too easy for a manger to say "It's OK to hold off on that. We've got this other pressing need over here. It's logged. We can come back to it."  And in that moment, it's probably a sound decision. But those pressing needs never go away. Urgent lists only grow longer.</p>
+
+<p>And the situation get worse. My experience is that there is a point when the technical debt backlog grows so onerous that the team will give up on <em>wanting</em> to pay it off. The team will feel hopeless. The developers cannot achieve flow. The business isn't getting new value. I have a few thoughts on how to avoid insurmountable technical debt.</p>
+
+<p>A good development team won't play the same technical debt card over and over again. When a team realizes it's playing the same type of technical debt card repeatedly, it must bring the pain forward and quickly assume that work into its normal everyday way of working.</p>
+
+<p>My colleague Badri suggests that a team must agree to take on debt collectively. No one individual has the right to make the codebase worse while signing up the entire team to fix it later.</p>
+
+<p>Most importantly, technical leaders and product leaders need to trust each other. Neither side should be able to play the "because I said so" card. Good technical leaders understand the priorities of the business. Good product managers value being able to deliver. Both sides need to talk about risks, costs, and benefits. If you can't ship, your technical debt has converted into a business problem and that's bad for everyone.</p>
+
+<p>There's obviously much more a team can do to write long-lived code: code for the reader, don't be clever, and always think of your future colleagues to name a few. I'd love to hear what you think should be added to this list.</p>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
