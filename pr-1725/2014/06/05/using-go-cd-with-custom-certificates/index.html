@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="GoCD is open source continuous delivery software. This post will help you set up GoCD to use your custom certificate instead of a self-signed certificate." name="description" />
+    <meta content="GoCD, continuous delivery, continuous delivery software, continuous integration, continuous integration software, go, goforcd, open source, custom certificate, self signed, certificate" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Using GoCD with custom certificates | GoCD Blog" />
+    <meta name="twitter:description" content="GoCD is open source continuous delivery software. This post will help you set up GoCD to use your custom certificate instead of a self-signed certificate." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/using-go-cd-with-custom-certificates/summary_image-55b6cd48.png" />
+    <link rel="canonical" href="http://localhost:4567/2014/06/05/using-go-cd-with-custom-certificates" />
+
+    <title>Using GoCD with custom certificates | GoCD Blog</title>
+    <link href="../../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2014 x2014_06 x2014_06_05 x2014_06_05_using-go-cd-with-custom-certificates x2014_06_05_using-go-cd-with-custom-certificates_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../../../" class="logo" analytics-label="logo"><img src="../../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+
+
+  <header class="blog-post-header">
+    <h1>Using <span class="go">Go</span>CD with custom certificates</h1>
+    <h4>Sachin Sudheendra</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      <p>The following post will help you setting up <a href="https://www.gocd.org">GoCD</a> to use your custom certificate instead of the self-signed certificate that GoCD ships with.</p>
+
+<p>Note: This post is a copy of the one available <a href="https://sachinsudheendra.github.io/2014/03/08/using-go-cd-with-custom-certificates.html">here</a></p>
+
+<blockquote>
+  <p>Assumption: You have the certificate key (*.key) and an X509 certificate (*.crt).</p>
+</blockquote>
+
+<h2 id="step-1-changing-passphrase-of-certificate-key">Step 1: Changing passphrase of certificate key</h2>
+
+<p>The passphrase of the certificate key, for example <strong>site.key</strong>, should be changed to match the one we use for the keystore.</p>
+
+<blockquote>
+  <p>Note: Certificate passphrase <strong>must</strong> be set to <strong>serverKeystorepa55w0rd</strong></p>
+</blockquote>
+
+<pre><code>$ mv site.key site.key.orig
+$ openssl rsa -des3 -in site.key.orig -out site.key
+Enter pass phrase for site.key.orig:
+writing RSA key
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
+</code></pre>
+
+<h2 id="step-2-converting-your-certificate-sitecrt-into-pkcs12-format">Step 2: Converting your certificate (site.crt) into PKCS12 format</h2>
+
+<p>If you have the key and certificate, you should export them to the pkcs12 format by running</p>
+
+<pre><code>$ openssl pkcs12 -inkey site.key -in site.crt -export -out site.pkcs12
+Enter pass phrase for site.key:
+Enter Export Password:
+Verifying - Enter Export Password:
+</code></pre>
+
+<h2 id="step-3-importing-the-pkcs12-store-into-the-java-keystore">Step 3: Importing the PKCS12 store into the Java Keystore</h2>
+
+<p>Once you have the site.pkcs12 file, you would need to import this keystore into the java keystore that GoCD uses. We will use the <strong>keytool</strong> utility that ships with Java.</p>
+
+<blockquote>
+  <p>Note: Destination keystore password <strong>must</strong> be set to <strong>serverKeystorepa55w0rd</strong></p>
+</blockquote>
+
+<pre><code>$ keytool -importkeystore -srckeystore site.pkcs12 -srcstoretype PKCS12 -destkeystore keystore -srcalias 1 -destalias cruise
+Enter destination keystore password: serverKeystorepa55w0rd
+Re-enter new password: serverKeystorepa55w0rd
+Enter source keystore password:
+Entry for alias 1 successfully imported.
+Import command completed:  1 entries successfully imported, 0 entries failed or cancelled
+</code></pre>
+
+<h2 id="step-4-replacing-the-current-gocd-keystore-with-the-newly-generated-one">Step 4: Replacing the current GoCD keystore with the newly generated one</h2>
+
+<p>Now that the <strong>keystore</strong> (/tmp/keystore) is created, we'll replace the one that GoCD uses with this new one.</p>
+
+<ul>
+  <li>
+    <p>Stop go-server</p>
+
+    <pre><code>sudo /etc/init.d/go-server stop
+</code></pre>
+  </li>
+  <li>
+    <p>Change user to <strong>go</strong></p>
+
+    <pre><code>sudo su - go
+</code></pre>
+  </li>
+  <li>
+    <p>Change directory</p>
+
+    <pre><code>cd /etc/go
+</code></pre>
+  </li>
+  <li>
+    <p>Backup the current keystore</p>
+
+    <pre><code>mv keystore keystore.original
+</code></pre>
+  </li>
+  <li>
+    <p>Copy over the new keystore</p>
+
+    <pre><code>cp /tmp/keystore /etc/go
+</code></pre>
+  </li>
+  <li>
+    <p>Start go-server</p>
+
+    <pre><code>sudo /etc/init.d/go-server start
+</code></pre>
+  </li>
+</ul>
+
+<p>Post this, when you access the GoCD Server over HTTPS (https://<go-server>:8154), the certificate served should be the one you added into the keystore.</go-server></p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="https://www.gocd.org">#gocd</a></li>
+  <li><a href="https://sharetheconversation.blogspot.in/2012/01/setting-up-self-signed-ssl-certificates.html">Setting up self-signed SSL certificates for your Jetty instance (experiments with Noir and Clojure)</a></li>
+</ul>
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../../2018/">2018 (16)</a></li>
+            <li><a href="../../../../2017/">2017 (39)</a></li>
+            <li><a href="../../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
