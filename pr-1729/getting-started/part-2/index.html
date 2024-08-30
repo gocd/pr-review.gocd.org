@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="New to GoCD? Learn about some of GoCD's concepts and features, and get the chance to try them out on a real server." name="description" />
+    <meta content="GoCD, continuous delivery, continuous delivery software, continuous integration, continuous integration software, go, goforcd, open source, help, support, resources, getting started, deployment pipeline, Go" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Help - Getting Started with GoCD Part Two | GoCD" />
+    <meta name="twitter:description" content="New to GoCD? Learn about some of GoCD's concepts and features, and get the chance to try them out on a real server." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/gocd_continuous_delivery_thoughtworks_twitter-9cfe1828.jpg" />
+    <link rel="canonical" href="http://localhost:4567/getting-started/part-2" />
+
+    <title>Help - Getting Started with GoCD Part Two | GoCD</title>
+    <link href="../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="getting-started getting-started_part-2 getting-started_part-2_index">
+    <header class="top">
+  <div class="container">
+    <a href="../../" class="logo" analytics-label="logo"><img src="../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="inner-banner">
+  <div class="container">
+    <h1 class="caption"><span>Introduction to <span class="go">Go</span>CD</span></h1>
+  </div>
+</div>
+
+<div class="container">
+  <div class="grid-container">
+    
+<div class="grid-col-3 sidebar">
+  <button class="get-start-btn"><i class="fa fa-bars"></i></button>
+  <nav class="sidebar-nav getting-started-nav">
+    <h5>Introduction to GoCD <span class="close-nav">X</span></h5>
+
+    <ul class="verticalnav">
+      <li class="dropdown dropdown-menu">
+        <a href="#" class="active">Part 1</a>
+        <ul>
+          <li><a href="#" class="active" data-section="#concept1" data-dest="../part-1/" data-is-local="false"><strong>Concept 1:</strong>Server and agents</a></li>
+          <li><a href="#" data-section="#concept2" data-dest="../part-1/" data-is-local="false"><strong>Concept 2:</strong>Pipelines and materials</a></li>
+          <li><a href="#" data-section="#concept3" data-dest="../part-1/" data-is-local="false"><strong>Concept 3:</strong>Agent prepares to do some work</a></li>
+          <li><a href="#" data-section="#concept4" data-dest="../part-1/" data-is-local="false"><strong>Concept 4:</strong>Stages, jobs and tasks </a></li>
+        </ul>
+      </li>
+      <li class="dropdown open">
+        <a href="#">Part 2</a>
+        <ul>
+          <li><a href="#" data-section="#pipeline_as_material" data-dest="./" data-is-local="true">Using a pipeline as a material</a></li>
+          <li><a href="#" data-section="#concept_pipeline_dependency_material" data-dest="./" data-is-local="true"><strong>Concept 5:</strong>  Pipeline Dependency Material </a></li>
+          <li><a href="#" data-section="#using_artifacts" data-dest="./" data-is-local="true">Publishing, fetching and using artifacts</a></li>
+          <li><a href="#" data-section="#concept_artifact" data-dest="./" data-is-local="true"><strong>Concept 6:</strong>Artifact </a></li>
+          <li><a href="#" data-section="#fetching_using_artifacts" data-dest="./" data-is-local="true">Fetching and using artifacts</a></li>
+          <li><a href="#" data-section="#concept_ancestor_artifacts" data-dest="./" data-is-local="true"><strong>Concept 7:</strong>Ancestor artifacts and building artifacts only once </a></li>
+          <li><a href="#" data-section="#custom_tabs" data-dest="./" data-is-local="true">Custom tabs</a></li>
+          <li><a href="#" data-section="#concept_custom_tab" data-dest="./" data-is-local="true"><strong>Concept 8:</strong> Custom tab</a></li>
+        </ul>
+      </li>
+      <li class="dropdown dropdown-menu">
+        <a href="#">Part 3</a>
+        <ul>
+          <li><a href="#" data-section="#value_stream_map" data-dest="../part-3/" data-is-local="false">Value Stream Map (VSM)</a></li>
+          <li><a href="#" data-section="#concept_vsm" data-dest="../part-3/" data-is-local="false"><strong>Concept 9:</strong>  Value Stream Map </a></li>
+          <li><a href="#" data-section="#fan_out_fan_in" data-dest="../part-3/" data-is-local="false">Fan-Out and Fan-In</a></li>
+          <li><a href="#" data-section="#concept_fan_out_fan_in" data-dest="../part-3/" data-is-local="false"><strong>Concept 10:</strong>Fan-Out and Fan-In</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+    <div class="grid-col-9">
+      <div class="getting-started-content">
+        <p>
+          In <a href="../part-1/">Part 1</a> of this guide, the concepts of GoCD Server, GoCD Agents,
+          pipelines, materials, stages, jobs and tasks were introduced. You were also able to get a simple pipeline with
+          a single stage, job and task each working.
+        </p>
+
+        <p>
+          Let us continue, in this part, by learning about pipelines as materials, about artifacts and about custom
+          tabs.
+        </p>
+
+        <h2 class="big-title" id="pipeline_as_material">Using a pipeline as a material</h2>
+        <p>
+          Instead of using a source code repository on GitHub as a material, it is possible to use a stage of any
+          pipeline as a material for another pipeline. This seemingly simple feature provides a lot of power. This
+          allows pipelines to be chained together, allowing very complex workflows to be modeled well and is a basis for
+          the more advanced features in GoCD, such as Value Stream Map (VSM) and fan-in/fan-out.
+        </p>
+
+        <section class="concept" id="concept_pipeline_dependency_material">
+          <h3>Concept 5: Pipeline Dependency Material</h3>
+
+          <figure>
+            <img src="../../assets/images/getting-started/part-2/gocd-pipeline-dependency-material-bd64c6f3.svg" title="GoCD Concept 5 - Pipeline Dependency Material" alt="GoCD Pipeline Dependency Material" />
+          </figure>
+
+          <p>
+            A pipeline dependency material links pipelines together. The pipeline which has the material which points to another
+            pipeline is called the "Downstream Pipeline". The actual pipeline which is the dependency material is called the
+            "Upstream Pipeline". Even though it is called a "Pipeline Dependency" the real dependency is to a stage in an
+            upstream pipeline.
+          </p>
+
+          <p>
+            As soon as that stage completes successfully, the first stage of each of the configured downstream pipelines triggers.
+            If the stage does not complete successfully, its configured downstream pipelines do not trigger.
+          </p>
+
+          <p>
+            In the image above, as soon as "Stage 2" of "UpstreamPipeline" completes successfully, "DownstreamPipeline1"
+            starts. Concurrently, "Stage 3" of "UpstreamPipeline" also starts.
+          </p>
+        </section>
+
+        <p>
+          Let's see how we can get a pipeline dependency to work. Clicking on "Admin" and then "Pipelines" takes you to
+          the "Pipeline Configuration" page which lists all the pipelines in the system. It looks like this:
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/1-pipeline-configuration-page-08907387.png" title="Pipeline Configuration page" alt="Pipeline Configuration page" />
+          <figcaption>Pipeline Configuration page</figcaption>
+        </figure>
+
+        <ol start="1">
+          <li>Create another pipeline, using the "Create a new pipeline within this group" link.</li>
+          <li>Name this new pipeline "MySecondPipeline" and click "Next" to reach step 2, to choose a material.</li>
+          <li>Choose "Pipeline" as the Material Type, and you'll be in a screen like the one below.</li>
+        </ol>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/2-pipeline-dependency-material-73c42e70.png" title="Start adding a pipeline dependency material" alt="Start adding a pipeline dependency material" />
+          <figcaption>Start adding a pipeline dependency material</figcaption>
+        </figure>
+
+        <p>
+          As soon as you start typing the name of your first pipeline in the "Pipeline [Stage]" textbox, it will
+          autocomplete and give you the name of the first pipeline and the only stage that is in it. Selecting that will
+          link these two pipelines together.
+        </p>
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/3-autocompletion-pipeline-material-1737f4e3.png" title="Autocompletion of the pipeline dependency material" alt="Autocompletion of the pipeline dependency material" />
+          <figcaption>Autocompletion of the pipeline dependency material</figcaption>
+        </figure>
+
+        <p>Click "Next" and choose some task in the "Initial Job and Task" section and click "Finish".</p>
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/4-create-downstream-pipeline-ae7713c5.png" title="Create the downstream pipeline" alt="Create the downstream pipeline" />
+          <figcaption>Create the downstream pipeline</figcaption>
+        </figure>
+
+        <p>
+          That's it! You'll now have a pipeline which will run when un-pause. Un-pause it and let it finish. This is how
+          it will look on the Pipelines list (dashboard) when finished.
+        </p>
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/5-dependent-pipeline-dashboard-19905315.png" title="Dependent pipelines on the dashboard" alt="Dependent pipelines on the dashboard" />
+          <figcaption>Dependent pipelines on the dashboard</figcaption>
+        </figure>
+
+        <p>
+          That doesn't look very different. But, this allows for some powerful features such as fan-in, fan-out and the
+          ValueStream Map (VSM), which we will learn about in <a href="../part-3/">Part 3</a>. Click
+          on the label of the "MyFirstPipeline" (the part highlightedin the image above) for a sneak peek at a small
+          Value Stream Map.
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/6-value-stream-map-8a14c25b.png" title="Dependent pipelines in a Value Stream Map" alt="Dependent pipelines in a Value Stream Map" />
+          <figcaption>Dependent pipelines in a Value Stream Map</figcaption>
+        </figure>
+
+        <p>You now know how to chain pipelines together. Let's now learn about artifacts, which are very useful when used with pipeline dependencies.</p>
+
+        <h2 class="big-title" id="using_artifacts">Publishing, fetching and using artifacts</h2>
+
+        <p>A very important aspect of GoCD is the way it handles artifacts.</p>
+
+        <section class="concept" id="concept_artifact">
+          <h3>Concept 6: Artifact</h3>
+
+          <p>
+            An artifact in GoCD is a file or directory which is most often produced during the run of a pipeline. Every job in a
+            pipeline can be configured to publish its own set of artifacts and GoCD will ensure that these artifacts are moved from
+            the Agent where it is created, to the Server and stored there, so that it can be retrieved at any time.
+          </p>
+
+          <p>
+            Typically, artifacts are created during a job run, by one of the tasks. Some examples of artifacts are: Test reports,
+            coverage reports, installers, documentation, meta information about the build process itself and anything else that
+            needs to be stored after a pipeline has finished.
+          </p>
+
+          <p>
+            These artifacts, published by a job, can be fetched and used by <em>any</em> downstream pipeline or <em>any</em>
+            stage after the one that produced the artifact in the same pipeline, using a special task called a "Fetch Artifact"
+            task. If you recall from "Concept 4" in part 1, jobs are independent of each other. So, a job in the same stage as
+            another job that produced an artifact cannot use that artifact. It needs to be used in a stage after that one.
+          </p>
+        </section>
+
+        <p>
+          Let's see how to publish an artifact. In the upstream pipeline, "MyFirstPipeline", let's first declare an
+          artifact. The build script used throughout this guide creates a file called "my-artifact.html" after it
+          finishes. We can use that as the artifact for this example.
+        </p>
+
+        <ol start="1">
+          <li>Go to "Admin" -&gt; "Pipelines" and the select the stage, "defaultStage" and then the job, "defaultJob".</li>
+          <li>Click on the "Artifacts" tab in the job.</li>
+          <li>Enter "my-artifact.html" as the artifact source.</li>
+          <li>Leave the "Destination" box empty for now.</li>
+        </ol>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/7-adding-artifact-977cd8a3.png" title="Adding an artifact" alt="Adding an artifact" />
+          <figcaption>Adding an artifact</figcaption>
+        </figure>
+
+        <p>
+          Since we have chosen to leave the "Destination" empty, and that means that the artifact will be accessible at the root,
+          by its own name. We have also chosen the type as "Build Artifact", to signify that it is not a "Test Artifact". Marking
+          it as a "Test Artifact" means that GoCD will try and parse the file as a test report and if it can, it will use it in
+          the test aggregation reporting it does. Typically, you'll want to use "Build Artifact" for installers, binaries,
+          documentation, etc.
+        </p>
+
+        <p>
+          After saving this change, retrigger "MyFirstPipeline" by going to the pipeline dashboard and clicking on the play button
+          against it. Once it is finished, going to the "Artifacts" tab of the pipeline run shows you the artifact for that
+          run. Every run of that pipeline, from now on, will have that artifact.
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/8-artifacts-tab-2a423239.png" title="The artifacts tab - Every job will have one" alt="The artifacts tab - Every job will have one" />
+          <figcaption>The artifacts tab - Every job will have one</figcaption>
+        </figure>
+
+        <p>Clicking on it will show you its contents:</p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/9-contents-of-artifact-52748cf0.png" title="The contents of the artifact - It is stored on the GoCD Server" alt="The contents of the artifact - It is stored on the Go C D Server" />
+          <figcaption>The contents of the artifact - It is stored on the GoCD Server</figcaption>
+        </figure>
+
+        <h4 id="fetching_using_artifacts">Fetching and using artifacts</h4>
+
+        <p>
+          We can now use this artifact in any downstream pipeline, or any subsequent stage of the same pipeline. Let's fetch this
+          artifact in the pipeline "MySecondPipeline" and display it as a part of the output. To do this, we go to the task
+          configuration section of the "defaultJob" job inside the "defaultStage" stage of "MySecondPipeline" pipeline, and add a
+          "Fetch Artifact" task.
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/10-adding-fetch-artifact-cd85c5b4.png" title="Adding a Fetch Artifact task" alt="Adding a Fetch Artifact task" />
+          <figcaption>Adding a "Fetch Artifact" task</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/11-details-can-be-autocompleted-3378453b.png" title="The details can be autocompleted" alt="The details can be autocompleted" />
+          <figcaption>The details can be autocompleted</figcaption>
+        </figure>
+
+        <p>
+          Once you provide all the details and click save, you can move the "Fetch Artifact" task above, so that it is
+          done first. Then, for this demonstration, let us display the fetched file in a "Custom Command" task.
+        </p>
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/12-move-the-fetch-artifact-to-top-18eeeed5.png" title="Move the fetch artifact task to the top" alt="Move the fetch artifact task to the top" />
+          <figcaption>Move the fetch artifact task to the top</figcaption>
+        </figure>
+
+        <p>
+          After it is moved up, you can edit the "Custom Command" task to output the contents of the file (for instance). If you
+          are running this on Windows, use "type" instead of "cat":
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/13-contents-of-fetch-artifact-d389e3d3.png" title="Display the contents of the fetched artifact" alt="Display the contents of the fetched artifact" />
+          <figcaption>Display the contents of the fetched artifact</figcaption>
+        </figure>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/14-tasks-should-look-like-this-b45c1798.png" title="This is how the tasks should look like" alt="This is how the tasks should look like" />
+          <figcaption>This is how the tasks should look like</figcaption>
+        </figure>
+
+        <p>
+          Running "MySecondPipeline" now will show you the contents of the file created in "MyFirstPipeline" and fetched
+          as an artifact. The importance of fetching an artifact this way is that GoCD will ensure that the correct
+          version of the artifact will be fetched and provided to the job in "MySecondPipeline".
+        </p>
+
+        <p>
+          If more instances of "MyFirstPipeline" ran (because it is fast) while "MySecondPipeline" has run fewer times,
+          GoCD will ensure that every time "MySecondPipeline" runs, the correct (and compatible) version of the artifact
+          is fetched and used. When you now check the output of the pipeline, you should see something like this:
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/15-output-of-fetched-artifact-974958e8.png" title="The output - The artifact is fetched and displayed" alt="The output - The artifact is fetched and displayed" />
+          <figcaption>The output - The artifact is fetched and displayed</figcaption>
+        </figure>
+
+        <section class="concept">
+          <h3 id="concept_ancestor_artifacts">Concept 7: Ancestor artifacts and building artifacts only once</h3>
+
+          <p>
+            In GoCD, you can even fetch artifacts from pipelines which are not immediately downstream of the pipeline which produces
+            an artifact. It can be fetched from any pipeline which is downstream, however many levels that is. So, with a Value
+            Stream Map like this:
+          </p>
+
+          <figure>
+            <img src="../../assets/images/getting-started/part-2/16-ancestor-artifacts-vsm-142de56a.png" title="Value Stream Map" alt="Value Stream Map" />
+          </figure>
+
+          <p>
+            The pipeline "MyFifthPipeline" can be configured to fetch an artifact from "MyFirstPipeline" like this:
+          </p>
+
+          <figure>
+            <img src="../../assets/images/getting-started/part-2/17-fetch-from-ancestor-pipeline-074da703.png" title="Fetching artifacts from ancestor pipelines" alt="Fetching artifacts from ancestor pipelines" />
+            <figcaption>Fetching artifacts from ancestor pipelines</figcaption>
+          </figure>
+
+          <p>
+            GoCD will complete the name of the pipeline and the path through the upstream pipelines for you and you can then use an
+            artifact from an ancestor pipeline in a downstream pipeline.
+          </p>
+
+          <p>
+            The ability to do this is important because of how artifacts are expected to be used in a Continuous Delivery
+            pipeline. A core concept of CD is "Only Build Your Binaries Once". This prevents problems such as inconsistencies
+            between a binary which went through various levels of testing and a new "duplicate binary" which is released after being
+            built on a box which has a slightly different environment. So, the ability to move an artifact between pipelines and
+            more importantly, knowing that it is the same binary being used (GoCD ensures that) is important.
+          </p>
+
+          <p>
+            We can then take the same binary across different kinds of tests, getting more confident about it as it progresses
+            through the pipelines, eventually reaching a production-deployment pipeline, knowing that the binary that is getting
+            deployed is the same as the one that went through tests.
+          </p>
+        </section>
+
+        <h2 class="big-title" id="custom_tabs">Custom tabs</h2>
+
+        <p>
+          The final part of this guide introduces the concept of a custom tab. A question that gets asked all the time
+          is: "Does GoCD integrate with &lt;application-x&gt; and show its output?". The answer is usually: "Yes, as
+          long as that application can generate a report or output that needs to be shown". Here is the concept:
+        </p>
+
+        <section class="concept" id="concept_custom_tab">
+          <h3>Concept 8: Custom tab</h3>
+
+          <p>
+            A custom tab in GoCD is a way of showing an artifact as a user-defined tab at the job level. Any file which
+            is published as an artifact by a job can be shown. Usually, these are HTML files, with images. The GoCD
+            Server will serve these files from its internal artifact repository.
+          </p>
+        </section>
+
+        <p>
+          Let's use the example artifact we had used earlier as a custom tab. To do that, let's go to the configuration
+          of "MyFirstPipeline" and then to the "Custom Tab" section of the "defaultJob" and create one. It should look
+          like this:
+        </p>
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/18-custom-tab-configure-e1e878c6.png" title="Configuring a custom tab" alt="Configuring a custom tab" />
+          <figcaption>Configuring a custom tab</figcaption>
+        </figure>
+
+        <p>
+          That's it! If you now go to the pipeline, and navigate to the job "defaultJob", you'll see a custom tab called
+          "SomeCustomName". Clicking on it will show you the artifact for that run of the pipeline.
+        </p>
+
+        <figure>
+          <img src="../../assets/images/getting-started/part-2/19-custom-tab-in-action-a2c1dcac.png" title="A custom tab in action" alt="A custom tab in action" />
+          <figcaption>A custom tab in action</figcaption>
+        </figure>
+
+        <p>
+          This can be used to integrate with coverage tools, unit test reports and anything else which creates an
+          artifact.
+        </p>
+
+        <p>
+          In this part of the guide, you learnt about pipeline dependencies, artifacts and custom tabs. In
+          <a href="../part-3/">Part 3</a> of this guide, we dive deeper into the Value Stream Map and into
+          the powerful fan-in and fan-out concepts.
+        </p>
+        
+        <div class="page-control">
+          <a href="../part-1/" class="left-control">Previous</a>
+          <a href="../part-3/" class="right-control">Next</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../plugins/">PLUGINS</a></li>
+            <li><a href="../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
