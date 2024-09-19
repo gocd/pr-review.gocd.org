@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="Snap CI is going away. GoCD is the recommended replacement for your Continuous Delivery Pipelines." name="description" />
+    <meta content="GoCD, continuous delivery, deployment pipelines, snap ci, open source, continuous delivery tool" name="keywords" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@goforcd" />
+    <meta name="twitter:title" content="Migrating from Snap CI to GoCD | GoCD Blog" />
+    <meta name="twitter:description" content="Snap CI is going away. GoCD is the recommended replacement for your Continuous Delivery Pipelines." />
+    <meta name="twitter:image" content="http://localhost:4567/assets/images/blog/migrating-snapci-gocd/snapci-migrating-gocd-d04ddb52.jpg" />
+    <link rel="canonical" href="http://localhost:4567/2017/02/16/migrating-snapci-to-gocd.html" />
+
+    <title>Migrating from Snap CI to GoCD | GoCD Blog</title>
+    <link href="../../../assets/images/favicon.ico" rel="shortcut icon" />
+    <link href="../../../assets/stylesheets/site-8aa753e5.css" rel="stylesheet" />
+    <script src="../../../assets/javascripts/all-10e8d5d5.js" data-manual="true"></script>
+    
+    <link rel="alternate" type="application/atom+xml" title="GoCD blog feed" href="../../../feed.xml" />
+    <script>
+      $(document).ready(function(){
+      $('.chocolat-parent').Chocolat();
+    });
+    </script>
+  </head>
+
+  <body class="x2017 x2017_02 x2017_02_16 x2017_02_16_migrating-snapci-to-gocd">
+    <header class="top">
+  <div class="container">
+    <a href="../../../" class="logo" analytics-label="logo"><img src="../../../assets/images/go_logo-5b5ca9e1.svg" title="GoCD Logo" alt="GoCD Logo" /></a>
+    <nav class="mainnav">
+      <ul class="level0">
+        <li><a href="../../../why-gocd/" class="link_whygocd" analytics-label="link_whygocd">Features</a></li>
+        <li><a href="https://docs.gocd.org/current/" class="link_documentation" analytics-label="link_help&gt;link_documentation">Documentation</a></li>
+        <li><a href="../../../blog/" class="link_blog" analytics-label="Blog">Blog</a></li>
+        <li><a href="../../../download/" class="link_download" analytics-label="Download">Download</a></li>
+      </ul>
+    </nav>
+    <button class="navbtn menu collapse">
+    <span></span>
+    </button>
+  </div>
+
+</header>
+<span id="top"></span>
+
+    <div class="container blog-post">
+
+
+  
+
+
+
+  <div class="row">
+    <div class="col-md-9">
+
+    <div class="post-banner">
+      <figure>
+  <img src="../../../assets/images/blog/migrating-snapci-gocd/snapci-migrating-gocd-d04ddb52.jpg" alt="Migrating SnapCI to GoCD" />
+</figure>
+
+    </div>
+
+
+  <header class="blog-post-header">
+    <h1>Migrating from Snap CI to <span class="go">Go</span>CD</h1>
+    <h4>Suzie Prince - Product Manager at Snap CI</h4>
+    <p class='tags'>
+     </p>
+  </header>
+
+      <main id="main" role="main" class="blog-post-main-container">
+      
+<p>Many Snap CI users are now looking for a replacement CI/CD tool. In the <a href="https://github.com/snap-ci/snap-ci-blog-content/blob/master/posts/2017-02-06-2017-02-06-snap-announcement.md">end of life announcement</a> we recommended that Snap CI users take a look at GoCD and consider it as an alternative. We recommend this not just because Thoughtworks creates and supports both tools, but because we think it's a great choice for Snap CI users. Snap CI had its roots in GoCD and they share common features. However, they were also created with different specific needs in mind and offer unique capabilities.</p>
+
+<p>This post intends to serve as reference for anyone comparing GoCD to Snap CI (or any other hosted CI/CD tool) and fairly compare them to provide you with useful insights into why GoCD might be a good choice for you. Because we understand the needs of Snap CI users, we will also highlight areas where GoCD may not completely meet your needs and where you may need to consider your own tooling priorities. Finally, should you think that GoCD is a good choice for you, we will provide you with information about how to migrate from Snap CI to GoCD.</p>
+
+<h2 id="comparison-gocd-snapci">Comparison of GoCD and Snap CI</h2>
+
+<p>Here is the obligatory comparison table. Read on ahead for our opinions.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Features</th>
+      <th>Snap CI</th>
+      <th>GoCD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Pricing</strong></td>
+      <td>Free for public repositories. Starting at $30 for private repositories</td>
+      <td>Free, open source for all users</td>
+    </tr>
+    <tr>
+      <td><strong>Platform</strong></td>
+      <td>Hosted software as a service</td>
+      <td>Run on your own servers, on-premise or on the cloud</td>
+    </tr>
+    <tr>
+      <td><strong>Source Control</strong></td>
+      <td>Github integration</td>
+      <td>GoCD is universal (not platform or tool specific) and extensible through plugins</td>
+    </tr>
+    <tr>
+      <td><strong>Pipeline </strong></td>
+      <td>Built with pipelines at the core</td>
+      <td>Built with pipelines at the core</td>
+    </tr>
+    <tr>
+      <td><strong>Pipeline Dependencies</strong></td>
+      <td>Some support for fan-in and fan-out pipelines capabilities</td>
+      <td>First class support for fan-in/fan-out (to chain multiple pipelines) and value stream map.<br /><br />GoCD works great when it comes to modeling and visualizing workflows spanning across multiple repositories and pipelines.</td>
+    </tr>
+    <tr>
+      <td><strong>Configuration</strong></td>
+      <td>Configuration via UI</td>
+      <td>Configuration via source code, API and UI</td>
+    </tr>
+    <tr>
+      <td><strong>Language Support</strong></td>
+      <td>Ruby/JRuby, Python, Node.js/io.js, PHP, Java, Groovy/Gradle, Scala/SBT, Clojure/Leiningen, C/C++, Android</td>
+      <td>GoCD will execute tests and perform deployments written using any languages or frameworks</td>
+    </tr>
+    <tr>
+      <td><strong>Operating System</strong></td>
+      <td>CentOS, Ubuntu</td>
+      <td>Windows, Mac OSX and Linux (Debian/Ubuntu CentOS/RedHat)</td>
+    </tr>
+    <tr>
+      <td><strong>Docker Support</strong></td>
+      <td>Out of the box support for docker</td>
+      <td>Users are required to setup and configure docker on GoCD agents</td>
+    </tr>
+    <tr>
+      <td><strong>Test Parallelization</strong></td>
+      <td>Test parallelization up to 5 workers</td>
+      <td>Test parallelization and flexibility to scale from one machine to many machines using multiple GoCD agents</td>
+    </tr>
+    <tr>
+      <td><strong>Branch Tracking</strong></td>
+      <td>Automatic branch tracking and pull request integration</td>
+      <td><a href="https://gocd.org/plugins">Plugin</a> support</td>
+    </tr>
+    <tr>
+      <td><strong>Support</strong></td>
+      <td>First class professional support for all users</td>
+      <td>Community based support for all users<br />1. <a href="https://groups.google.com/g/go-cd">Google Group</a><br />2. <a href="https://github.com/gocd/gocd/discussions">Github Discussions</a> for code contributors<br /><br /><a href="https://www.thoughtworks.com//">Professional support</a> for paid GoCD users</td>
+    </tr>
+    <tr>
+      <td><strong>API</strong></td>
+      <td>APIs to trigger pipelines and get pipeline history</td>
+      <td><a href="https://api.gocd.org/current">Rich API</a> to configure GoCD, trigger pipelines and get read historical data from GoCD</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="is-gocd-for-me">What does this really mean for me? Is GoCD the tool for me?</h2>
+
+<p>Basically, if what you liked about Snap CI was the continuous delivery pipelines then GoCD has all that and much more. If you used the Snap CI workaround for fan-in and fan-out pipelines then GoCD can easily meet your pipeline dependency needs. It you loved seeing which stage was broken and halting the line when there was a problem then GoCD can continue to do all that for you. And, if you were waiting for Snap CI's config as code feature to go live or were hoping we'd make Snap CI free to use then GoCD can meet these needs already.</p>
+
+<p>However, if what you really liked and still need in a CI/CD tool is that it is hosted, and that does not require you to manage your own machines then GoCD is likely not the best choice for you. If seamless support for GitFlow, branch tracking and PRs or out of the box support for Heroku is a priority for you then GoCD is likely not what you should choose.</p>
+
+<p>If you would like our opinions on which hosted CI/CD tool may best suit your needs please get in touch with us at <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#115;&#110;&#097;&#112;&#045;&#099;&#105;&#046;&#099;&#111;&#109;">&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#115;&#110;&#097;&#112;&#045;&#099;&#105;&#046;&#099;&#111;&#109;</a>. We are familiar with many of the tools available and happy to provide our unbiased opinion on what might work for you.</p>
+
+<h2 id="whats-next-migration">What's next?</h2>
+
+<p>If you'd like to learn more about GoCD or try it out we recommend the GoCD <a href="https://www.gocd.org/getting-started/">getting started guide</a> and the <a href="https://www.gocd.org/getting-started/">GoCD community</a>.  And if you do decide to migrate from Snap CI to GoCD then do email us at <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#115;&#110;&#097;&#112;&#045;&#099;&#105;&#046;&#099;&#111;&#109;">&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#115;&#110;&#097;&#112;&#045;&#099;&#105;&#046;&#099;&#111;&#109;</a> and we can provide your Snap CI configuration <a href="https://github.com/snap-ci/docs.snap-ci.com/blob/master/source/999-migration/999-gocd-migration.md.erb">in a GoCD compatible format and help you get started</a>.</p>
+
+<p>We hope you find this a useful, thorough and fair comparison. We are more than happy to answer any specific questions you may have. We are all the same friendly, informed Thoughtworks team you're used to from Snap CI so <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#064;&#115;&#110;&#097;&#112;&#045;&#099;&#105;&#046;&#099;&#111;&#109;">drop us a note and say hi</a>!</p>
+
+<style>
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #000000;
+}
+
+th {
+    border: 1px solid #000000;
+}
+
+td {
+    border: 1px solid #000000;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+</style>
+
+
+      </main>
+    </div>
+    <div class="col-md-3">
+      <aside class="post-sidebar">
+        <section  class="recent-articles">
+          <h2 class="section-title">Recent Articles</h2>
+          <ol>
+            <li>
+              <span class="post-date">Feb 13</span>
+              <span class="post-author">Chad Wilson & Aravind SV</span>
+              <a href="../../../2023/02/13/gocd-project-status/">GoCD project status in 2023</a>
+            </li>
+            <li>
+              <span class="post-date">Dec 14</span>
+              <span class="post-author">Aravind SV</span>
+              <a href="../../../2021/12/14/log4j-vulnerability/">GoCD and the Log4j vulnerability - CVE-2021-44228</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/restore-backup-for-gocd-on-kubernetes/">Restore Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Oct 11</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/10/11/perform-backup-for-gocd-on-kubernetes/">Perform Backup for GoCD on Kubernetes</a>
+            </li>
+            <li>
+              <span class="post-date">Apr 14</span>
+              <span class="post-author">Guest post by Abilash Rajasekaran</span>
+              <a href="../../../2020/04/14/gocd-on-kubernetes-using-terraform/">GoCD on Kubernetes using Terraform</a>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2 class="section-title">By Year</h2>
+          <ol>
+            <li><a href="../../../2023/">2023 (1)</a></li>
+            <li><a href="../../../2021/">2021 (1)</a></li>
+            <li><a href="../../../2020/">2020 (3)</a></li>
+            <li><a href="../../../2019/">2019 (7)</a></li>
+            <li><a href="../../../2018/">2018 (16)</a></li>
+            <li><a href="../../">2017 (39)</a></li>
+            <li><a href="../../../2016/">2016 (8)</a></li>
+            <li><a href="../../../2015/">2015 (21)</a></li>
+            <li><a href="../../../2014/">2014 (25)</a></li>
+          </ol>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="join-community">
+    <ul>
+      <li>
+        <a href="https://groups.google.com/g/go-cd" target="_blank" analytics-label="google-group">
+          <i class="icon fa fa-users fa-4x join-us" aria-hidden="true"></i>
+          <span>Join our discussion forum</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd/discussions" target="_blank" analytics-label="github-discussions">
+          <i class="icon fa fa-comments fa-4x develop-with-us" aria-hidden="true"></i>
+         <span>Chat with us</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gocd/gocd" target="_blank" analytics-label="github">
+          <i class="icon fa fa-github fa-4x watch-us" aria-hidden="true"></i>
+          <span>watch us</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../download/">DOWNLOAD GoCD</a></li>
+            <li><a href="../../../getting-started/part-1/">INTRO TO GoCD</a></li>
+            <li><a href="../../../test-drive-gocd.html">TEST DRIVE GoCD</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="../../../plugins/">PLUGINS</a></li>
+            <li><a href="../../../resources/">RESOURCES</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+          <ul class="unordered-list">
+            <li><a href="https://www.github.com/gocd" target="_blank">FORK US ON GITHUB</a></li>
+            <li><a href="../../../assets/gocd-brand-styleguide.zip">LOGOS + BRAND</a></li>
+            <li><a href="../../../contribute/">CONTRIBUTE</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-4">
+          <p>
+            GoCD is an open-source project, sponsored by <a target="_blank" href="https://www.thoughtworks.com" analytics-label="link_footer_thoughtworks">Thoughtworks Inc.</a>
+            under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" title="Apache 2.0 License">Apache License, Version 2.0</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <div class='imagemodal'>
+      <div class='imagemodalcontent'>
+      </div>
+      <div class='close'>&#10006;
+      </div>
+    </div>
+
+  </body>
+</html>
